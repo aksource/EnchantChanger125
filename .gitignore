@@ -16,6 +16,24 @@ local.properties
 .settings/
 .loadpath
 
+/cpw
+/argo
+/ibxm
+/paulscode
+/net/minecraft/client
+/net/minecraft/isom
+/net/minecraft/src/forge
+/net/minecraft/src/*.java
+!mod_EnchantChanger.java
+!mod_MultiToolHolders.java
+fmlversion.properties
+forge_logo.png
+gk.java
+Start.java
+*.info
+*.cfg
+
+
 # External tool builders
 .externalToolBuilders/
 
