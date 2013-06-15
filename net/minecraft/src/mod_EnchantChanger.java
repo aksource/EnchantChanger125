@@ -270,6 +270,7 @@ public class mod_EnchantChanger extends BaseMod
 		MinecraftForgeClient.registerItemRenderer(FirstSwordItemID, (EcItemCloudSwordCore)ItemCloudSwordCore);
 		MinecraftForgeClient.registerItemRenderer(CloudSwordItemID, (EcItemCloudSword)ItemCloudSword);
 		MinecraftForgeClient.registerItemRenderer(UltimateWeaponItemID, (EcItemUltimateWeapon)ItemUltimateWeapon);
+		MinecraftForgeClient.registerItemRenderer(MateriaID, (IItemRenderer) ItemMat);
 		ModLoader.registerEntityID(EcEntityExExpBottle.class, "ItemExExpBottle", 500);
 		ModLoader.registerEntityID(EcEntityMeteo.class, "Meteo", 501);
 		ModLoader.registerEntityID(EcEntitySword.class, "EntitySword", 502);
