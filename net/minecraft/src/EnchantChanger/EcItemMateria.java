@@ -49,19 +49,20 @@ public class EcItemMateria extends Item implements IItemRenderer
 	public static int MagicMateriaNum = MateriaMagicNames.length;
 	public static int MagicMateriaNumMax = MagicMateriaNum*mod_EnchantChanger.MaxLv;
 	public static int[] vanillaEnch = new int[]{0,1,2,3,4,5,6,16,17,18,19,20,21,32,33,34,35,48,49,50,51};
+	public static int[] magicEnch = new int[]{mod_EnchantChanger.EnchantmentMeteoId, mod_EnchantChanger.EndhantmentHolyId, mod_EnchantChanger.EnchantmentTelepoId, mod_EnchantChanger.EnchantmentFloatId, mod_EnchantChanger.EnchantmentThunderId};
 	public static double homeX = 0;
 	public static double homeY = 512;
 	public static double homeZ = 0;
 	public static boolean GGEnable = false;
 	public static boolean MagicMateriaInBar = false;
 	private int ItemUseTime =0;
-	private int materiamax = mod_EnchantChanger.materiamax;
+//	private int materiamax = mod_EnchantChanger.materiamax;
 	private int maxlv = mod_EnchantChanger.MaxLv;
-	private int vanilla = mod_EnchantChanger.VanillaEnchNum;
+//	private int vanilla = mod_EnchantChanger.VanillaEnchNum;
 	private boolean LvCap = mod_EnchantChanger.LevelCap;
 	private boolean Debug = mod_EnchantChanger.Debug;
 	private boolean tera = mod_EnchantChanger.YouAreTera;
-	private Vec3D Gate = mod_EnchantChanger.GateCoord;
+//	private Vec3D Gate = mod_EnchantChanger.GateCoord;
 	protected static Random rand;
 	private double BoxSize = 5D;
 	private static double vert[];
@@ -122,8 +123,8 @@ public class EcItemMateria extends Item implements IItemRenderer
 		}
 		if(itemstack.getItemDamage() == 0 && itemstack.isItemEnchanted())
 		{
-			int EnchantmentKind = this.getMateriaEnchKind(itemstack);
-			int Lv = this.getMateriaEnchLv(itemstack);
+			int EnchantmentKind = mod_EnchantChanger.getMateriaEnchKind(itemstack);
+			int Lv = mod_EnchantChanger.getMateriaEnchLv(itemstack);
 			if(entityplayer.isSneaking() && Lv > 1)
 			{
 				entityplayer.removeExperience(-LevelUPEXP(itemstack, false));
@@ -189,18 +190,15 @@ public class EcItemMateria extends Item implements IItemRenderer
 		if(entity instanceof EntityLiving)
 		{
 			EntityLiving entityliving = (EntityLiving)entity;
-			if(itemstack.getItemDamage() >0  && itemstack.getItemDamage() <= materiamax)
-			{
-				this.MateriaPotionEffect(itemstack, entityliving, player);
-			}
+			this.MateriaPotionEffect(itemstack, entityliving, player);
 			return false;
 		}
 		return false;
 	}
 	public void addMateriaLv(ItemStack item, int addLv)
 	{
-		int EnchantmentKind = this.getMateriaEnchKind(item);
-		int Lv = this.getMateriaEnchLv(item);
+		int EnchantmentKind = mod_EnchantChanger.getMateriaEnchKind(item);
+		int Lv = mod_EnchantChanger.getMateriaEnchLv(item);
 		NBTTagCompound nbt = item.getTagCompound();
 		this.removeEnchTag(nbt, "ench");
 		this.addEnchantmentToItem(item, Enchantment.enchantmentsList[EnchantmentKind], Lv + addLv);
@@ -245,8 +243,8 @@ public class EcItemMateria extends Item implements IItemRenderer
 		}
 		else
 		{
-			int EnchantmentKind = this.getMateriaEnchKind(item);
-			int Lv = this.getMateriaEnchLv(item);
+			int EnchantmentKind = mod_EnchantChanger.getMateriaEnchKind(item);
+			int Lv = mod_EnchantChanger.getMateriaEnchLv(item);
 			if(EnchantmentKind != 256)
 			{
 				int potionNum;
@@ -271,32 +269,6 @@ public class EcItemMateria extends Item implements IItemRenderer
 			}
 		}
 	}
-	public int getMateriaEnchKind(ItemStack item)
-	{
-		int EnchantmentKind = 256;
-		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
-		{
-			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
-			{
-				EnchantmentKind = i;
-				break;
-			}
-		}
-		return EnchantmentKind;
-	}
-	public int getMateriaEnchLv(ItemStack item)
-	{
-		int Lv = 0;
-		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
-		{
-			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
-			{
-				Lv = EnchantmentHelper.getEnchantmentLevel(i, item);
-				break;
-			}
-		}
-		return Lv;
-	}
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){}
 
 	public String getItemNameIS(ItemStack par1ItemStack)
@@ -317,28 +289,37 @@ public class EcItemMateria extends Item implements IItemRenderer
 		itemList.add(new ItemStack(this, 1, 0));
 		for(int i = 0; i < Enchantment.enchantmentsList.length;i++)
 		{
-			if(Enchantment.enchantmentsList[i] != null)
+			if(Enchantment.enchantmentsList[i] != null && !this.isMagicEnch(i))
 			{
-				ItemStack stack = new ItemStack(this, 1, 0);
-				stack.addEnchantment(Enchantment.enchantmentsList[i], 1);
-				itemList.add(stack);
-				this.removeEnchTag(stack.getTagCompound(), "ench");
-				stack.addEnchantment(Enchantment.enchantmentsList[i], 10);
-				itemList.add(stack);
+				ItemStack stack1 = new ItemStack(this, 1, 0);
+				stack1.addEnchantment(Enchantment.enchantmentsList[i], 1);
+				itemList.add(stack1);
+				ItemStack stack2 = new ItemStack(this, 1, 0);
+				stack2.addEnchantment(Enchantment.enchantmentsList[i], 10);
+				itemList.add(stack2);
 				if(mod_EnchantChanger.Debug)
 				{
-					this.removeEnchTag(stack.getTagCompound(), "ench");
-					stack.addEnchantment(Enchantment.enchantmentsList[i], 127);
-					itemList.add(stack);
+					ItemStack stack3 = new ItemStack(this, 1, 0);
+					stack3.addEnchantment(Enchantment.enchantmentsList[i], 127);
+					itemList.add(stack3);
 				}
 			}
 		}
 		for(int i=0;i < MagicMateriaNum; i++)
 		{
-			itemList.add(new ItemStack(this, 1,1 + i));
+			ItemStack magic = new ItemStack(this, 1,1 + i);
+			if(i<this.magicEnch.length)
+				magic.addEnchantment(Enchantment.enchantmentsList[this.magicEnch[i]], 1);
+			itemList.add(magic);
 		}
 	}
-
+	public boolean isMagicEnch(int enchID)
+	{
+		for(int i=0;i < this.magicEnch.length;i++)
+			if(enchID == this.magicEnch[i])
+				return true;
+		return false;
+	}
 	public boolean hasEffect(ItemStack par1ItemStack)
 	{
 		return par1ItemStack.getItemDamage() > 0;
@@ -349,9 +330,9 @@ public class EcItemMateria extends Item implements IItemRenderer
 			return EnumRarity.rare;
 		else
 		{
-			if(this.getMateriaEnchKind(item) == 256 || this.getMateriaEnchLv(item) < 6)
+			if(mod_EnchantChanger.getMateriaEnchKind(item) == 256 || mod_EnchantChanger.getMateriaEnchLv(item) < 6)
 				return EnumRarity.common;
-			else if(this.getMateriaEnchLv(item) < 11)
+			else if(mod_EnchantChanger.getMateriaEnchLv(item) < 11)
 				return EnumRarity.uncommon;
 			else
 				return EnumRarity.rare;
@@ -372,8 +353,8 @@ public class EcItemMateria extends Item implements IItemRenderer
 //	}
 	public int LevelUPEXP(ItemStack item, boolean next)
 	{
-		int EnchantmentKind = this.getMateriaEnchKind(item);
-		int Lv = this.getMateriaEnchLv(item);
+		int EnchantmentKind = mod_EnchantChanger.getMateriaEnchKind(item);
+		int Lv = mod_EnchantChanger.getMateriaEnchLv(item);
 		int nextLv = next ?1:0;
 		if(EnchantmentKind == 256)
 			return 0;
@@ -567,7 +548,7 @@ public class EcItemMateria extends Item implements IItemRenderer
 	}
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.INVENTORY;
+		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY;
 	}
 	@Override
 	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
@@ -581,13 +562,15 @@ public class EcItemMateria extends Item implements IItemRenderer
 			this.renderMateria(item, 0.2f,0,0,f0, type);
 		else if(type == ItemRenderType.INVENTORY)
 			this.renderMateria(item, 0f, 0f, 0f, f1, type);
+		else if(type == ItemRenderType.ENTITY)
+			this.renderMateria(item, 0,0,0,f0, type);
 	}
 	public void renderMateria(ItemStack item, float x, float y, float z, float size, ItemRenderType type)
 	{
 		GL11.glTranslatef(x, y, z);
 		if(type == ItemRenderType.EQUIPPED && mc.gameSettings.thirdPersonView == 0)
 			GL11.glTranslatef(0.3f, 0.2f, 0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/mod_EnchantChanger/gui/materia.png"));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(this.getTextuerfromEnch(item)));
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 //		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -668,7 +651,7 @@ public class EcItemMateria extends Item implements IItemRenderer
 		{
 //			int[] Icon = new int[]{8,8,8,8,8,4,4,13,13,13,14,1,9,5,7,3,9,13,14,1,12};
 			int num;
-			switch(this.getMateriaEnchKind(item))
+			switch(mod_EnchantChanger.getMateriaEnchKind(item))
 			{
 			case 0:num = 8;break;
 			case 1:num = 8;break;

@@ -13,7 +13,7 @@ public class mod_EnchantChanger extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.5o";
+		return "1.6";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
@@ -86,8 +86,8 @@ public class mod_EnchantChanger extends BaseMod
 	@MLProp(info="Difficulty Ex:0=Easy,1=Normal,2=Hard")
 	public static int Difficulty =1;
 	public static int MaxLv = 127;
-	public static int VanillaEnchNum = 21;
-	public static int materiamax = VanillaEnchNum*MaxLv;
+//	public static int VanillaEnchNum = 21;
+//	public static int materiamax = VanillaEnchNum*MaxLv;
 
 	public static int EnchantmentMeteoId =240;
 	public static Enchantment Meteo;
@@ -100,7 +100,7 @@ public class mod_EnchantChanger extends BaseMod
 	public static int EnchantmentThunderId=244;
 	public static Enchantment Thunder;
 
-	ItemStack[] Magic = new ItemStack[EcItemMateria.MagicMateriaNum];
+//	ItemStack[] Magic = new ItemStack[EcItemMateria.MagicMateriaNum];
 	public int[] VanillaEnchant = new int[]{0,1,2,3,4,5,6,16,17,18,19,20,21,32,33,34,35,48,49,50,51};
 	public int[] Count= new int[]{0,0,0,0,0,0,0,0,0,0};
 	public static int[] LimitBreakCount = new int[]{0,0,0};
@@ -113,9 +113,9 @@ public class mod_EnchantChanger extends BaseMod
 	public int AttackSeveralMpTime=20*1;
 	public int AttackTime=0;
 	public double AbsorpBoxSize=5D;
-	public static Vec3D GateCoord =null;
-	public boolean incompatible=false;
-	public boolean ExtraEnchCheckbool = false;
+//	public static Vec3D GateCoord =null;
+//	public boolean incompatible=false;
+//	public boolean ExtraEnchCheckbool = false;
 	public static KeyBinding MagicKey = new KeyBinding("EcMagicKey",88);
 	public static boolean MagicKeyDown = false;
 
@@ -155,13 +155,11 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.setInGameHook(this, true, true);
 		mc = ModLoader.getMinecraftInstance();
 		instance =this;
-//		incompatible=checkCompatibility();
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/items.png");
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/terrain.png");
 		MinecraftForge.setGuiHandler(this, new EcGuiHandler());
 		MinecraftForge.registerEntityLivingHandler(new EcLivingHandler());
 		ModLoader.registerKey(this, MagicKey, false);
-//		RenderHugeId = ModLoader.getUniqueBlockModelID(this, true);
 
 		StringtoInt(SwordIds,SwordIdArray);
 		StringtoInt(ToolIds,ToolIdArray);
@@ -187,10 +185,7 @@ public class mod_EnchantChanger extends BaseMod
 		Telepo = new EcEnchantmentTeleport(this.EnchantmentTelepoId,0);
 		Float = new EcEnchantmentFloat(this.EnchantmentFloatId,0);
 		Thunder = new EcEnchantmentThunder(this.EnchantmentThunderId,0);
-//		AddExtraEnchantment(ExtraEnchantIdArray,ExtraEnchantNameArray);
-//		this.forpsEnchant();
-//		this.forTC2();
-//		this.forRP2World();
+
 		//Register Name
 		ModLoader.addName(BlockMat, "Enchant Changer");
 		ModLoader.addName(BlockMat, "ja_JP","エンチャントチェンジャー");
@@ -226,30 +221,18 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.addLocalization("enchantment.arrowDamage","ja_JP", "矢ダメージ増加");
 		ModLoader.addLocalization("ItemMateria.Base.name", "Inactive Materia");
 		ModLoader.addLocalization("ItemMateria.Base.name", "ja_JP","不活性マテリア");
+		ModLoader.addLocalization("ItemMateria.name", "Materia");
+		ModLoader.addLocalization("ItemMateria.name", "ja_JP","マテリア");
 		ModLoader.addLocalization("container.materializer", "Enchant Changer");
 		ModLoader.addLocalization("container.materializer", "ja_JP", "エンチャントチェンジャー");
 		ModLoader.addLocalization("container.hugeMateria", "HugeMateria");
 		ModLoader.addLocalization("container.hugeMateria", "ja_JP", "ヒュージマテリア");
-//		for (int i = 1; i <= materiamax; i++)
-//		{
-//			int var1 = (i-1) / MaxLv;
-//			int var2 = (i % MaxLv != 0)? i% MaxLv : MaxLv;
-//			ModLoader.addLocalization("ItemMateria." + Enchantment.enchantmentsList[this.VanillaEnchant[var1]].getName()+"."+var2+".name", " Materia of "+EcItemMateria.MateriaNames[var1]+" Lv."+var2);
-//			ModLoader.addLocalization("ItemMateria." + Enchantment.enchantmentsList[this.VanillaEnchant[var1]].getName()+"."+var2+".name", "ja_JP",EcItemMateria.MateriaJPNames[var1]+"マテリア Lv."+var2);
-//		}
+
 		for(int i=0;i < EcItemMateria.MagicMateriaNum;i++)
 		{
-			Magic[i]=new ItemStack(ItemMat, 1, materiamax + 1 +  i * MaxLv);
 			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", EcItemMateria.MateriaMagicNames[i]+" Materia");
 			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", "ja_JP",EcItemMateria.MateriaMagicJPNames[i]+"マテリア");
 		}
-//		for(int i=0; i < ExtraEnchantNameArray.size();i++)
-//		{
-//			for(int j=1;j<=MaxLv;j++)
-//			{
-//				ModLoader.addLocalization("ItemMateria."+ ExtraEnchantNameArray.get(i) +"."+ j + ".name", "Materia of "+ ExtraEnchantNameArray.get(i) + " Lv."+ j );
-//			}
-//		}
 		for(int i = 0;i< EcItemMasterMateria.MasterMateriaNum;i++)
 		{
 			ModLoader.addLocalization("ItemMasterMateria." + i + ".name", "Master Materia of " + EcItemMasterMateria.MasterMateriaNames[i]);
@@ -262,8 +245,6 @@ public class mod_EnchantChanger extends BaseMod
 
 		//register
 		ModLoader.registerBlock(BlockMat);
-//		ModLoader.registerBlock(HugeMateria, EcItemHugeMateria.class);
-//		ModLoader.registerBlock(HugeMateria);
 		ModLoader.registerTileEntity(EcTileEntityMaterializer.class, "container.materializer");
 		ModLoader.registerTileEntity(EcTileEntityHugeMateria.class, "container.hugeMateria", new EcRenderHugeMateria());
 		MinecraftForgeClient.registerItemRenderer(SephirothSwordItemID, (IItemRenderer) ItemSephirothSword);
@@ -272,6 +253,7 @@ public class mod_EnchantChanger extends BaseMod
 		MinecraftForgeClient.registerItemRenderer(CloudSwordItemID, (IItemRenderer)ItemCloudSword);
 		MinecraftForgeClient.registerItemRenderer(UltimateWeaponItemID, (IItemRenderer)ItemUltimateWeapon);
 		MinecraftForgeClient.registerItemRenderer(MateriaID, (IItemRenderer) ItemMat);
+		MinecraftForgeClient.registerItemRenderer(MasterMateriaID, (IItemRenderer) MasterMateria);
 		ModLoader.registerEntityID(EcEntityExExpBottle.class, "ItemExExpBottle", 500);
 		ModLoader.registerEntityID(EcEntityMeteo.class, "Meteo", 501);
 		ModLoader.registerEntityID(EcEntitySword.class, "EntitySword", 502);
@@ -296,22 +278,19 @@ public class mod_EnchantChanger extends BaseMod
 
 		//register recipes
 		FMLRegistry.addRecipe(new EcMateriaRecipe());
+		FMLRegistry.addRecipe(new EcMasterMateriaRecipe());
 		ModLoader.addShapelessRecipe(new ItemStack(ItemMat,1, 0), new Object[]{new ItemStack(Item.diamond, 1), new ItemStack(Item.enderPearl, 1)});
 		ModLoader.addRecipe(new ItemStack(ItemZackSword, 1), new Object[]{" X","XX"," Y", Character.valueOf('X'),Block.blockSteel, Character.valueOf('Y'),Item.ingotIron});
 		ModLoader.addRecipe(new ItemStack(ItemCloudSwordCore, 1), new Object[]{" X ","XYX"," Z ", Character.valueOf('X'), Block.blockSteel, Character.valueOf('Y'), new ItemStack(ItemMat, 1,0), Character.valueOf('Z'),Item.ingotIron});
-//		ModLoader.addRecipe(new ItemStack(ItemCloudSword , 1), new Object[]{"BCB","DED", Character.valueOf('C'),new ItemStack(Item.swordSteel, 1,0), Character.valueOf('B'),new ItemStack(Item.swordGold, 1, 0),Character.valueOf('E'),ItemCloudSwordCore, Character.valueOf('D'),new ItemStack(Item.swordDiamond, 1, 0)});
-		ModLoader.addRecipe(new ItemStack(ItemSephirothSword, 1), new Object[]{"  A"," B ","C  ",Character.valueOf('A'),Item.ingotIron, Character.valueOf('B'),new ItemStack(Item.swordDiamond, 1, 0), Character.valueOf('C'),Magic[0]});
+
+		ModLoader.addRecipe(new ItemStack(ItemSephirothSword, 1), new Object[]{"  A"," B ","C  ",Character.valueOf('A'),Item.ingotIron, Character.valueOf('B'),new ItemStack(Item.swordDiamond, 1, 0), Character.valueOf('C'),new ItemStack(ItemMat, 1, 1)});
 		ModLoader.addRecipe(new ItemStack(ItemUltimateWeapon, 1), new Object[]{" A ","ABA"," C ", Character.valueOf('A'),Block.blockDiamond, Character.valueOf('B'), new ItemStack(MasterMateria, 1,-1), Character.valueOf('C'),Item.stick});
 		ModLoader.addRecipe(new ItemStack(BlockMat, 1), new Object[]{"XYX","ZZZ", Character.valueOf('X'),Item.diamond, Character.valueOf('Y'),Block.blockGold, Character.valueOf('Z'),Block.obsidian});
 		ModLoader.addRecipe(new ItemStack(HugeMateria), new Object[]{" A ","ABA"," A ",'A',Block.blockDiamond,'B',new ItemStack(MasterMateria,1,-1)});
 		ModLoader.addShapelessRecipe(new ItemStack(ItemPortableEnchantChanger,1),  new Object[]{BlockMat});
 		ModLoader.addShapelessRecipe(new ItemStack(ItemPortableEnchantmentTable,1),  new Object[]{Block.enchantmentTable});
+
 		ModLoader.addShapelessRecipe(new ItemStack(MasterMateria,1,0), new Object[]{new ItemStack(MasterMateria,1,1), new ItemStack(MasterMateria,1,2), new ItemStack(MasterMateria,1,3), new ItemStack(MasterMateria,1,4), new ItemStack(MasterMateria,1,5)});
-		ModLoader.addShapelessRecipe(new ItemStack(MasterMateria,1,1), new Object[]{new ItemStack(ItemMat,1, 0*this.MaxLv + 10),new ItemStack(ItemMat,1, 1*this.MaxLv + 10), new ItemStack(ItemMat,1, 2*this.MaxLv + 10), new ItemStack(ItemMat,1, 3*this.MaxLv + 10), new ItemStack(ItemMat,1, 4*this.MaxLv + 10)});
-		ModLoader.addShapelessRecipe(new ItemStack(MasterMateria,1,2), new Object[]{new ItemStack(ItemMat,1, 5*this.MaxLv + 10),new ItemStack(ItemMat,1, 6*this.MaxLv + 10)});
-		ModLoader.addShapelessRecipe(new ItemStack(MasterMateria,1,3), new Object[]{new ItemStack(ItemMat,1, 7*this.MaxLv + 10),new ItemStack(ItemMat,1, 8*this.MaxLv + 10), new ItemStack(ItemMat,1, 9*this.MaxLv + 10), new ItemStack(ItemMat,1, 10*this.MaxLv + 10), new ItemStack(ItemMat,1, 11*this.MaxLv + 10), new ItemStack(ItemMat,1, 12*this.MaxLv + 10)});
-		ModLoader.addShapelessRecipe(new ItemStack(MasterMateria,1,4), new Object[]{new ItemStack(ItemMat,1, 13*this.MaxLv + 10),new ItemStack(ItemMat,1, 14*this.MaxLv + 10), new ItemStack(ItemMat,1, 15*this.MaxLv + 10), new ItemStack(ItemMat,1, 16*this.MaxLv + 10)});
-		ModLoader.addShapelessRecipe(new ItemStack(MasterMateria,1,5), new Object[]{new ItemStack(ItemMat,1, 17*this.MaxLv + 10),new ItemStack(ItemMat,1, 18*this.MaxLv + 10), new ItemStack(ItemMat,1, 19*this.MaxLv + 10), new ItemStack(ItemMat,1, 20*this.MaxLv + 10)});
 
 		ModLoader.addRecipe(new ItemStack(Item.expBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.potion, 1, 0), Character.valueOf('Y'), new ItemStack(Item.diamond, 1)});
 		ModLoader.addRecipe(new ItemStack(ItemExExpBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.expBottle, 1, 0), Character.valueOf('Y'), new ItemStack(Block.blockDiamond, 1)});
@@ -342,7 +321,60 @@ public class mod_EnchantChanger extends BaseMod
 	}
 	public void debugsystem()
 	{
-		ModLoader.addShapelessRecipe(Magic[3], new Object[]{Block.dirt});
+//		ModLoader.addShapelessRecipe(Magic[3], new Object[]{Block.dirt});
+	}
+	public static void addEnchantmentToItem(ItemStack item, Enchantment enchantment, int Lv)
+	{
+		if (item.stackTagCompound == null)
+		{
+			item.setTagCompound(new NBTTagCompound());
+		}
+
+		if (!item.stackTagCompound.hasKey("ench"))
+		{
+			item.stackTagCompound.setTag("ench", new NBTTagList("ench"));
+		}
+
+		NBTTagList var3 = (NBTTagList)item.stackTagCompound.getTag("ench");
+		NBTTagCompound var4 = new NBTTagCompound();
+		var4.setShort("id", (short)enchantment.effectId);
+		var4.setShort("lvl", (short)(Lv));
+		var3.appendTag(var4);
+	}
+	public static void removeEnchTag(NBTTagCompound nbt, String string)
+	{
+		try
+		{
+			HashMap map = ModLoader.getPrivateValue(NBTTagCompound.class, nbt, 0);
+			map.remove(string);
+		}
+		catch (Exception e){}
+	}
+	public static int getMateriaEnchKind(ItemStack item)
+	{
+		int EnchantmentKind = 256;
+		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
+		{
+			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
+			{
+				EnchantmentKind = i;
+				break;
+			}
+		}
+		return EnchantmentKind;
+	}
+	public static int getMateriaEnchLv(ItemStack item)
+	{
+		int Lv = 0;
+		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
+		{
+			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
+			{
+				Lv = EnchantmentHelper.getEnchantmentLevel(i, item);
+				break;
+			}
+		}
+		return Lv;
 	}
 	public void StringtoInt(String ExtraIDs, ArrayList<Integer> IDList)
 	{
@@ -396,33 +428,6 @@ public class mod_EnchantChanger extends BaseMod
 			NameList.add("");
 		}
 	}
-//	public void AddExtraEnchantment(ArrayList<Integer> IDList, ArrayList<String> NameList)
-//	{
-//		int[] vanilla = new int[]{0,1,2,3,4,5,6,7,16,17,18,19,20,21,32,33,34,35,48,49,50,51,this.EnchantmentMeteoId,this.EndhantmentHolyId,this.EnchantmentTelepoId,this.EnchantmentFloatId,this.EnchantmentThunderId};
-//
-//		boolean isvanillaenchid=false;
-//		for (int i=0;i<256;i++)
-//		{
-//			if(Enchantment.enchantmentsList[i] != null)
-//			{
-//				for (int j=0;j<vanilla.length;j++)
-//				{
-//					if(i == vanilla[j])
-//						isvanillaenchid=true;
-//				}
-//				if(! isvanillaenchid)
-//				{
-//					IDList.add(i);
-//					String EnchName = StatCollector.translateToLocal(Enchantment.enchantmentsList[i].getName());
-//					NameList.add(EnchName);
-//				}
-//				else
-//				{
-//					isvanillaenchid = false;
-//				}
-//			}
-//		}
-//	}
 	@Override
 	public boolean onTickInGame(float var1, Minecraft var2)
 	{
@@ -533,25 +538,13 @@ public class mod_EnchantChanger extends BaseMod
 		}
 		else if(itemstack.getItem() instanceof EcItemMateria || itemstack.getItem() instanceof EcItemSword)
 		{
-			if(itemstack.getItem() instanceof EcItemMateria)
+			if(magicNum < 5)
+				return EnchantmentHelper.getEnchantmentLevel(EcItemMateria.magicEnch[magicNum], itemstack) > 0;
+			else if(itemstack.getItem() instanceof EcItemMateria)
 			{
-				if(itemstack.getItemDamage() >= materiamax + 1 + magicNum*MaxLv && itemstack.getItemDamage() <= materiamax + 100 + magicNum*MaxLv)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				return itemstack.getItemDamage()-1 == magicNum;
 			}
-			else if(magicNum ==3)
-			{
-				return EcItemSword.hasFloat(itemstack);
-			}
-			else
-			{
-				return false;
-			}
+			else return false;
 		}
 		else
 		{
@@ -583,62 +576,18 @@ public class mod_EnchantChanger extends BaseMod
 			return false;
 		}
 	}
-//	public boolean checkCompatibility()
-//	{
-//		return ModLoader.isModLoaded("mod_EE");
-//	}
-//	public void forpsEnchant()
-//	{
-//		List<BaseMod> Modslist=ModLoader.getLoadedMods();
-//		for (int i=0 ; i < Modslist.size();i++)
-//		{
-//			//System.out.println(Modslist.get(i));
-//			if(Modslist.get(i).getName().equals("mod_ThaumCraft"))
-//			{
-//				this.ExtraEnchantIdArray.add(7);
-//				this.ExtraEnchantNameArray.add("Thorns");
-//
-//			}
-//		}
-//	}
-//	public void forTC2()
-//	{
-//		if(ModLoader.isModLoaded("mod_ThaumCraft"))
-//		{
-//			this.ExtraEnchantIdArray.add(200);
-//			this.ExtraEnchantNameArray.add("Vampiric");
-//			this.ExtraEnchantIdArray.add(201);
-//			this.ExtraEnchantNameArray.add("Soulstealer");
-//			this.ExtraEnchantIdArray.add(205);
-//			this.ExtraEnchantNameArray.add("Repair");
-//			this.ExtraEnchantIdArray.add(206);
-//			this.ExtraEnchantNameArray.add("Relic");
-//			this.ExtraEnchantIdArray.add(208);
-//			this.ExtraEnchantNameArray.add("Potency");
-//		}
-//	}
-//	public void forRP2World()
-//	{
-//		if(ModLoader.isModLoaded("mod_RedPowerWorld"))
-//		{
-//			this.ExtraEnchantIdArray.add(79);
-//			this.ExtraEnchantNameArray.add("disjunction");
-//		}
-//	}
 	public void MagicKey()
 	{
 		this.MagicKeyDown = Keyboard.isKeyDown(this.MagicKey.keyCode) && !this.MagicKeyDown;
 	}
 	public void DungeonLootItemResist()
 	{
-		for (int i=0;i<this.Magic.length;i++)
+		for(int i=0;i < EcItemMateria.MagicMateriaNum; i++)
 		{
-			MinecraftForge.addDungeonLoot(this.Magic[i], 0.01F);
-		}
-		for(int i =0;i<this.VanillaEnchNum;i++)
-		{
-			int lv = Enchantment.enchantmentsList[EcItemMateria.vanillaEnch[i]].getMaxLevel();
-			MinecraftForge.addDungeonLoot(new ItemStack(ItemMat,1, i*MaxLv + lv) , 0.01F);
+			ItemStack magic = new ItemStack(this.MateriaID, 1,1 + i);
+			if(i<EcItemMateria.magicEnch.length)
+				magic.addEnchantment(Enchantment.enchantmentsList[EcItemMateria.magicEnch[i]], 1);
+			MinecraftForge.addDungeonLoot(magic, 0.01F);
 		}
 	}
 }

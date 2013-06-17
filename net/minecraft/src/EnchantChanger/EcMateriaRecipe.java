@@ -1,9 +1,15 @@
 package net.minecraft.src.EnchantChanger;
 
+import java.util.HashMap;
+
+import net.minecraft.src.Enchantment;
+import net.minecraft.src.EnchantmentHelper;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.ModLoader;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.mod_EnchantChanger;
 
 public class EcMateriaRecipe implements IRecipe
@@ -39,26 +45,32 @@ public class EcMateriaRecipe implements IRecipe
 			else
 				return false;
 		}
-		if(materia2 != null)
+		if(materia2 != null && materia1.isItemEnchanted() && materia2.isItemEnchanted())
 		{
-			if(materia1.getItemDamage() == materia2.getItemDamage() && materia1.getItemDamage() % mod_EnchantChanger.MaxLv !=0)
+			if(ItemStack.areItemStacksEqual(materia1, materia2))
 			{
-				this.output = new ItemStack(mod_EnchantChanger	.MateriaID, 1, materia1.getItemDamage() + 1);
+				this.output = materia1.copy();
+				mod_EnchantChanger.removeEnchTag(output.getTagCompound(), "ench");
+				mod_EnchantChanger.addEnchantmentToItem(output, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(materia1)], mod_EnchantChanger.getMateriaEnchLv(materia1) + 1);
 				flag = true;
 			}
 		}
 		else if(materia1 != null)
 		{
-			if(materia1.getItemDamage() != 0)
+			if(materia1.getItemDamage() == 0)
 			{
-				if(expBottle != null && materia1.getItemDamage() % mod_EnchantChanger.MaxLv > 0 &&materia1.getItemDamage() % mod_EnchantChanger.MaxLv < 6)
+				if(expBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) < 6)
 				{
-					this.output = new ItemStack(mod_EnchantChanger.MateriaID, 1, materia1.getItemDamage() + 1);
+					this.output = materia1.copy();
+					mod_EnchantChanger.removeEnchTag(output.getTagCompound(), "ench");
+					mod_EnchantChanger.addEnchantmentToItem(output, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(materia1)], mod_EnchantChanger.getMateriaEnchLv(materia1) + 1);
 					flag = true;
 				}
-				else if(exExpBottle != null && materia1.getItemDamage() % mod_EnchantChanger.MaxLv != 0 &&materia1.getItemDamage() % mod_EnchantChanger.MaxLv > 5)
+				else if(exExpBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) > 5)
 				{
-					this.output = new ItemStack(mod_EnchantChanger.MateriaID, 1, materia1.getItemDamage() + 1);
+					this.output = materia1.copy();
+					mod_EnchantChanger.removeEnchTag(output.getTagCompound(), "ench");
+					mod_EnchantChanger.addEnchantmentToItem(output, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(materia1)], mod_EnchantChanger.getMateriaEnchLv(materia1) + 1);
 					flag = true;
 				}
 				else if( expBottle == null && exExpBottle == null)
@@ -88,5 +100,4 @@ public class EcMateriaRecipe implements IRecipe
 	{
 		return this.output;
 	}
-
 }

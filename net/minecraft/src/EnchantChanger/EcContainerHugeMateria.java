@@ -22,7 +22,7 @@ public class EcContainerHugeMateria extends Container {
 	public static int SourceSlotNum = 9;
 	protected EcTileEntityHugeMateria tileEntity;
 	protected InventoryPlayer InvPlayer;
-	protected int materiamax = mod_EnchantChanger.materiamax ;
+//	protected int materiamax = mod_EnchantChanger.materiamax ;
 	private ArrayList<Integer> ItemEnchList = new ArrayList<Integer>();
 	private ArrayList<Integer> ItemEnchLvList = new ArrayList<Integer>();
 	private ArrayList<Integer> MateriaEnchList = new ArrayList<Integer>();

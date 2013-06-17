@@ -35,7 +35,7 @@ public class EcContainerMaterializer extends Container {
 	public static int SourceSlotNum = 9;
 	protected EcTileEntityMaterializer tileEntity;
 	protected InventoryPlayer InvPlayer;
-	protected int materiamax = mod_EnchantChanger.materiamax ;
+//	protected int materiamax = mod_EnchantChanger.materiamax ;
 	private ArrayList<Integer> ItemEnchList = new ArrayList<Integer>();
 	private ArrayList<Integer> ItemEnchLvList = new ArrayList<Integer>();
 	private ArrayList<Integer> MateriaEnchList = new ArrayList<Integer>();
@@ -188,7 +188,7 @@ public class EcContainerMaterializer extends Container {
 			ItemStack Result = enchitem.copy();
 			if(Result.hasTagCompound())
 			{
-				this.removeEnchTag(Result.getTagCompound(), "ench");
+				mod_EnchantChanger.removeEnchTag(Result.getTagCompound(), "ench");
 			}
 			if(enchOnItem != null)
 			{
@@ -251,12 +251,12 @@ public class EcContainerMaterializer extends Container {
 				}
 				for(int i2=0;i2 < this.ItemEnchList.size();i2++)
 				{
-					this.addEnchantmentToItem(Result, Enchantment.enchantmentsList[this.ItemEnchList.get(i2)], this.ItemEnchLvList.get(i2));
+					mod_EnchantChanger.addEnchantmentToItem(Result, Enchantment.enchantmentsList[this.ItemEnchList.get(i2)], this.ItemEnchLvList.get(i2));
 //					Result.addEnchantment(Enchantment.enchantmentsList[this.ItemEnchList.get(i2)], this.ItemEnchLvList.get(i2));
 				}
 				for(int i2=0;i2 < this.MateriaEnchList.size();i2++)
 				{
-					this.addEnchantmentToItem(Result, Enchantment.enchantmentsList[this.MateriaEnchList.get(i2)], this.MateriaEnchLvList.get(i2));
+					mod_EnchantChanger.addEnchantmentToItem(Result, Enchantment.enchantmentsList[this.MateriaEnchList.get(i2)], this.MateriaEnchLvList.get(i2));
 //					Result.addEnchantment(Enchantment.enchantmentsList[this.MateriaEnchList.get(i2)], this.MateriaEnchLvList.get(i2));
 				}
 				this.materializeResult.setInventorySlotContents(0, Result);
@@ -280,7 +280,7 @@ public class EcContainerMaterializer extends Container {
 						int decreasedLv=(this.ItemEnchLvList.get(i)-declv <0)?0:this.ItemEnchLvList.get(i)-declv;
 						int damage = this.setMateriaDmgfromEnch(this.ItemEnchList.get(i));
 						ItemStack materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, damage);
-						this.addEnchantmentToItem(materia, Enchantment.enchantmentsList[this.ItemEnchList.get(i)], this.ItemEnchLvList.get(i));
+						mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[this.ItemEnchList.get(i)], this.ItemEnchLvList.get(i));
 
 //						var1Int = MateriaKindFromEnch(this.ItemEnchList.get(i))*maxlv + decreasedLv;
 						this.materializeResult.setInventorySlotContents(i+1, materia);
@@ -321,33 +321,6 @@ public class EcContainerMaterializer extends Container {
 			return 5;
 		else
 			return 0;
-	}
-	public void addEnchantmentToItem(ItemStack item, Enchantment enchantment, int Lv)
-	{
-		if (item.stackTagCompound == null)
-		{
-			item.setTagCompound(new NBTTagCompound());
-		}
-
-		if (!item.stackTagCompound.hasKey("ench"))
-		{
-			item.stackTagCompound.setTag("ench", new NBTTagList("ench"));
-		}
-
-		NBTTagList var3 = (NBTTagList)item.stackTagCompound.getTag("ench");
-		NBTTagCompound var4 = new NBTTagCompound();
-		var4.setShort("id", (short)enchantment.effectId);
-		var4.setShort("lvl", (short)(Lv));
-		var3.appendTag(var4);
-	}
-	public void removeEnchTag(NBTTagCompound nbt, String string)
-	{
-		try
-		{
-			HashMap map = ModLoader.getPrivateValue(NBTTagCompound.class, nbt, 0);
-			map.remove(string);
-		}
-		catch (Exception e){}
 	}
 	/**
 	 * Callback for when the crafting gui is closed.
@@ -557,38 +530,12 @@ public class EcContainerMaterializer extends Container {
 			return ench.type.canEnchantItem(par1ItemStack.getItem());
 		}
 	}
-	public int getMateriaEnchKind(ItemStack item)
-	{
-		int EnchantmentKind = 256;
-		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
-		{
-			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
-			{
-				EnchantmentKind = i;
-				break;
-			}
-		}
-		return EnchantmentKind;
-	}
-	public int getMateriaEnchLv(ItemStack item)
-	{
-		int Lv = 0;
-		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
-		{
-			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
-			{
-				Lv = EnchantmentHelper.getEnchantmentLevel(i, item);
-				break;
-			}
-		}
-		return Lv;
-	}
 	public boolean CheckLvCap(ItemStack materia)
 	{
 		if(mod_EnchantChanger.LevelCap)
 		{
-			int ench = this.getMateriaEnchKind(materia);
-			int lv = this.getMateriaEnchLv(materia);
+			int ench = mod_EnchantChanger.getMateriaEnchKind(materia);
+			int lv = mod_EnchantChanger.getMateriaEnchLv(materia);
 			if(Enchantment.enchantmentsList[ench].getMaxLevel() < lv)
 				return false;
 			else return true;

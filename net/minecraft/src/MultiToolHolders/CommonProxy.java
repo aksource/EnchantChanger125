@@ -46,6 +46,16 @@ public class CommonProxy implements IGuiHandler
 			else
 				return null;
 		}
+		else if(id == mod_MultiToolHolders.guiIdHolder7)
+		{
+			if(player.getCurrentEquippedItem().getItem() instanceof ItemMultiToolHolder)
+			{
+				ItemStack stack = player.getCurrentEquippedItem();
+				return new GuiToolHolder(player.inventory, ((ItemMultiToolHolder)stack.getItem()).getData(stack, world), 7);
+			}
+			else
+				return null;
+		}
 		else
 			return null;
 	}
