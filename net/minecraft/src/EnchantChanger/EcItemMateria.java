@@ -4,20 +4,20 @@ import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
 import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Enchantment;
+import net.minecraft.src.EnchantmentHelper;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLightningBolt;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPigZombie;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityRenderer;
 import net.minecraft.src.EntitySkeleton;
 import net.minecraft.src.EntityZombie;
 import net.minecraft.src.EnumMovingObjectType;
@@ -28,6 +28,8 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.MovingObjectPosition;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagList;
 import net.minecraft.src.PotionEffect;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.Vec3D;
@@ -75,74 +77,70 @@ public class EcItemMateria extends Item implements IItemRenderer
 		this.setTextureFile(mod_EnchantChanger.EcSprites);
 		this.mc = mod_EnchantChanger.mc;
 	}
-	public int getIconFromDamage(int par1)
-	{
-		int[] Icon = new int[]{8,8,8,8,8,4,4,13,13,13,14,1,9,5,7,3,9,13,14,1,12};
-		if(par1 == 0)
-		{
-			return this.iconIndex;
-		}
-		else if(par1 <= materiamax)
-		{
-			int materiaId = (par1 - 1)/ maxlv;
-			return Icon[materiaId];
-		}
-		else if(par1 <= materiamax + this.MagicMateriaNumMax)
-		{
-			int var1 = (par1 - materiamax - 1) / maxlv;
-			switch(var1)
-			{
-			case 0 :return this.iconIndex;
-			case 1 :return 15;
-			case 2 :return 5;
-			case 3 :return 9;
-			case 4 :return 11;
-			case 5 :return 7;
-			case 6 :return 6;
-			case 7 :return 10;
-			default :return this.iconIndex;
-			}
-		}
-		else if(mod_EnchantChanger.ExtraEnchantIdArray.size() > 0)
-		{
-			return 10;
-		}
-		else
-		{
-			return this.iconIndex;
-		}
-	}
+//	public int getIconFromDamage(int par1)
+//	{
+//		int[] Icon = new int[]{8,8,8,8,8,4,4,13,13,13,14,1,9,5,7,3,9,13,14,1,12};
+//		if(par1 == 0)
+//		{
+//			return this.iconIndex;
+//		}
+//		else if(par1 <= materiamax)
+//		{
+//			int materiaId = (par1 - 1)/ maxlv;
+//			return Icon[materiaId];
+//		}
+//		else if(par1 <= materiamax + this.MagicMateriaNumMax)
+//		{
+//			int var1 = (par1 - materiamax - 1) / maxlv;
+//			switch(var1)
+//			{
+//			case 0 :return this.iconIndex;
+//			case 1 :return 15;
+//			case 2 :return 5;
+//			case 3 :return 9;
+//			case 4 :return 11;
+//			case 5 :return 7;
+//			case 6 :return 6;
+//			case 7 :return 10;
+//			default :return this.iconIndex;
+//			}
+//		}
+//		else if(mod_EnchantChanger.ExtraEnchantIdArray.size() > 0)
+//		{
+//			return 10;
+//		}
+//		else
+//		{
+//			return this.iconIndex;
+//		}
+//	}
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
 	{
-		if(itemstack.stackSize>1)
+		if(itemstack.stackSize > 1)
 		{
 			return itemstack;
 		}
-		int enchLv = itemstack.getItemDamage() % maxlv;
-		if(itemstack.getItemDamage() > 0 && itemstack.getItemDamage() <= materiamax)
+		if(itemstack.getItemDamage() == 0 && itemstack.isItemEnchanted())
 		{
-			int MateriaKind = (itemstack.getItemDamage()-1) / maxlv;
-			if(entityplayer.isSneaking()&&LvCap && enchLv > 1)
+			int EnchantmentKind = this.getMateriaEnchKind(itemstack);
+			int Lv = this.getMateriaEnchLv(itemstack);
+			if(entityplayer.isSneaking() && Lv > 1)
 			{
-				for (int i=0; i< LevelUPEXP(MateriaKind,enchLv-1); i++)
-					++entityplayer.experienceLevel;
-//				entityplayer.addExperience(this.LevelUPEXP2(MateriaKind, enchLv-1));
-				itemstack.setItemDamage(itemstack.getItemDamage() - 1);
+				entityplayer.removeExperience(-LevelUPEXP(itemstack, false));
+				this.addMateriaLv(itemstack, -1);
 			}
-			else if ((entityplayer.experienceLevel >= LevelUPEXP(MateriaKind,enchLv) || entityplayer.capabilities.isCreativeMode) && enchLv != 0)
+			else if ((entityplayer.experienceLevel >= LevelUPEXP(itemstack,true) || entityplayer.capabilities.isCreativeMode) && Lv != 0)
 			{
-				entityplayer.removeExperience(LevelUPEXP(MateriaKind,enchLv));
-//				entityplayer.addExperience(-this.LevelUPEXP2(MateriaKind, enchLv));
-				itemstack.setItemDamage(itemstack.getItemDamage() + 1);
+				entityplayer.removeExperience(LevelUPEXP(itemstack,true));
+				this.addMateriaLv(itemstack, 1);
 			}
 		}
-		else if(itemstack.getItemDamage() > materiamax && itemstack.getItemDamage() <= materiamax + MagicMateriaNumMax)
+		else
 		{
-			int var1 = (itemstack.getItemDamage() -  materiamax - 1) / maxlv;
-			switch(var1)
+			switch(itemstack.getItemDamage())
 			{
-			case 0:Meteo(world,entityplayer);break;
-			case 1:
+			case 1:Meteo(world,entityplayer);break;
+			case 2:
 				if(entityplayer.isSneaking())
 				{
 					GGEnable=!GGEnable;
@@ -152,32 +150,30 @@ public class EcItemMateria extends Item implements IItemRenderer
 				{
 					Holy(world,entityplayer);
 				}break;
-			case 2:Teleport(itemstack,world,entityplayer);break;
-			case 4:Thunder(world,entityplayer);break;
-			case 5:Despell(entityplayer, entityplayer);break;
-			case 6:Haste(entityplayer,entityplayer);break;
+			case 3:Teleport(itemstack,world,entityplayer);break;
+			case 5:Thunder(world,entityplayer);break;
+			case 6:Despell(entityplayer, entityplayer);break;
+			case 7:Haste(entityplayer,entityplayer);break;
 			default:;
 			}
 		}
-		else if(itemstack.getItemDamage() > materiamax + MagicMateriaNumMax && mod_EnchantChanger.ExtraEnchantIdArray.size() > 0)
-		{
-			int var2 = itemstack.getItemDamage() - (materiamax + MagicMateriaNumMax);
-			int ExtraEnchLv = var2 % maxlv;
-			if(entityplayer.isSneaking() && LvCap && ExtraEnchLv > 1)
-			{
-				for (int i=0; i< 15; i++)
-					++entityplayer.experienceLevel;
-
-//				entityplayer.addExperience(250);
-				itemstack.setItemDamage(itemstack.getItemDamage() - 1);
-			}
-			else if(ExtraEnchLv != 0 && (entityplayer.experienceLevel >= 15 || entityplayer.capabilities.isCreativeMode))
-			{
-				entityplayer.removeExperience(15);
-//				entityplayer.addExperience(-250);
-				itemstack.setItemDamage(itemstack.getItemDamage() + 1);
-			}
-		}
+//		else if(itemstack.getItemDamage() > materiamax + MagicMateriaNumMax && mod_EnchantChanger.ExtraEnchantIdArray.size() > 0)
+//		{
+//			int var2 = itemstack.getItemDamage() - (materiamax + MagicMateriaNumMax);
+//			int ExtraEnchLv = var2 % maxlv;
+//			if(entityplayer.isSneaking() && LvCap && ExtraEnchLv > 1)
+//			{
+//				for (int i=0; i< 15; i++)
+//					++entityplayer.experienceLevel;
+//
+//				itemstack.setItemDamage(itemstack.getItemDamage() - 1);
+//			}
+//			else if(ExtraEnchLv != 0 && (entityplayer.experienceLevel >= 15 || entityplayer.capabilities.isCreativeMode))
+//			{
+//				entityplayer.removeExperience(15);
+//				itemstack.setItemDamage(itemstack.getItemDamage() + 1);
+//			}
+//		}
 		return itemstack;
 	}
 	/**
@@ -186,40 +182,7 @@ public class EcItemMateria extends Item implements IItemRenderer
 	public void useItemOnEntity(ItemStack itemstack, EntityLiving entityliving)
 	{
 		EntityPlayer entityplayer=ModLoader.getMinecraftInstance().thePlayer;
-		if(itemstack.getItemDamage() >0  &&itemstack.getItemDamage() <= materiamax)
-		{
-			int MateriaKind = (itemstack.getItemDamage() - 1) / maxlv;
-			int enchLv = itemstack.getItemDamage() % maxlv;
-			int potionNum;
-			String Message;
-			String EntityName=entityliving.getEntityData().getName();
-			switch (MateriaKind)
-			{
-			case 1:potionNum = 12;Message="fire resistance";break;
-			case 5:potionNum = 13;Message="more Oxygen";break;
-			case 2:potionNum = 8;Message="high jump";break;
-			case 0:potionNum = 11;Message="defence power";break;
-			default:return;
-			}
-			if(entityplayer.experienceLevel > LevelUPEXP(MateriaKind,enchLv) || entityplayer.capabilities.isCreativeMode)
-			{
-				entityplayer.addChatMessage(EntityName + " gets "+ Message);
-				entityplayer.getFoodStats().setFoodLevel(entityplayer.getFoodStats().getFoodLevel()-6);
-				entityliving.addPotionEffect(new PotionEffect(potionNum,20*60*mod_EnchantChanger.MateriaPotionMinutes,enchLv));
-				entityplayer.removeExperience(LevelUPEXP(MateriaKind,enchLv));
-				return;
-			}
-		}
-		else
-		{
-			int var1 = (itemstack.getItemDamage() -  materiamax - 1) / maxlv;
-			switch(var1)
-			{
-			case 5:Despell(entityplayer,entityliving);return;
-			case 6:Haste(entityplayer,entityliving);entityplayer.addChatMessage("Haste!");return;
-			default:return;
-			}
-		}
+		this.MateriaPotionEffect(itemstack, entityliving, entityplayer);
 	}
 	public boolean onLeftClickEntity(ItemStack itemstack, EntityPlayer player, Entity entity)
 	{
@@ -228,173 +191,214 @@ public class EcItemMateria extends Item implements IItemRenderer
 			EntityLiving entityliving = (EntityLiving)entity;
 			if(itemstack.getItemDamage() >0  && itemstack.getItemDamage() <= materiamax)
 			{
-				int MateriaKind = (itemstack.getItemDamage() - 1) / maxlv;
-				int enchLv = itemstack.getItemDamage() % maxlv;
-				int potionNum;
-				String Message;
-				String EntityName=entityliving.getEntityData().getName();
-				switch (MateriaKind)
-				{
-				case 1:potionNum = 12;Message="fire resistance";break;
-				case 5:potionNum = 13;Message="more Oxygen";break;
-				case 2:potionNum = 8;Message="high jump";break;
-				case 0:potionNum = 11;Message="defence power";break;
-				default:return false;
-				}
-				if(player.experienceLevel > LevelUPEXP(MateriaKind,enchLv) || player.capabilities.isCreativeMode)
-				{
-					entityliving.addPotionEffect(new PotionEffect(potionNum,20*60*mod_EnchantChanger.MateriaPotionMinutes,enchLv));
-					player.removeExperience(LevelUPEXP(MateriaKind,enchLv));
-					player.addChatMessage(EntityName + " gets "+ Message);
-					player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel()-6);
-					return true;
-				}
-			}
-			else
-			{
-				int var1 = (itemstack.getItemDamage() -  materiamax - 1) / maxlv;
-				switch(var1)
-				{
-				case 5:Despell(player,entityliving);return true;
-				case 6:Haste(player,entityliving);player.addChatMessage("Haste!");return true;
-				default:return false;
-				}
+				this.MateriaPotionEffect(itemstack, entityliving, player);
 			}
 			return false;
 		}
 		return false;
 	}
+	public void addMateriaLv(ItemStack item, int addLv)
+	{
+		int EnchantmentKind = this.getMateriaEnchKind(item);
+		int Lv = this.getMateriaEnchLv(item);
+		NBTTagCompound nbt = item.getTagCompound();
+		this.removeEnchTag(nbt, "ench");
+		this.addEnchantmentToItem(item, Enchantment.enchantmentsList[EnchantmentKind], Lv + addLv);
+	}
+	public void addEnchantmentToItem(ItemStack item, Enchantment enchantment, int Lv)
+	{
+		if (item.stackTagCompound == null)
+		{
+			item.setTagCompound(new NBTTagCompound());
+		}
 
+		if (!item.stackTagCompound.hasKey("ench"))
+		{
+			item.stackTagCompound.setTag("ench", new NBTTagList("ench"));
+		}
+
+		NBTTagList var3 = (NBTTagList)item.stackTagCompound.getTag("ench");
+		NBTTagCompound var4 = new NBTTagCompound();
+		var4.setShort("id", (short)enchantment.effectId);
+		var4.setShort("lvl", (short)(Lv));
+		var3.appendTag(var4);
+	}
+	public void removeEnchTag(NBTTagCompound nbt, String string)
+	{
+		try
+		{
+			HashMap map = ModLoader.getPrivateValue(NBTTagCompound.class, nbt, 0);
+			map.remove(string);
+		}
+		catch (Exception e){}
+	}
+	public void MateriaPotionEffect(ItemStack item, EntityLiving entity, EntityPlayer player)
+	{
+		if(item.getItemDamage() > 0)
+		{
+			switch(item.getItemDamage())
+			{
+			case 6:Despell(player,entity);return;
+			case 7:Haste(player,entity);player.addChatMessage("Haste!");return;
+			default:return;
+			}
+		}
+		else
+		{
+			int EnchantmentKind = this.getMateriaEnchKind(item);
+			int Lv = this.getMateriaEnchLv(item);
+			if(EnchantmentKind != 256)
+			{
+				int potionNum;
+				String Message;
+				String EntityName = entity.getEntityData().getName();
+				switch (EnchantmentKind)
+				{
+				case 1:potionNum = 12;Message="fire resistance";break;
+				case 5:potionNum = 13;Message="more Oxygen";break;
+				case 2:potionNum = 8;Message="high jump";break;
+				case 0:potionNum = 11;Message="defence power";break;
+				default:return;
+				}
+				if(player.experienceLevel > LevelUPEXP(item, false) || player.capabilities.isCreativeMode)
+				{
+					entity.addPotionEffect(new PotionEffect(potionNum,20*60*mod_EnchantChanger.MateriaPotionMinutes,Lv));
+					player.removeExperience(LevelUPEXP(item, false));
+					player.addChatMessage(EntityName + " gets "+ Message);
+					player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel()-6);
+					return;
+				}
+			}
+		}
+	}
+	public int getMateriaEnchKind(ItemStack item)
+	{
+		int EnchantmentKind = 256;
+		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
+		{
+			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
+			{
+				EnchantmentKind = i;
+				break;
+			}
+		}
+		return EnchantmentKind;
+	}
+	public int getMateriaEnchLv(ItemStack item)
+	{
+		int Lv = 0;
+		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
+		{
+			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
+			{
+				Lv = EnchantmentHelper.getEnchantmentLevel(i, item);
+				break;
+			}
+		}
+		return Lv;
+	}
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){}
 
 	public String getItemNameIS(ItemStack par1ItemStack)
 	{
 		if(par1ItemStack.getItemDamage() ==0)
 		{
-			return "ItemMateria.Base";
-		}
-		else if(par1ItemStack.getItemDamage() <= materiamax)
-		{
-			int var1 = (par1ItemStack.getItemDamage()-1)/maxlv;
-			int var2 = (par1ItemStack.getItemDamage() % maxlv != 0)? par1ItemStack.getItemDamage() % this.maxlv:this.maxlv;
-			return "ItemMateria." + Enchantment.enchantmentsList[this.vanillaEnch[var1]].getName()+"."+var2;
-		}
-		else if(par1ItemStack.getItemDamage() <= materiamax + MagicMateriaNumMax)
-		{
-			int var3 =(par1ItemStack.getItemDamage()-materiamax -1)/maxlv;
-			return "ItemMateria."+MateriaMagicNames[var3];
-		}
-		else if(mod_EnchantChanger.ExtraEnchantIdArray.size() > 0)
-		{
-			int var4 = (par1ItemStack.getItemDamage() - (materiamax + MagicMateriaNumMax) -1) /maxlv;
-			int var6 = (par1ItemStack.getItemDamage() - (materiamax + MagicMateriaNumMax)) % maxlv;
-			if(var4 < mod_EnchantChanger.ExtraEnchantNameArray.size())
-			{
-				return "ItemMateria."+mod_EnchantChanger.ExtraEnchantNameArray.get(var4)+"."+var6;
-			}
-			else
-			{
-				return "";
-			}
+			return par1ItemStack.isItemEnchanted() ? "ItemMateria":"ItemMateria.Base";
 		}
 		else
 		{
-			return "";
+			int var3 = par1ItemStack.getItemDamage() - 1;
+			return "ItemMateria."+MateriaMagicNames[var3];
 		}
 	}
 	@Override
 	public void addCreativeItems(ArrayList itemList)
 	{
 		itemList.add(new ItemStack(this, 1, 0));
-		for (int x = 0; x < this.vanilla; x++)
+		for(int i = 0; i < Enchantment.enchantmentsList.length;i++)
 		{
-			itemList.add(new ItemStack(this, 1, x*maxlv + 1 ));
-			itemList.add(new ItemStack(this, 1, x*maxlv + 10 ));
-			if(mod_EnchantChanger.Debug)
-				itemList.add(new ItemStack(this, 1, x*maxlv + maxlv));
+			if(Enchantment.enchantmentsList[i] != null)
+			{
+				ItemStack stack = new ItemStack(this, 1, 0);
+				stack.addEnchantment(Enchantment.enchantmentsList[i], 1);
+				itemList.add(stack);
+				this.removeEnchTag(stack.getTagCompound(), "ench");
+				stack.addEnchantment(Enchantment.enchantmentsList[i], 10);
+				itemList.add(stack);
+				if(mod_EnchantChanger.Debug)
+				{
+					this.removeEnchTag(stack.getTagCompound(), "ench");
+					stack.addEnchantment(Enchantment.enchantmentsList[i], 127);
+					itemList.add(stack);
+				}
+			}
 		}
 		for(int i=0;i < MagicMateriaNum; i++)
 		{
-			itemList.add(new ItemStack(this, 1, materiamax + 1 + i*maxlv));
-		}
-		for(int i=0; i< mod_EnchantChanger.ExtraEnchantIdArray.size();i++)
-		{
-			itemList.add(new ItemStack(this, 1, materiamax+MagicMateriaNumMax + 1 + i*maxlv));
+			itemList.add(new ItemStack(this, 1,1 + i));
 		}
 	}
 
 	public boolean hasEffect(ItemStack par1ItemStack)
 	{
-		int var1 =  par1ItemStack.getItemDamage();
-		if(var1 <= materiamax)
-			return false;
-		else if(var1 <= materiamax + MagicMateriaNumMax)
-			return true;
-		else
-			return false;
+		return par1ItemStack.getItemDamage() > 0;
 	}
-	public EnumRarity getRarity(ItemStack var1)
+	public EnumRarity getRarity(ItemStack item)
 	{
-		if(var1.getItemDamage() ==0)
-		{
-			return EnumRarity.common;
-		}
-		else if(var1.getItemDamage() <= materiamax)
-		{
-			int var2 = var1.getItemDamage() % maxlv;
-			switch(var2)
-			{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-				return EnumRarity.common;
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-			case 10:
-				return EnumRarity.uncommon;
-			default :
-				return EnumRarity.epic;
-			}
-		}
-		else if(var1.getItemDamage() <= materiamax + this.MagicMateriaNumMax)
-		{
+		if(item.getItemDamage() > 0)
 			return EnumRarity.rare;
-		}
 		else
 		{
-			return EnumRarity.common;
+			if(this.getMateriaEnchKind(item) == 256 || this.getMateriaEnchLv(item) < 6)
+				return EnumRarity.common;
+			else if(this.getMateriaEnchLv(item) < 11)
+				return EnumRarity.uncommon;
+			else
+				return EnumRarity.rare;
 		}
 	}
-	public int LevelUPEXP(int materiakind, int materialv)
+//	public int LevelUPEXP(int materiakind, int materialv)
+//	{
+//		int[] LvUPBase = new int[]{10,5,5,5,5,10,20,10,5,5,5,5,10,10,20,10,10,10,5,5,20};
+//		int[] LvUPOver5 = new int[]{30,20,20,20,20,30,30,30,20,20,20,20,30,30,20,30,30,30,20,20,20};
+//		if(materialv < 5 || mod_EnchantChanger.Difficulty == 0)
+//		{
+//			return LvUPBase[materiakind];
+//		}
+//		else
+//		{
+//			return LvUPOver5[materiakind];
+//		}
+//	}
+	public int LevelUPEXP(ItemStack item, boolean next)
 	{
-		int[] LvUPBase = new int[]{10,5,5,5,5,10,20,10,5,5,5,5,10,10,20,10,10,10,5,5,20};
-		int[] LvUPOver5 = new int[]{30,20,20,20,20,30,30,30,20,20,20,20,30,30,20,30,30,30,20,20,20};
-		if(materialv < 5 || mod_EnchantChanger.Difficulty == 0)
+		int EnchantmentKind = this.getMateriaEnchKind(item);
+		int Lv = this.getMateriaEnchLv(item);
+		int nextLv = next ?1:0;
+		if(EnchantmentKind == 256)
+			return 0;
+		if(Lv < 5 || mod_EnchantChanger.Difficulty == 0)
 		{
-			return LvUPBase[materiakind];
+			return Enchantment.enchantmentsList[EnchantmentKind].getMinEnchantability(Lv + nextLv);
 		}
 		else
 		{
-			return LvUPOver5[materiakind];
+			return Enchantment.enchantmentsList[EnchantmentKind].getMaxEnchantability(Lv + nextLv);
 		}
 	}
-	public int LevelUPEXP2(int materiakind, int materialv)
-	{
-		int[] LvUPBase = new int[]{10*20,5*20,5*20,5*20,5*20,10*20,20*20,10*20,5*20,5*20,5*20,5*20,10*20,10*20,20*20,10*20,10*20,10*20,5*20,5*20,20*20};;
-		int[] LvUPOver5 = new int[]{30*20,20*20,20*20,20*20,20*20,30*20,30*20,30*20,20*20,20*20,20*20,20*20,30*20,30*20,20*20,30*20,30*20,30*20,20*20,20*20,20*20};
-		if(materialv < 5 || mod_EnchantChanger.Difficulty == 0)
-		{
-			return LvUPBase[materiakind];
-		}
-		else
-		{
-			return LvUPOver5[materiakind];
-		}
-	}
+//	public int LevelUPEXP2(int materiakind, int materialv)
+//	{
+//		int[] LvUPBase = new int[]{10*20,5*20,5*20,5*20,5*20,10*20,20*20,10*20,5*20,5*20,5*20,5*20,10*20,10*20,20*20,10*20,10*20,10*20,5*20,5*20,20*20};;
+//		int[] LvUPOver5 = new int[]{30*20,20*20,20*20,20*20,20*20,30*20,30*20,30*20,20*20,20*20,20*20,20*20,30*20,30*20,20*20,30*20,30*20,30*20,20*20,20*20,20*20};
+//		if(materialv < 5 || mod_EnchantChanger.Difficulty == 0)
+//		{
+//			return LvUPBase[materiakind];
+//		}
+//		else
+//		{
+//			return LvUPOver5[materiakind];
+//		}
+//	}
 	public static void Teleport(ItemStack itemstack, World world, EntityPlayer entityplayer)
 	{
 		ChunkCoordinates Spawn;
@@ -444,14 +448,14 @@ public class EcItemMateria extends Item implements IItemRenderer
 			}
 		}
 	}
-	public void setHomePoint(ItemStack itemstack, World world, EntityPlayer entityplayer)
-	{
-		homeX = entityplayer.posX;
-		homeY = entityplayer.posY-1;
-		homeZ = entityplayer.posZ;
-		if(!world.isRemote)
-			entityplayer.addChatMessage("Set HomePoint!!");
-	}
+//	public void setHomePoint(ItemStack itemstack, World world, EntityPlayer entityplayer)
+//	{
+//		homeX = entityplayer.posX;
+//		homeY = entityplayer.posY-1;
+//		homeZ = entityplayer.posZ;
+//		if(!world.isRemote)
+//			entityplayer.addChatMessage("Set HomePoint!!");
+//	}
 	public static Vec3D setTeleportPoint(World world, EntityPlayer entityplayer)
 	{
 		float var1=1F;
@@ -520,8 +524,6 @@ public class EcItemMateria extends Item implements IItemRenderer
 		{
 			return;
 		}
-		//System.out.println("Meteo!");
-		//System.out.println(entityplayer.rotationPitch);
 		if(!entityplayer.capabilities.isCreativeMode)
 			entityplayer.getFoodStats().setFoodLevel(entityplayer.getFoodStats().getFoodLevel()-6);
 		Vec3D EndPoint = setTeleportPoint(world,entityplayer);
@@ -573,7 +575,7 @@ public class EcItemMateria extends Item implements IItemRenderer
 	}
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		float f0 = 0.3F;
+		float f0 = 0.2F;
 		float f1 = 16F;
 		if(type == ItemRenderType.EQUIPPED)
 			this.renderMateria(item, 0.2f,0,0,f0, type);
@@ -640,6 +642,60 @@ public class EcItemMateria extends Item implements IItemRenderer
 		GL11.glTranslatef(-x, -y, -z);
 	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_LIGHTING);
+	}
+	public String getTextuerfromEnch(ItemStack item)
+	{
+		if(item.getItemDamage() > 0)
+		{
+			int num;
+			switch(item.getItemDamage() - 1)
+			{
+			case 0 :num = 0;break;
+			case 1 :num = 15;break;
+			case 2 :num = 5;break;
+			case 3 :num = 9;break;
+			case 4 :num = 11;break;
+			case 5 :num = 7;break;
+			case 6 :num = 6;break;
+			case 7 :num = 10;break;
+			default :num = 0;
+			}
+			return "/mod_EnchantChanger/gui/materia"+num+".png";
+		}
+		else if(!item.isItemEnchanted())
+			return "/mod_EnchantChanger/gui/materia"+0+".png";
+		else
+		{
+//			int[] Icon = new int[]{8,8,8,8,8,4,4,13,13,13,14,1,9,5,7,3,9,13,14,1,12};
+			int num;
+			switch(this.getMateriaEnchKind(item))
+			{
+			case 0:num = 8;break;
+			case 1:num = 8;break;
+			case 2:num = 8;break;
+			case 3:num = 8;break;
+			case 4:num = 8;break;
+			case 5:num = 4;break;
+			case 6:num = 4;break;
+			case 16:num = 13;break;
+			case 17:num = 13;break;
+			case 18:num = 13;break;
+			case 19:num = 14;break;
+			case 20:num = 1;break;
+			case 21:num = 9;break;
+			case 32:num = 5;break;
+			case 33:num = 7;break;
+			case 34:num = 3;break;
+			case 35:num = 9;break;
+			case 48:num = 13;break;
+			case 49:num = 14;break;
+			case 50:num = 1;break;
+			case 51:num = 12;break;
+
+			default :num = 10;
+			}
+			return "/mod_EnchantChanger/gui/materia"+num+".png";
+		}
 	}
 	static
 	{

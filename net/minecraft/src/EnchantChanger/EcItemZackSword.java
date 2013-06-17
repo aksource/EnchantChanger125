@@ -14,15 +14,15 @@ import net.minecraft.src.World;
 import net.minecraft.src.mod_EnchantChanger;
 import net.minecraft.src.forge.IItemRenderer;
 
-public class EcItemZackSword extends EcItemSword implements IItemRenderer
+public class EcItemZackSword extends EcItemSword //implements IItemRenderer
 {
-	public static final EcModelZackSword2 ZModel = new EcModelZackSword2();
+//	public static final EcModelZackSword2 ZModel = new EcModelZackSword2();
 	private double BoxSize=3D;
 
 	public EcItemZackSword(int par1)
 	{
 		super(par1, EnumToolMaterial.IRON);
-		this.setMaxDamage(-1);
+//		this.setMaxDamage(-1);
 	}
 
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving)
@@ -30,29 +30,28 @@ public class EcItemZackSword extends EcItemSword implements IItemRenderer
 		par1ItemStack.damageItem(1, par3EntityLiving);
 		if(mod_EnchantChanger.LimitBreakFlag[0])
 		{
-			par2EntityLiving.hurtTime=0;
-			par3EntityLiving.hurtTime=0;
+			par2EntityLiving.heartsLife=0;
 		}
 		return true;
 	}
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return type == ItemRenderType.EQUIPPED;
-	}
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return false;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		ZModel.renderItem(item, (EntityLiving)data[1]);
-	}
-	public boolean onBlockDestroyed(ItemStack par1ItemStack, int par2, int par3, int par4, int par5, EntityLiving par6EntityLiving)
-	{
-		par1ItemStack.damageItem(2, par6EntityLiving);
-		return true;
-	}
+//	@Override
+//	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+//		return type == ItemRenderType.EQUIPPED;
+//	}
+//	@Override
+//	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+//		return false;
+//	}
+//
+//	@Override
+//	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+//		ZModel.renderItem(item, (EntityLiving)data[1]);
+//	}
+//	public boolean onBlockDestroyed(ItemStack par1ItemStack, int par2, int par3, int par4, int par5, EntityLiving par6EntityLiving)
+//	{
+//		par1ItemStack.damageItem(2, par6EntityLiving);
+//		return true;
+//	}
 
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{

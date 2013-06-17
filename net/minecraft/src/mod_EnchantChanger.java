@@ -73,10 +73,10 @@ public class mod_EnchantChanger extends BaseMod
 	@MLProp(info="Extra Armor Ids(test)")
 	public static String ArmorIds = "";
 	public static ArrayList<Integer> ArmorIdArray = new ArrayList<Integer>();
-	public static String ExtraEnchantName = "";
-	public static ArrayList<String> ExtraEnchantNameArray = new ArrayList<String>();
-	public static String ExtraEnchantIds = "";
-	public static ArrayList<Integer> ExtraEnchantIdArray = new ArrayList<Integer>();
+//	public static String ExtraEnchantName = "";
+//	public static ArrayList<String> ExtraEnchantNameArray = new ArrayList<String>();
+//	public static String ExtraEnchantIds = "";
+//	public static ArrayList<Integer> ExtraEnchantIdArray = new ArrayList<Integer>();
 	@MLProp(info="Item damege decrease MateriaLv")
 	public static boolean DecMateriaLv = false;
 	@MLProp(info="You are Tera in FF4")
@@ -127,10 +127,11 @@ public class mod_EnchantChanger extends BaseMod
 	public static String EcSprites ="/mod_EnchantChanger/gui/items.png";
 	public static String EcTerrain = "/mod_EnchantChanger/terrain.png";
 	public static String EcZackSwordPNG ="/mod_EnchantChanger/item/ZackSword.png";
-	public static String EcSword2PNG ="/mod_EnchantChanger/item/Sword-3Dtrue.png";
-	public static String EcCloudSwordPNG ="/mod_EnchantChanger/item/CloudSword.png";
+	public static String EcSephirothSwordPNG ="/mod_EnchantChanger/item/SephirothSword.png";
+//	public static String EcSword2PNG ="/mod_EnchantChanger/item/Sword-3Dtrue.png";
+//	public static String EcCloudSwordPNG ="/mod_EnchantChanger/item/CloudSword.png";
 	public static String EcCloudSword2PNG ="/mod_EnchantChanger/item/CloudSword-3Dtrue.png";
-	public static String EcCloudSwordCorePNG ="/mod_EnchantChanger/item/CloudSwordCore.png";
+//	public static String EcCloudSwordCorePNG ="/mod_EnchantChanger/item/CloudSwordCore.png";
 	public static String EcCloudSwordCore2PNG ="/mod_EnchantChanger/item/CloudSwordCore-3Dtrue.png";
 	public static String EcUltimateWeaponPNG ="/mod_EnchantChanger/item/UltimaWeapon.png";
 	public static String EcGuiMaterializer ="/mod_EnchantChanger/gui/materializer.png";
@@ -154,7 +155,7 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.setInGameHook(this, true, true);
 		mc = ModLoader.getMinecraftInstance();
 		instance =this;
-		incompatible=checkCompatibility();
+//		incompatible=checkCompatibility();
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/items.png");
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/terrain.png");
 		MinecraftForge.setGuiHandler(this, new EcGuiHandler());
@@ -186,10 +187,10 @@ public class mod_EnchantChanger extends BaseMod
 		Telepo = new EcEnchantmentTeleport(this.EnchantmentTelepoId,0);
 		Float = new EcEnchantmentFloat(this.EnchantmentFloatId,0);
 		Thunder = new EcEnchantmentThunder(this.EnchantmentThunderId,0);
-		AddExtraEnchantment(ExtraEnchantIdArray,ExtraEnchantNameArray);
-		this.forpsEnchant();
-		this.forTC2();
-		this.forRP2World();
+//		AddExtraEnchantment(ExtraEnchantIdArray,ExtraEnchantNameArray);
+//		this.forpsEnchant();
+//		this.forTC2();
+//		this.forRP2World();
 		//Register Name
 		ModLoader.addName(BlockMat, "Enchant Changer");
 		ModLoader.addName(BlockMat, "ja_JP","エンチャントチェンジャー");
@@ -229,26 +230,26 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.addLocalization("container.materializer", "ja_JP", "エンチャントチェンジャー");
 		ModLoader.addLocalization("container.hugeMateria", "HugeMateria");
 		ModLoader.addLocalization("container.hugeMateria", "ja_JP", "ヒュージマテリア");
-		for (int i = 1; i <= materiamax; i++)
-		{
-			int var1 = (i-1) / MaxLv;
-			int var2 = (i % MaxLv != 0)? i% MaxLv : MaxLv;
-			ModLoader.addLocalization("ItemMateria." + Enchantment.enchantmentsList[this.VanillaEnchant[var1]].getName()+"."+var2+".name", " Materia of "+EcItemMateria.MateriaNames[var1]+" Lv."+var2);
-			ModLoader.addLocalization("ItemMateria." + Enchantment.enchantmentsList[this.VanillaEnchant[var1]].getName()+"."+var2+".name", "ja_JP",EcItemMateria.MateriaJPNames[var1]+"マテリア Lv."+var2);
-		}
+//		for (int i = 1; i <= materiamax; i++)
+//		{
+//			int var1 = (i-1) / MaxLv;
+//			int var2 = (i % MaxLv != 0)? i% MaxLv : MaxLv;
+//			ModLoader.addLocalization("ItemMateria." + Enchantment.enchantmentsList[this.VanillaEnchant[var1]].getName()+"."+var2+".name", " Materia of "+EcItemMateria.MateriaNames[var1]+" Lv."+var2);
+//			ModLoader.addLocalization("ItemMateria." + Enchantment.enchantmentsList[this.VanillaEnchant[var1]].getName()+"."+var2+".name", "ja_JP",EcItemMateria.MateriaJPNames[var1]+"マテリア Lv."+var2);
+//		}
 		for(int i=0;i < EcItemMateria.MagicMateriaNum;i++)
 		{
 			Magic[i]=new ItemStack(ItemMat, 1, materiamax + 1 +  i * MaxLv);
 			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", EcItemMateria.MateriaMagicNames[i]+" Materia");
 			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", "ja_JP",EcItemMateria.MateriaMagicJPNames[i]+"マテリア");
 		}
-		for(int i=0; i < ExtraEnchantNameArray.size();i++)
-		{
-			for(int j=1;j<=MaxLv;j++)
-			{
-				ModLoader.addLocalization("ItemMateria."+ ExtraEnchantNameArray.get(i) +"."+ j + ".name", "Materia of "+ ExtraEnchantNameArray.get(i) + " Lv."+ j );
-			}
-		}
+//		for(int i=0; i < ExtraEnchantNameArray.size();i++)
+//		{
+//			for(int j=1;j<=MaxLv;j++)
+//			{
+//				ModLoader.addLocalization("ItemMateria."+ ExtraEnchantNameArray.get(i) +"."+ j + ".name", "Materia of "+ ExtraEnchantNameArray.get(i) + " Lv."+ j );
+//			}
+//		}
 		for(int i = 0;i< EcItemMasterMateria.MasterMateriaNum;i++)
 		{
 			ModLoader.addLocalization("ItemMasterMateria." + i + ".name", "Master Materia of " + EcItemMasterMateria.MasterMateriaNames[i]);
@@ -265,11 +266,11 @@ public class mod_EnchantChanger extends BaseMod
 //		ModLoader.registerBlock(HugeMateria);
 		ModLoader.registerTileEntity(EcTileEntityMaterializer.class, "container.materializer");
 		ModLoader.registerTileEntity(EcTileEntityHugeMateria.class, "container.hugeMateria", new EcRenderHugeMateria());
-		MinecraftForgeClient.registerItemRenderer(SephirothSwordItemID, (EcItemSephirothSword)ItemSephirothSword);
-		MinecraftForgeClient.registerItemRenderer(ZackSwordItemID, (EcItemZackSword)ItemZackSword);
-		MinecraftForgeClient.registerItemRenderer(FirstSwordItemID, (EcItemCloudSwordCore)ItemCloudSwordCore);
-		MinecraftForgeClient.registerItemRenderer(CloudSwordItemID, (EcItemCloudSword)ItemCloudSword);
-		MinecraftForgeClient.registerItemRenderer(UltimateWeaponItemID, (EcItemUltimateWeapon)ItemUltimateWeapon);
+		MinecraftForgeClient.registerItemRenderer(SephirothSwordItemID, (IItemRenderer) ItemSephirothSword);
+		MinecraftForgeClient.registerItemRenderer(ZackSwordItemID, (IItemRenderer)ItemZackSword);
+		MinecraftForgeClient.registerItemRenderer(FirstSwordItemID, (IItemRenderer)ItemCloudSwordCore);
+		MinecraftForgeClient.registerItemRenderer(CloudSwordItemID, (IItemRenderer)ItemCloudSword);
+		MinecraftForgeClient.registerItemRenderer(UltimateWeaponItemID, (IItemRenderer)ItemUltimateWeapon);
 		MinecraftForgeClient.registerItemRenderer(MateriaID, (IItemRenderer) ItemMat);
 		ModLoader.registerEntityID(EcEntityExExpBottle.class, "ItemExExpBottle", 500);
 		ModLoader.registerEntityID(EcEntityMeteo.class, "Meteo", 501);
@@ -395,33 +396,33 @@ public class mod_EnchantChanger extends BaseMod
 			NameList.add("");
 		}
 	}
-	public void AddExtraEnchantment(ArrayList<Integer> IDList, ArrayList<String> NameList)
-	{
-		int[] vanilla = new int[]{0,1,2,3,4,5,6,7,16,17,18,19,20,21,32,33,34,35,48,49,50,51,this.EnchantmentMeteoId,this.EndhantmentHolyId,this.EnchantmentTelepoId,this.EnchantmentFloatId,this.EnchantmentThunderId};
-
-		boolean isvanillaenchid=false;
-		for (int i=0;i<256;i++)
-		{
-			if(Enchantment.enchantmentsList[i] != null)
-			{
-				for (int j=0;j<vanilla.length;j++)
-				{
-					if(i == vanilla[j])
-						isvanillaenchid=true;
-				}
-				if(! isvanillaenchid)
-				{
-					IDList.add(i);
-					String EnchName = StatCollector.translateToLocal(Enchantment.enchantmentsList[i].getName());
-					NameList.add(EnchName);
-				}
-				else
-				{
-					isvanillaenchid = false;
-				}
-			}
-		}
-	}
+//	public void AddExtraEnchantment(ArrayList<Integer> IDList, ArrayList<String> NameList)
+//	{
+//		int[] vanilla = new int[]{0,1,2,3,4,5,6,7,16,17,18,19,20,21,32,33,34,35,48,49,50,51,this.EnchantmentMeteoId,this.EndhantmentHolyId,this.EnchantmentTelepoId,this.EnchantmentFloatId,this.EnchantmentThunderId};
+//
+//		boolean isvanillaenchid=false;
+//		for (int i=0;i<256;i++)
+//		{
+//			if(Enchantment.enchantmentsList[i] != null)
+//			{
+//				for (int j=0;j<vanilla.length;j++)
+//				{
+//					if(i == vanilla[j])
+//						isvanillaenchid=true;
+//				}
+//				if(! isvanillaenchid)
+//				{
+//					IDList.add(i);
+//					String EnchName = StatCollector.translateToLocal(Enchantment.enchantmentsList[i].getName());
+//					NameList.add(EnchName);
+//				}
+//				else
+//				{
+//					isvanillaenchid = false;
+//				}
+//			}
+//		}
+//	}
 	@Override
 	public boolean onTickInGame(float var1, Minecraft var2)
 	{
@@ -582,48 +583,48 @@ public class mod_EnchantChanger extends BaseMod
 			return false;
 		}
 	}
-	public boolean checkCompatibility()
-	{
-		return ModLoader.isModLoaded("mod_EE");
-	}
-	public void forpsEnchant()
-	{
-		List<BaseMod> Modslist=ModLoader.getLoadedMods();
-		for (int i=0 ; i < Modslist.size();i++)
-		{
-			//System.out.println(Modslist.get(i));
-			if(Modslist.get(i).getName().equals("mod_ThaumCraft"))
-			{
-				this.ExtraEnchantIdArray.add(7);
-				this.ExtraEnchantNameArray.add("Thorns");
-
-			}
-		}
-	}
-	public void forTC2()
-	{
-		if(ModLoader.isModLoaded("mod_ThaumCraft"))
-		{
-			this.ExtraEnchantIdArray.add(200);
-			this.ExtraEnchantNameArray.add("Vampiric");
-			this.ExtraEnchantIdArray.add(201);
-			this.ExtraEnchantNameArray.add("Soulstealer");
-			this.ExtraEnchantIdArray.add(205);
-			this.ExtraEnchantNameArray.add("Repair");
-			this.ExtraEnchantIdArray.add(206);
-			this.ExtraEnchantNameArray.add("Relic");
-			this.ExtraEnchantIdArray.add(208);
-			this.ExtraEnchantNameArray.add("Potency");
-		}
-	}
-	public void forRP2World()
-	{
-		if(ModLoader.isModLoaded("mod_RedPowerWorld"))
-		{
-			this.ExtraEnchantIdArray.add(79);
-			this.ExtraEnchantNameArray.add("disjunction");
-		}
-	}
+//	public boolean checkCompatibility()
+//	{
+//		return ModLoader.isModLoaded("mod_EE");
+//	}
+//	public void forpsEnchant()
+//	{
+//		List<BaseMod> Modslist=ModLoader.getLoadedMods();
+//		for (int i=0 ; i < Modslist.size();i++)
+//		{
+//			//System.out.println(Modslist.get(i));
+//			if(Modslist.get(i).getName().equals("mod_ThaumCraft"))
+//			{
+//				this.ExtraEnchantIdArray.add(7);
+//				this.ExtraEnchantNameArray.add("Thorns");
+//
+//			}
+//		}
+//	}
+//	public void forTC2()
+//	{
+//		if(ModLoader.isModLoaded("mod_ThaumCraft"))
+//		{
+//			this.ExtraEnchantIdArray.add(200);
+//			this.ExtraEnchantNameArray.add("Vampiric");
+//			this.ExtraEnchantIdArray.add(201);
+//			this.ExtraEnchantNameArray.add("Soulstealer");
+//			this.ExtraEnchantIdArray.add(205);
+//			this.ExtraEnchantNameArray.add("Repair");
+//			this.ExtraEnchantIdArray.add(206);
+//			this.ExtraEnchantNameArray.add("Relic");
+//			this.ExtraEnchantIdArray.add(208);
+//			this.ExtraEnchantNameArray.add("Potency");
+//		}
+//	}
+//	public void forRP2World()
+//	{
+//		if(ModLoader.isModLoaded("mod_RedPowerWorld"))
+//		{
+//			this.ExtraEnchantIdArray.add(79);
+//			this.ExtraEnchantNameArray.add("disjunction");
+//		}
+//	}
 	public void MagicKey()
 	{
 		this.MagicKeyDown = Keyboard.isKeyDown(this.MagicKey.keyCode) && !this.MagicKeyDown;

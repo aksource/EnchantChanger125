@@ -12,7 +12,7 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.src.World;
 import net.minecraft.src.forge.IItemRenderer;
 
-public class EcItemUltimateWeapon extends EcItemSword implements IItemRenderer
+public class EcItemUltimateWeapon extends EcItemSword //implements IItemRenderer
 {
 	public static final EcModelUltimateWeapon UModel = new EcModelUltimateWeapon();
 	private int ultimateWeaponDamage;
@@ -24,19 +24,19 @@ public class EcItemUltimateWeapon extends EcItemSword implements IItemRenderer
 		this.ultimateWeaponDamage =  0;
 	}
 
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return type == ItemRenderType.EQUIPPED;
-	}
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return false;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		UModel.renderItem(item, (EntityLiving)data[1]);
-	}
+//	@Override
+//	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+//		return type == ItemRenderType.EQUIPPED;
+//	}
+//	@Override
+//	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+//		return false;
+//	}
+//
+//	@Override
+//	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+//		UModel.renderItem(item, (EntityLiving)data[1]);
+//	}
 
 	public int getDamageVsEntity(Entity par1Entity)
 	{
@@ -61,11 +61,11 @@ public class EcItemUltimateWeapon extends EcItemSword implements IItemRenderer
 		return par1ItemStack;
 	}
 
-	@Override
-	public void addCreativeItems(ArrayList itemList)
-	{
-		itemList.add(new ItemStack(this, 1));
-	}
+//	@Override
+//	public void addCreativeItems(ArrayList itemList)
+//	{
+//		itemList.add(new ItemStack(this, 1));
+//	}
 	public int WeaponDamagefromHP()
 	{
 		EntityPlayer player = ModLoader.getMinecraftInstance().thePlayer;

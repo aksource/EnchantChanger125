@@ -14,30 +14,30 @@ import net.minecraft.src.PotionEffect;
 import net.minecraft.src.World;
 import net.minecraft.src.forge.IItemRenderer;
 
-public class EcItemSephirothSword extends EcItemSword implements IItemRenderer
+public class EcItemSephirothSword extends EcItemSword //implements IItemRenderer
 {
-	public static final EcModelSephirothSword2 SModel = new EcModelSephirothSword2();
+//	public static final EcModelSephirothSword2 SModel = new EcModelSephirothSword2();
 	public double BoxSize = 5D;
 
 	public EcItemSephirothSword(int par1)
 	{
 		super(par1, EnumToolMaterial.EMERALD);
-		this.setMaxDamage(-1);
+//		this.setMaxDamage(-1);
 	}
 
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return type == ItemRenderType.EQUIPPED;
-	}
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return false;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		SModel.renderItem(item, (EntityLiving)data[1]);
-	}
+//	@Override
+//	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+//		return type == ItemRenderType.EQUIPPED;
+//	}
+//	@Override
+//	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+//		return false;
+//	}
+//
+//	@Override
+//	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+//		SModel.renderItem(item, (EntityLiving)data[1]);
+//	}
 
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{
@@ -89,14 +89,14 @@ public class EcItemSephirothSword extends EcItemSword implements IItemRenderer
 		return false;
 	}
 
-	public Item setNoRepair()
-	{
-		canRepair = false;
-		return this;
-	}
-	@Override
-	public void addCreativeItems(ArrayList itemList)
-	{
-		itemList.add(new ItemStack(this, 1));
-	}
+//	public Item setNoRepair()
+//	{
+//		canRepair = false;
+//		return this;
+//	}
+//	@Override
+//	public void addCreativeItems(ArrayList itemList)
+//	{
+//		itemList.add(new ItemStack(this, 1));
+//	}
 }

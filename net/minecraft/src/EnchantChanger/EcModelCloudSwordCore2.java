@@ -145,7 +145,7 @@ public class EcModelCloudSwordCore2 extends ModelBase
   {
 	  super.setRotationAngles(f, f1, f2, f3, f4, f5);
   }
-	public void renderItem(ItemStack pitem, EntityLiving pentity) {
+	public void renderItem(ItemStack pitem, EntityLiving pentity, boolean mode) {
 
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
@@ -173,17 +173,15 @@ public class EcModelCloudSwordCore2 extends ModelBase
 			}
 		}
 		*/
-	    if(EcItemCloudSwordCore.ActiveMode)
+	    if(mode)
 	    {
 	    	Blade1.setRotationPoint(9.5F, 5F, -0.5F);
 	    	Blade2.setRotationPoint(10.5F, 5F, -0.5F);
-	    	//System.out.println("Active");
 	    }
 	    else
 	    {
 	    	Blade1.setRotationPoint(10F, 5F, -0.5F);
 	    	Blade2.setRotationPoint(10F, 5F, -0.5F);
-	    	//System.out.println("Not Active");
 	    }
 
 

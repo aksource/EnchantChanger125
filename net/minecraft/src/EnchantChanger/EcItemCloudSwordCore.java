@@ -23,7 +23,7 @@ import net.minecraft.src.World;
 import net.minecraft.src.mod_EnchantChanger;
 import net.minecraft.src.forge.ForgeHooks;
 import net.minecraft.src.forge.IItemRenderer;
-public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
+public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 {
 	public static final EcModelCloudSwordCore2 CCModel = new EcModelCloudSwordCore2();
 	public static boolean ActiveMode=false;
@@ -38,7 +38,7 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
 	public EcItemCloudSwordCore(int par1)
 	{
 		super(par1, EnumToolMaterial.EMERALD);
-		this.setMaxDamage(-1);
+//		this.setMaxDamage(-1);
 	}
 
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving)
@@ -47,19 +47,19 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
 		return true;
 	}
 
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return type == ItemRenderType.EQUIPPED;
-	}
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return false;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		CCModel.renderItem(item, (EntityLiving)data[1]);
-	}
+//	@Override
+//	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+//		return type == ItemRenderType.EQUIPPED;
+//	}
+//	@Override
+//	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+//		return false;
+//	}
+//
+//	@Override
+//	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+//		CCModel.renderItem(item, (EntityLiving)data[1], this.ActiveMode);
+//	}
 
 	public int getDamageVsEntity(Entity par1Entity)
 	{
@@ -120,11 +120,11 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
 		}
 		return ChangeSword;
 	}
-	public Item setNoRepair()
-	{
-		canRepair = false;
-		return this;
-	}
+//	public Item setNoRepair()
+//	{
+//		canRepair = false;
+//		return this;
+//	}
 
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
 	{
@@ -416,9 +416,9 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
 
 		return var4;
     }
-	@Override
-	public void addCreativeItems(ArrayList itemList)
-	{
-		itemList.add(new ItemStack(this, 1));
-	}
+//	@Override
+//	public void addCreativeItems(ArrayList itemList)
+//	{
+//		itemList.add(new ItemStack(this, 1));
+//	}
 }

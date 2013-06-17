@@ -24,6 +24,8 @@ local.properties
 /net/minecraft/isom
 /net/minecraft/src/forge
 /net/minecraft/src/*.java
+!mod_MergeEnchantment.java
+!MergeEnchantmentRecipes.java
 !mod_EnchantChanger.java
 !mod_MultiToolHolders.java
 fmlversion.properties
