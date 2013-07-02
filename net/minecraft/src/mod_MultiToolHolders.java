@@ -118,17 +118,17 @@ public class mod_MultiToolHolders extends BaseMod
 	@Override
     public void keyboardEvent(KeyBinding kb)
     {
-		if(kb == OpenKey && kb.isPressed())
+		if(kb == OpenKey)
 		{
-			openKeydown = !openKeydown;
+			openKeydown = kb.pressed;
 		}
-		else if(kb == NextKey && kb.isPressed())
+		else if(kb == NextKey)
 		{
-			nextKeydown = !nextKeydown;
+			nextKeydown = kb.pressed;
 		}
-		else if(kb == PrevKey && kb.isPressed())
+		else if(kb == PrevKey)
 		{
-			prevKeydown = !prevKeydown;
+			prevKeydown = kb.pressed;
 		}
     }
 	public void debugsystem()

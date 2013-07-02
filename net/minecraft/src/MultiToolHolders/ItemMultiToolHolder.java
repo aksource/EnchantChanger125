@@ -245,7 +245,7 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 		par1Tessellator.draw();
 	}
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
-		if (par3Entity instanceof EntityPlayer && ((EntityPlayer) par3Entity).getCurrentEquippedItem() == par1ItemStack)
+		if (par3Entity instanceof EntityPlayer && par5)
 		{
 			EntityPlayer entityPlayer = (EntityPlayer) par3Entity;
 			this.tools = this.getData(par1ItemStack, par2World);
@@ -281,7 +281,7 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 				this.OpenKeydown = mod_MultiToolHolders.openKeydown && !this.OpenKeydown;
 				if(this.OpenKeydown)
 				{
-					int GuiID = (this.Slotsize == 3)? mod_MultiToolHolders.guiIdHolder3:(this.Slotsize == 5)? mod_MultiToolHolders.guiIdHolder5:mod_MultiToolHolders.guiIdHolder9;
+					int GuiID = (this.Slotsize == 3)? mod_MultiToolHolders.guiIdHolder3:(this.Slotsize == 5)? mod_MultiToolHolders.guiIdHolder5:(this.Slotsize == 7)? mod_MultiToolHolders.guiIdHolder7:mod_MultiToolHolders.guiIdHolder9;
 					entityPlayer.openGui(mod_MultiToolHolders.instance, GuiID, par2World, 0, 0, 0);
 					mod_MultiToolHolders.openKeydown = false;
 				}

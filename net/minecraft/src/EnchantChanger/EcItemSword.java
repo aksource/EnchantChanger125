@@ -3,6 +3,7 @@ package net.minecraft.src.EnchantChanger;
 import java.util.ArrayList;
 
 import net.minecraft.src.EnchantmentHelper;
+import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumToolMaterial;
@@ -19,11 +20,24 @@ public class EcItemSword extends ItemSword implements IItemRenderer
 	private final EcModelCloudSword2 CModel = new EcModelCloudSword2();
 	private final EcModelSephirothSword SModel = new EcModelSephirothSword();
 	private final EcModelZackSword ZModel = new EcModelZackSword();
+	private boolean toggle = false;
 	public EcItemSword(int par1 , EnumToolMaterial toolMaterial)
 	{
 		super(par1, toolMaterial);
 		this.setTextureFile(mod_EnchantChanger.EcSprites);
 		this.setMaxDamage(-1);
+	}
+	@Override
+	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+		if(par3Entity instanceof EntityPlayer && par5)
+		{
+			this.toggle = mod_EnchantChanger.MagicKeyDown && !toggle;
+			if(toggle)
+			{
+				doMagic(par1ItemStack, par2World, (EntityPlayer) par3Entity);
+				mod_EnchantChanger.MagicKeyDown = toggle = !toggle;
+			}
+		}
 	}
 	@Override
 	public void addCreativeItems(ArrayList itemList)

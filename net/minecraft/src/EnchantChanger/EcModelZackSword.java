@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL12;
 
 public class EcModelZackSword extends ModelBase
 {
-  //fields
+	//fields
 	ModelRenderer Sword;
 	private Minecraft MC = mod_EnchantChanger.mc;
 
@@ -72,48 +72,44 @@ public class EcModelZackSword extends ModelBase
 		Sword.addBox("Shape22", 2F, 4F, 0F, 2, 2, 1);
 		Sword.addBox("Shape23", 2F, 8F, 0F, 2, 2, 1);
 	}
-  private void setRotation(ModelRenderer model, float x, float y, float z)
-  {
-	    model.rotateAngleX = x;
-	    model.rotateAngleY = y;
-	    model.rotateAngleZ = z;
-  }
+	private void setRotation(ModelRenderer model, float x, float y, float z)
+	{
+		model.rotateAngleX = x;
+		model.rotateAngleY = y;
+		model.rotateAngleZ = z;
+	}
 
-  public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
-  {
-	  super.setRotationAngles(f, f1, f2, f3, f4, f5);
-  }
 	public void renderItem(ItemStack pitem, EntityLiving pentity) {
 
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glPushMatrix();
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.MC.renderEngine.getTexture(mod_EnchantChanger.EcZackSwordPNG));
-	    if (pentity instanceof EntityPlayer && ((EntityPlayer)pentity).isUsingItem()) {
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.MC.renderEngine.getTexture(mod_EnchantChanger.EcZackSwordPNG));
+		if (pentity instanceof EntityPlayer && ((EntityPlayer)pentity).isUsingItem()) {
 			//Guard
 			//ViewChange
 			if (MC.gameSettings.thirdPersonView == 0) {
 				GL11.glTranslatef(0.2F, -0.5F, 0.5F);
-//				GL11.glRotatef(70F, 0F, 0F, 1F);
+				//				GL11.glRotatef(70F, 0F, 0F, 1F);
 			}
 			else
-		    	GL11.glTranslatef(0F, -0.1F, 0F);
+				GL11.glTranslatef(0F, -0.1F, 0F);
 		} else {
 			//ViewChange
 			if (MC.gameSettings.thirdPersonView == 0) {
-//				GL11.glTranslatef(1F, -1F, 0.5F);
-//				GL11.glRotatef(90F, 0F, 1F, 0F);
-//				GL11.glRotatef(20F, 0F, 0F, 1F);
+				//				GL11.glTranslatef(1F, -1F, 0.5F);
+				//				GL11.glRotatef(90F, 0F, 1F, 0F);
+				//				GL11.glRotatef(20F, 0F, 0F, 1F);
 			}
 		}
-	    GL11.glTranslatef(0.5F, 0.5F, -0.05F);
-	    GL11.glScalef(1F, 1F, 0.4F);
-//	    GL11.glRotatef(0F, 1.0F, 1.0F, 0.0F);
-//	    GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
-	    GL11.glRotatef(50.0F, 0.0F, 0.0F, 1.0F);
+		GL11.glTranslatef(0.5F, 0.5F, -0.05F);
+		GL11.glScalef(1F, 1F, 0.4F);
+		//	    GL11.glRotatef(0F, 1.0F, 1.0F, 0.0F);
+		//	    GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(50.0F, 0.0F, 0.0F, 1.0F);
 
-	    Sword.render(0.03F);
-	    GL11.glPopMatrix();
-	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		Sword.render(0.03F);
+		GL11.glPopMatrix();
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}
 }

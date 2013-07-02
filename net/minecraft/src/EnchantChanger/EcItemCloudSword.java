@@ -34,7 +34,6 @@ public class EcItemCloudSword extends EcItemSword //implements IItemRenderer
 	public EcItemCloudSword(int par1)
 	{
 		super(par1, EnumToolMaterial.EMERALD);
-//		this.setMaxDamage(-1);
 	}
 
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving)
@@ -54,20 +53,6 @@ public class EcItemCloudSword extends EcItemSword //implements IItemRenderer
 		else
 			return false;
 	}
-//	@Override
-//	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-//		return type == ItemRenderType.EQUIPPED;
-//	}
-//	@Override
-//	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-//		return false;
-//	}
-//
-//	@Override
-//	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-//		CModel.renderItem(item, (EntityLiving)data[1]);
-//	}
-
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{
 		if(par3EntityPlayer.isSneaking())
@@ -77,7 +62,7 @@ public class EcItemCloudSword extends EcItemSword //implements IItemRenderer
 		}
 		else
 		{
-			super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
+//			super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
 			par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 			if(this.SlotNum == 5)
 				this.SlotNum = 0;
@@ -137,6 +122,7 @@ public class EcItemCloudSword extends EcItemSword //implements IItemRenderer
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
 	{
+		super.onUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 		if (!par2World.isRemote && par3Entity instanceof EntityPlayer)
 		{
 			this.SwordData = this.getSwordData(par1ItemStack, par2World);
@@ -244,6 +230,7 @@ public class EcItemCloudSword extends EcItemSword //implements IItemRenderer
 					if (var7.stackSize <= 0)
 					{
 						var7.onItemDestroyedByUse(player);
+						this.SwordData.setInventorySlotContents(this.SlotNum, (ItemStack)null);
 						this.doCastOffSwords(player);
 						player.inventory.setInventorySlotContents(player.inventory.currentItem, this.makeCloudSwordCore(player.getCurrentEquippedItem()));
 					}

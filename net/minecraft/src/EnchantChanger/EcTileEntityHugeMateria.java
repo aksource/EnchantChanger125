@@ -319,35 +319,35 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.enderPearl.shiftedIndex)
 						{
-							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 2);
+							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 3);
 							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentTelepoId], 1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.eyeOfEnder.shiftedIndex)
 						{
-							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 3);
+							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 4);
 							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentFloatId], 1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Block.blockGold.blockID)
 						{
-							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 4);
+							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 5);
 							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentThunderId], 1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.bucketMilk.shiftedIndex)
 						{
-							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 5);
+							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 6);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.bootsGold.shiftedIndex)
 						{
-							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 6);
+							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 7);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.netherStalkSeeds.shiftedIndex)
 						{
-							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 7);
+							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 8);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == mod_EnchantChanger.MateriaID)

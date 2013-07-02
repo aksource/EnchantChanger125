@@ -47,20 +47,6 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 		return true;
 	}
 
-//	@Override
-//	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-//		return type == ItemRenderType.EQUIPPED;
-//	}
-//	@Override
-//	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-//		return false;
-//	}
-//
-//	@Override
-//	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-//		CCModel.renderItem(item, (EntityLiving)data[1], this.ActiveMode);
-//	}
-
 	public int getDamageVsEntity(Entity par1Entity)
 	{
 		return (ActiveMode)? 7: 6;
@@ -87,14 +73,12 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 				}
 				else
 				{
-					super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
 					par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 					return par1ItemStack;
 				}
 			}
 			else
 			{
-				super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
 				par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 				return par1ItemStack;
 			}
@@ -120,11 +104,6 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 		}
 		return ChangeSword;
 	}
-//	public Item setNoRepair()
-//	{
-//		canRepair = false;
-//		return this;
-//	}
 
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
 	{
@@ -172,22 +151,6 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 		else
 			return false;
 	}
-	public static int SwordNuminInventoryslot(EntityPlayer par1)
-	{
-		int Sword=0;
-		for (int i = 0;i<9;i++)
-		{
-			ItemStack SlotItem=par1.inventory.getStackInSlot(i);
-			if(SlotItem!=null)
-				if(SlotItem.getItem()==Item.swordDiamond||SlotItem.getItem()==Item.swordGold||SlotItem.getItem()==Item.swordSteel)
-					Sword++;
-		}
-		return Sword;
-	}
-	public boolean checkmode(int mode)
-	{
-		return mode != 0;
-	}
 	public void attackTargetEntityWithInventoryItem(Entity par1Entity, EntityPlayer player)
 	{
 		ItemStack sword;
@@ -199,7 +162,7 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 			sword = player.inventory.getStackInSlot(i);
 			if(sword != null && sword.getItem() instanceof ItemSword && !(sword.getItem() instanceof EcItemSword))
 			{
-				this.attackTargetEntityWithTheItem(par1Entity, player, sword);
+				this.attackTargetEntityWithTheItem(par1Entity, player, sword, i);
 			}
 		}
 	}
@@ -222,52 +185,7 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 			}
 		}
 	}
-	public void UnionSword(EntityPlayer entityplayer)
-	{
-		int DS=2;
-		int GS=2;
-		int IS=1;
-		int Index = 0;
-		ItemStack sword;
-		for (int i = 0;i<9;i++)
-		{
-			sword = entityplayer.inventory.getStackInSlot(i);
-			if(sword!=null)
-			{
-				if(sword.getItem()==Item.swordDiamond)
-				{
-					DS--;
-					if(DS>=0)
-					{
-						this.swords[Index] = sword;
-						Index++;
-						entityplayer.inventory.setInventorySlotContents(i, null);
-					}
-				}
-				else if(sword.getItem()==Item.swordGold)
-				{
-					GS--;
-					if(GS>=0)
-					{
-						this.swords[Index] = sword;
-						Index++;
-						entityplayer.inventory.setInventorySlotContents(i, null);
-					}
-				}
-				else if(sword.getItem()==Item.swordSteel)
-				{
-					IS--;
-					if(IS>=0)
-					{
-						this.swords[Index] = sword;
-						Index++;
-						entityplayer.inventory.setInventorySlotContents(i, null);
-					}
-				}
-			}
-		}
-	}
-	public void attackTargetEntityWithTheItem(Entity par1Entity, EntityPlayer player,ItemStack stack)
+	public void attackTargetEntityWithTheItem(Entity par1Entity, EntityPlayer player,ItemStack stack, int Slot)
 	{
 		if (!ForgeHooks.onEntityInteract(player, par1Entity, true))
 		{
@@ -354,6 +272,7 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 					if (var7.stackSize <= 0)
 					{
 						var7.onItemDestroyedByUse(player);
+						player.inventory.setInventorySlotContents(Slot, null);
 					}
 				}
 
@@ -416,9 +335,4 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 
 		return var4;
     }
-//	@Override
-//	public void addCreativeItems(ArrayList itemList)
-//	{
-//		itemList.add(new ItemStack(this, 1));
-//	}
 }

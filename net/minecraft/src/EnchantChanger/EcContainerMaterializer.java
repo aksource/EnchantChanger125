@@ -30,17 +30,14 @@ public class EcContainerMaterializer extends Container {
 
 	public IInventory materializeSource = new EcSlotMaterializer(this, "MaterializerSource", 9);
 	public IInventory materializeResult = new EcSlotResult(this, "MaterializerResult", 9);
-	public int[] vanillaEnch = new int[]{0,1,2,3,4,5,6,16,17,18,19,20,21,32,33,34,35,48,49,50,51};
 	public static int ResultSlotNum = 9;
 	public static int SourceSlotNum = 9;
 	protected EcTileEntityMaterializer tileEntity;
 	protected InventoryPlayer InvPlayer;
-//	protected int materiamax = mod_EnchantChanger.materiamax ;
 	private ArrayList<Integer> ItemEnchList = new ArrayList<Integer>();
 	private ArrayList<Integer> ItemEnchLvList = new ArrayList<Integer>();
 	private ArrayList<Integer> MateriaEnchList = new ArrayList<Integer>();
 	private ArrayList<Integer> MateriaEnchLvList = new ArrayList<Integer>();
-	private int maxlv = mod_EnchantChanger.MaxLv;
 	private boolean Debug = mod_EnchantChanger.Debug;
 	private World worldPointer;
 	private Minecraft mc = mod_EnchantChanger.mc;
@@ -214,9 +211,7 @@ public class EcContainerMaterializer extends Container {
 					{
 						continue;
 					}
-//					int materiaNum = materiaitem.getItemDamage();
 					int enchLv = this.EnchLv(materiaitem);
-//					int materiaKind = (materiaitem.getItemDamage()-1) / maxlv;
 					Enchantment enchKind = this.EnchKind(materiaitem);
 
 					if(!this.func_92037_a(enchKind, enchitem) || !this.CheckLvCap(materiaitem))
@@ -252,12 +247,10 @@ public class EcContainerMaterializer extends Container {
 				for(int i2=0;i2 < this.ItemEnchList.size();i2++)
 				{
 					mod_EnchantChanger.addEnchantmentToItem(Result, Enchantment.enchantmentsList[this.ItemEnchList.get(i2)], this.ItemEnchLvList.get(i2));
-//					Result.addEnchantment(Enchantment.enchantmentsList[this.ItemEnchList.get(i2)], this.ItemEnchLvList.get(i2));
 				}
 				for(int i2=0;i2 < this.MateriaEnchList.size();i2++)
 				{
 					mod_EnchantChanger.addEnchantmentToItem(Result, Enchantment.enchantmentsList[this.MateriaEnchList.get(i2)], this.MateriaEnchLvList.get(i2));
-//					Result.addEnchantment(Enchantment.enchantmentsList[this.MateriaEnchList.get(i2)], this.MateriaEnchLvList.get(i2));
 				}
 				this.materializeResult.setInventorySlotContents(0, Result);
 				this.ItemEnchList.clear();
@@ -281,8 +274,6 @@ public class EcContainerMaterializer extends Container {
 						int damage = this.setMateriaDmgfromEnch(this.ItemEnchList.get(i));
 						ItemStack materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, damage);
 						mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[this.ItemEnchList.get(i)], this.ItemEnchLvList.get(i));
-
-//						var1Int = MateriaKindFromEnch(this.ItemEnchList.get(i))*maxlv + decreasedLv;
 						this.materializeResult.setInventorySlotContents(i+1, materia);
 					}
 					else

@@ -13,7 +13,7 @@ public class mod_EnchantChanger extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.6";
+		return "1.6b";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
@@ -73,10 +73,6 @@ public class mod_EnchantChanger extends BaseMod
 	@MLProp(info="Extra Armor Ids(test)")
 	public static String ArmorIds = "";
 	public static ArrayList<Integer> ArmorIdArray = new ArrayList<Integer>();
-//	public static String ExtraEnchantName = "";
-//	public static ArrayList<String> ExtraEnchantNameArray = new ArrayList<String>();
-//	public static String ExtraEnchantIds = "";
-//	public static ArrayList<Integer> ExtraEnchantIdArray = new ArrayList<Integer>();
 	@MLProp(info="Item damege decrease MateriaLv")
 	public static boolean DecMateriaLv = false;
 	@MLProp(info="You are Tera in FF4")
@@ -86,8 +82,7 @@ public class mod_EnchantChanger extends BaseMod
 	@MLProp(info="Difficulty Ex:0=Easy,1=Normal,2=Hard")
 	public static int Difficulty =1;
 	public static int MaxLv = 127;
-//	public static int VanillaEnchNum = 21;
-//	public static int materiamax = VanillaEnchNum*MaxLv;
+
 
 	public static int EnchantmentMeteoId =240;
 	public static Enchantment Meteo;
@@ -100,44 +95,32 @@ public class mod_EnchantChanger extends BaseMod
 	public static int EnchantmentThunderId=244;
 	public static Enchantment Thunder;
 
-//	ItemStack[] Magic = new ItemStack[EcItemMateria.MagicMateriaNum];
-	public int[] VanillaEnchant = new int[]{0,1,2,3,4,5,6,16,17,18,19,20,21,32,33,34,35,48,49,50,51};
 	public int[] Count= new int[]{0,0,0,0,0,0,0,0,0,0};
 	public static int[] LimitBreakCount = new int[]{0,0,0};
 	public static int[] LimitBreakCoolDownCount = new int[]{0,0,0};
 	public static boolean[] LimitBreakFlag = new boolean[]{false,false,false};
-	public int FlightMptime=20*3;
+
 	public int GGMptime=20*1;
-	public int HasteMptime=20*3;
 	public int AbsorpMptime=20*3;
-	public int AttackSeveralMpTime=20*1;
-	public int AttackTime=0;
 	public double AbsorpBoxSize=5D;
-//	public static Vec3D GateCoord =null;
-//	public boolean incompatible=false;
-//	public boolean ExtraEnchCheckbool = false;
-	public static KeyBinding MagicKey = new KeyBinding("EcMagicKey",88);
+
+	public static KeyBinding MagicKey = new KeyBinding("Key.EcMagic",Keyboard.KEY_V);
 	public static boolean MagicKeyDown = false;
 
 	public static int MaterializerGuiId = 0;
 	public static int PortableEnchantmentTableGuiId=1;
 	public static int HugeMateriaGuiId=2;
-//	public static int RenderHugeId;
 
 	public static String EcSprites ="/mod_EnchantChanger/gui/items.png";
 	public static String EcTerrain = "/mod_EnchantChanger/terrain.png";
 	public static String EcZackSwordPNG ="/mod_EnchantChanger/item/ZackSword.png";
 	public static String EcSephirothSwordPNG ="/mod_EnchantChanger/item/SephirothSword.png";
-//	public static String EcSword2PNG ="/mod_EnchantChanger/item/Sword-3Dtrue.png";
-//	public static String EcCloudSwordPNG ="/mod_EnchantChanger/item/CloudSword.png";
 	public static String EcCloudSword2PNG ="/mod_EnchantChanger/item/CloudSword-3Dtrue.png";
-//	public static String EcCloudSwordCorePNG ="/mod_EnchantChanger/item/CloudSwordCore.png";
 	public static String EcCloudSwordCore2PNG ="/mod_EnchantChanger/item/CloudSwordCore-3Dtrue.png";
 	public static String EcUltimateWeaponPNG ="/mod_EnchantChanger/item/UltimaWeapon.png";
 	public static String EcGuiMaterializer ="/mod_EnchantChanger/gui/materializer.png";
 	public static String EcGuiHuge = "/mod_EnchantChanger/gui/HugeMateriaContainer.png";
 	public static String EcHugetex ="/mod_EnchantChanger/item/hugemateriatex.png";
-//	public static String EcGuiMaterializer2 ="/mod_EnchantChanger/gui/materializer02.png";
 
 	public static Minecraft mc;
 	public static mod_EnchantChanger instance;
@@ -150,6 +133,13 @@ public class mod_EnchantChanger extends BaseMod
         return "after:*";
     }
 	public mod_EnchantChanger(){}
+    public void keyboardEvent(KeyBinding event)
+    {
+    	if(event == this.MagicKey)
+    	{
+    		this.MagicKeyDown = event.isPressed();
+    	}
+    }
 	public void load() {
 		//initialize
 		ModLoader.setInGameHook(this, true, true);
@@ -157,6 +147,23 @@ public class mod_EnchantChanger extends BaseMod
 		instance =this;
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/items.png");
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/terrain.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia0.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia1.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia3.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia4.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia5.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia6.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia7.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia8.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia9.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia10.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia11.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia12.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia13.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia14.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia15.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/HugeMateriaContainer.png");
+		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materializer.png");
 		MinecraftForge.setGuiHandler(this, new EcGuiHandler());
 		MinecraftForge.registerEntityLivingHandler(new EcLivingHandler());
 		ModLoader.registerKey(this, MagicKey, false);
@@ -227,6 +234,8 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.addLocalization("container.materializer", "ja_JP", "エンチャントチェンジャー");
 		ModLoader.addLocalization("container.hugeMateria", "HugeMateria");
 		ModLoader.addLocalization("container.hugeMateria", "ja_JP", "ヒュージマテリア");
+		ModLoader.addLocalization("Key.EcMagic", "Magic Key");
+		ModLoader.addLocalization("Key.EcMagic", "ja_JP", "魔法キー");
 
 		for(int i=0;i < EcItemMateria.MagicMateriaNum;i++)
 		{
@@ -310,18 +319,8 @@ public class mod_EnchantChanger extends BaseMod
 		map.put(EcEntityMeteo.class, new EcRenderItemThrowable(22,MeteoSize, false));
 		map.put(EcEntitySword.class, new EcRenderItemThrowable(Item.swordDiamond.iconIndex, 0.5F,true));
 	}
-	public void renderInvBlock(RenderBlocks renderer, Block block, int metadata, int modelID)
-	{
-
-	}
-	public boolean renderWorldBlock(RenderBlocks renderer, IBlockAccess world, int x, int y, int z, Block block, int modelID)
-	{
-
-		return super.renderWorldBlock(renderer, world, x, y, z, block, modelID);
-	}
 	public void debugsystem()
 	{
-//		ModLoader.addShapelessRecipe(Magic[3], new Object[]{Block.dirt});
 	}
 	public static void addEnchantmentToItem(ItemStack item, Enchantment enchantment, int Lv)
 	{
@@ -435,11 +434,6 @@ public class mod_EnchantChanger extends BaseMod
 		Absorption(var2.theWorld,var2.thePlayer);
 		this.LimitBreak();
 		this.LimitBreakCoolDown();
-		this.MagicKey();
-		if(this.MagicKeyDown)
-		{
-			this.checkMagic(var2.theWorld, var2.thePlayer);
-		}
 		return true;
 	}
 	public void GreatGospel(EntityPlayer player)
@@ -491,14 +485,6 @@ public class mod_EnchantChanger extends BaseMod
 					}
 				}
 			}
-		}
-	}
-	public void checkMagic(World world, EntityPlayer player)
-	{
-		ItemStack itemstack = player.getHeldItem();
-		if(itemstack != null && itemstack.getItem() instanceof EcItemSword)
-		{
-			EcItemSword.doMagic(itemstack, world, player);
 		}
 	}
 	public void LimitBreak()
@@ -575,10 +561,6 @@ public class mod_EnchantChanger extends BaseMod
 		{
 			return false;
 		}
-	}
-	public void MagicKey()
-	{
-		this.MagicKeyDown = Keyboard.isKeyDown(this.MagicKey.keyCode) && !this.MagicKeyDown;
 	}
 	public void DungeonLootItemResist()
 	{

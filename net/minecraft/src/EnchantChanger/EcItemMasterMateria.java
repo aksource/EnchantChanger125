@@ -72,34 +72,14 @@ public class EcItemMasterMateria extends Item implements IItemRenderer
 	}
 	public void renderMateria(ItemStack item, float x, float y, float z, float size, ItemRenderType type)
 	{
+		GL11.glPushMatrix();
 		GL11.glTranslatef(x, y, z);
 		if(type == ItemRenderType.EQUIPPED && mod_EnchantChanger.mc.gameSettings.thirdPersonView == 0)
 			GL11.glTranslatef(0.3f, 0.2f, 0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_EnchantChanger.mc.renderEngine.getTexture("/mod_EnchantChanger/gui/materia10.png"));
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL_BLEND);
-        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//        GL11.glEnable(GL_BLEND);
+//        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		Tessellator tessellator = Tessellator.instance;
-		tessellator.setBrightness(100);
-		float f = 1.0F;
-		int color = ItemDye.dyeColors[15];
-		float r = (float)(color >> 16 & 0xff) / 255F;
-		float g = (float)(color >> 8 & 0xff) / 255F;
-		float b = (float)(color & 0xff) / 255F;
-//		if (EntityRenderer.anaglyphEnable)
-//		{
-//			float blightness = (r * 30F + g * 59F + b * 11F) / 100F;
-//			float y1 = (r * 30F + g * 70F) / 100F;
-//			float p = (r * 30F + b * 70F) / 100F;
-//			r = blightness ;
-//			g = y1;
-//			b = p;
-//		}
-//		tessellator.setColorOpaque_F(f * r ,  f * g ,  f * b);
-
-//		tessellator.draw();
 		GL11.glScalef(size, size, size);
 		tessellator.startDrawing(4);
 
@@ -128,8 +108,7 @@ public class EcItemMasterMateria extends Item implements IItemRenderer
 
 		tessellator.draw();
 		GL11.glTranslatef(-x, -y, -z);
-	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glPopMatrix();
 	}
 	static
 	{

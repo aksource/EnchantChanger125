@@ -42,27 +42,19 @@ import org.lwjgl.opengl.GL12;
 
 public class EcItemMateria extends Item implements IItemRenderer
 {
-	public static final String[] MateriaNames = new String[] {"Protection", "Fire Protection", "Feather Falling", "Blast Protection", "Projectile Protection", "Respiration", "Aqua Affinity", "Sharpness", "Smite", "Bane of Arthropods", "Knockback", "Fire Aspect", "Looting", "Efficiency", "Silk Touch", "Unbreaking","Fortune","Power","Punch","Flame","Infinity"};
-	public static final String[] MateriaJPNames = new String[]{"ダメージ軽減", "火炎耐性", "落下耐性", "爆発耐性", "飛び道具耐性", "水中呼吸", "水中採掘", "ダメージ増加", "アンデッド特効", "虫特効", "ノックバック", "火属性", "ドロップ増加", "効率強化", "シルクタッチ", "耐久力","幸運","矢ダメージ増加","パンチ","フレイム","無限"};
 	public static final String[] MateriaMagicNames = new String[]{"Black","White","Teleport","Floating","Thunder","Despell","Haste","Absorption"};
 	public static final String[] MateriaMagicJPNames = new String[]{"黒","白","瞬間移動","浮遊","雷","解呪","加速","吸収"};
 	public static int MagicMateriaNum = MateriaMagicNames.length;
-	public static int MagicMateriaNumMax = MagicMateriaNum*mod_EnchantChanger.MaxLv;
-	public static int[] vanillaEnch = new int[]{0,1,2,3,4,5,6,16,17,18,19,20,21,32,33,34,35,48,49,50,51};
 	public static int[] magicEnch = new int[]{mod_EnchantChanger.EnchantmentMeteoId, mod_EnchantChanger.EndhantmentHolyId, mod_EnchantChanger.EnchantmentTelepoId, mod_EnchantChanger.EnchantmentFloatId, mod_EnchantChanger.EnchantmentThunderId};
 	public static double homeX = 0;
 	public static double homeY = 512;
 	public static double homeZ = 0;
 	public static boolean GGEnable = false;
 	public static boolean MagicMateriaInBar = false;
-	private int ItemUseTime =0;
-//	private int materiamax = mod_EnchantChanger.materiamax;
-	private int maxlv = mod_EnchantChanger.MaxLv;
-//	private int vanilla = mod_EnchantChanger.VanillaEnchNum;
+
 	private boolean LvCap = mod_EnchantChanger.LevelCap;
 	private boolean Debug = mod_EnchantChanger.Debug;
 	private boolean tera = mod_EnchantChanger.YouAreTera;
-//	private Vec3D Gate = mod_EnchantChanger.GateCoord;
 	protected static Random rand;
 	private double BoxSize = 5D;
 	private static double vert[];
@@ -78,43 +70,6 @@ public class EcItemMateria extends Item implements IItemRenderer
 		this.setTextureFile(mod_EnchantChanger.EcSprites);
 		this.mc = mod_EnchantChanger.mc;
 	}
-//	public int getIconFromDamage(int par1)
-//	{
-//		int[] Icon = new int[]{8,8,8,8,8,4,4,13,13,13,14,1,9,5,7,3,9,13,14,1,12};
-//		if(par1 == 0)
-//		{
-//			return this.iconIndex;
-//		}
-//		else if(par1 <= materiamax)
-//		{
-//			int materiaId = (par1 - 1)/ maxlv;
-//			return Icon[materiaId];
-//		}
-//		else if(par1 <= materiamax + this.MagicMateriaNumMax)
-//		{
-//			int var1 = (par1 - materiamax - 1) / maxlv;
-//			switch(var1)
-//			{
-//			case 0 :return this.iconIndex;
-//			case 1 :return 15;
-//			case 2 :return 5;
-//			case 3 :return 9;
-//			case 4 :return 11;
-//			case 5 :return 7;
-//			case 6 :return 6;
-//			case 7 :return 10;
-//			default :return this.iconIndex;
-//			}
-//		}
-//		else if(mod_EnchantChanger.ExtraEnchantIdArray.size() > 0)
-//		{
-//			return 10;
-//		}
-//		else
-//		{
-//			return this.iconIndex;
-//		}
-//	}
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
 	{
 		if(itemstack.stackSize > 1)
@@ -158,23 +113,6 @@ public class EcItemMateria extends Item implements IItemRenderer
 			default:;
 			}
 		}
-//		else if(itemstack.getItemDamage() > materiamax + MagicMateriaNumMax && mod_EnchantChanger.ExtraEnchantIdArray.size() > 0)
-//		{
-//			int var2 = itemstack.getItemDamage() - (materiamax + MagicMateriaNumMax);
-//			int ExtraEnchLv = var2 % maxlv;
-//			if(entityplayer.isSneaking() && LvCap && ExtraEnchLv > 1)
-//			{
-//				for (int i=0; i< 15; i++)
-//					++entityplayer.experienceLevel;
-//
-//				itemstack.setItemDamage(itemstack.getItemDamage() - 1);
-//			}
-//			else if(ExtraEnchLv != 0 && (entityplayer.experienceLevel >= 15 || entityplayer.capabilities.isCreativeMode))
-//			{
-//				entityplayer.removeExperience(15);
-//				itemstack.setItemDamage(itemstack.getItemDamage() + 1);
-//			}
-//		}
 		return itemstack;
 	}
 	/**
@@ -200,35 +138,8 @@ public class EcItemMateria extends Item implements IItemRenderer
 		int EnchantmentKind = mod_EnchantChanger.getMateriaEnchKind(item);
 		int Lv = mod_EnchantChanger.getMateriaEnchLv(item);
 		NBTTagCompound nbt = item.getTagCompound();
-		this.removeEnchTag(nbt, "ench");
-		this.addEnchantmentToItem(item, Enchantment.enchantmentsList[EnchantmentKind], Lv + addLv);
-	}
-	public void addEnchantmentToItem(ItemStack item, Enchantment enchantment, int Lv)
-	{
-		if (item.stackTagCompound == null)
-		{
-			item.setTagCompound(new NBTTagCompound());
-		}
-
-		if (!item.stackTagCompound.hasKey("ench"))
-		{
-			item.stackTagCompound.setTag("ench", new NBTTagList("ench"));
-		}
-
-		NBTTagList var3 = (NBTTagList)item.stackTagCompound.getTag("ench");
-		NBTTagCompound var4 = new NBTTagCompound();
-		var4.setShort("id", (short)enchantment.effectId);
-		var4.setShort("lvl", (short)(Lv));
-		var3.appendTag(var4);
-	}
-	public void removeEnchTag(NBTTagCompound nbt, String string)
-	{
-		try
-		{
-			HashMap map = ModLoader.getPrivateValue(NBTTagCompound.class, nbt, 0);
-			map.remove(string);
-		}
-		catch (Exception e){}
+		mod_EnchantChanger.removeEnchTag(nbt, "ench");
+		mod_EnchantChanger.addEnchantmentToItem(item, Enchantment.enchantmentsList[EnchantmentKind], Lv + addLv);
 	}
 	public void MateriaPotionEffect(ItemStack item, EntityLiving entity, EntityPlayer player)
 	{
@@ -338,19 +249,6 @@ public class EcItemMateria extends Item implements IItemRenderer
 				return EnumRarity.rare;
 		}
 	}
-//	public int LevelUPEXP(int materiakind, int materialv)
-//	{
-//		int[] LvUPBase = new int[]{10,5,5,5,5,10,20,10,5,5,5,5,10,10,20,10,10,10,5,5,20};
-//		int[] LvUPOver5 = new int[]{30,20,20,20,20,30,30,30,20,20,20,20,30,30,20,30,30,30,20,20,20};
-//		if(materialv < 5 || mod_EnchantChanger.Difficulty == 0)
-//		{
-//			return LvUPBase[materiakind];
-//		}
-//		else
-//		{
-//			return LvUPOver5[materiakind];
-//		}
-//	}
 	public int LevelUPEXP(ItemStack item, boolean next)
 	{
 		int EnchantmentKind = mod_EnchantChanger.getMateriaEnchKind(item);
@@ -367,19 +265,6 @@ public class EcItemMateria extends Item implements IItemRenderer
 			return Enchantment.enchantmentsList[EnchantmentKind].getMaxEnchantability(Lv + nextLv);
 		}
 	}
-//	public int LevelUPEXP2(int materiakind, int materialv)
-//	{
-//		int[] LvUPBase = new int[]{10*20,5*20,5*20,5*20,5*20,10*20,20*20,10*20,5*20,5*20,5*20,5*20,10*20,10*20,20*20,10*20,10*20,10*20,5*20,5*20,20*20};;
-//		int[] LvUPOver5 = new int[]{30*20,20*20,20*20,20*20,20*20,30*20,30*20,30*20,20*20,20*20,20*20,20*20,30*20,30*20,20*20,30*20,30*20,30*20,20*20,20*20,20*20};
-//		if(materialv < 5 || mod_EnchantChanger.Difficulty == 0)
-//		{
-//			return LvUPBase[materiakind];
-//		}
-//		else
-//		{
-//			return LvUPOver5[materiakind];
-//		}
-//	}
 	public static void Teleport(ItemStack itemstack, World world, EntityPlayer entityplayer)
 	{
 		ChunkCoordinates Spawn;
@@ -429,14 +314,6 @@ public class EcItemMateria extends Item implements IItemRenderer
 			}
 		}
 	}
-//	public void setHomePoint(ItemStack itemstack, World world, EntityPlayer entityplayer)
-//	{
-//		homeX = entityplayer.posX;
-//		homeY = entityplayer.posY-1;
-//		homeZ = entityplayer.posZ;
-//		if(!world.isRemote)
-//			entityplayer.addChatMessage("Set HomePoint!!");
-//	}
 	public static Vec3D setTeleportPoint(World world, EntityPlayer entityplayer)
 	{
 		float var1=1F;
@@ -567,34 +444,14 @@ public class EcItemMateria extends Item implements IItemRenderer
 	}
 	public void renderMateria(ItemStack item, float x, float y, float z, float size, ItemRenderType type)
 	{
+		GL11.glPushMatrix();
 		GL11.glTranslatef(x, y, z);
 		if(type == ItemRenderType.EQUIPPED && mc.gameSettings.thirdPersonView == 0)
 			GL11.glTranslatef(0.3f, 0.2f, 0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture(this.getTextuerfromEnch(item)));
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL_BLEND);
-        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//		GL11.glEnable(GL_BLEND);
+//		GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		Tessellator tessellator = Tessellator.instance;
-		tessellator.setBrightness(100);
-		float f = 1.0F;
-		int color = ItemDye.dyeColors[15];
-		float r = (float)(color >> 16 & 0xff) / 255F;
-		float g = (float)(color >> 8 & 0xff) / 255F;
-		float b = (float)(color & 0xff) / 255F;
-//		if (EntityRenderer.anaglyphEnable)
-//		{
-//			float blightness = (r * 30F + g * 59F + b * 11F) / 100F;
-//			float y1 = (r * 30F + g * 70F) / 100F;
-//			float p = (r * 30F + b * 70F) / 100F;
-//			r = blightness ;
-//			g = y1;
-//			b = p;
-//		}
-//		tessellator.setColorOpaque_F(f * r ,  f * g ,  f * b);
-
-//		tessellator.draw();
 		GL11.glScalef(size, size, size);
 		tessellator.startDrawing(4);
 
@@ -623,8 +480,7 @@ public class EcItemMateria extends Item implements IItemRenderer
 
 		tessellator.draw();
 		GL11.glTranslatef(-x, -y, -z);
-	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glPopMatrix();
 	}
 	public String getTextuerfromEnch(ItemStack item)
 	{

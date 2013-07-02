@@ -56,7 +56,7 @@ public class EcItemUltimateWeapon extends EcItemSword //implements IItemRenderer
 
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{
-		super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
+//		super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
 		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		return par1ItemStack;
 	}

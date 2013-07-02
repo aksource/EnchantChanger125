@@ -64,10 +64,10 @@ public class EcItemZackSword extends EcItemSword //implements IItemRenderer
 			par3EntityPlayer.addChatMessage("LIMIT BREAK!!");
 			return par1ItemStack;
 		}
-		else
-		{
-			super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
-		}
+//		else
+//		{
+//			super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
+//		}
 		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		return par1ItemStack;
 	}
