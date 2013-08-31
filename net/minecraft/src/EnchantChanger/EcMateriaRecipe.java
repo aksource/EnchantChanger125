@@ -1,15 +1,10 @@
 package net.minecraft.src.EnchantChanger;
 
-import java.util.HashMap;
-
 import net.minecraft.src.Enchantment;
-import net.minecraft.src.EnchantmentHelper;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModLoader;
-import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.mod_EnchantChanger;
 
 public class EcMateriaRecipe implements IRecipe
@@ -47,9 +42,10 @@ public class EcMateriaRecipe implements IRecipe
 		}
 		if(materia2 != null && materia1.isItemEnchanted() && materia2.isItemEnchanted())
 		{
-			if(ItemStack.areItemStacksEqual(materia1, materia2))
+			if(materia1.getTagCompound().equals(materia2.getTagCompound()))
 			{
 				this.output = materia1.copy();
+				this.output.stackSize = 1;
 				mod_EnchantChanger.removeEnchTag(output.getTagCompound(), "ench");
 				mod_EnchantChanger.addEnchantmentToItem(output, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(materia1)], mod_EnchantChanger.getMateriaEnchLv(materia1) + 1);
 				flag = true;
@@ -59,16 +55,18 @@ public class EcMateriaRecipe implements IRecipe
 		{
 			if(materia1.getItemDamage() == 0)
 			{
-				if(expBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) < 6)
+				if(expBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) < 6 && materia1.isItemEnchanted())
 				{
 					this.output = materia1.copy();
+					this.output.stackSize = 1;
 					mod_EnchantChanger.removeEnchTag(output.getTagCompound(), "ench");
 					mod_EnchantChanger.addEnchantmentToItem(output, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(materia1)], mod_EnchantChanger.getMateriaEnchLv(materia1) + 1);
 					flag = true;
 				}
-				else if(exExpBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) > 5)
+				else if(exExpBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) > 5 && materia1.isItemEnchanted())
 				{
 					this.output = materia1.copy();
+					this.output.stackSize = 1;
 					mod_EnchantChanger.removeEnchTag(output.getTagCompound(), "ench");
 					mod_EnchantChanger.addEnchantmentToItem(output, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(materia1)], mod_EnchantChanger.getMateriaEnchLv(materia1) + 1);
 					flag = true;

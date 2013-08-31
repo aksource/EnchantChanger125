@@ -40,6 +40,8 @@ public class GuiToolHolder extends GuiContainer
 			texture = mc.renderEngine.getTexture(mod_MultiToolHolders.GuiToolHolder3);
 		else if(this.Num == 5)
 			texture = mc.renderEngine.getTexture(mod_MultiToolHolders.GuiToolHolder5);
+		else if(this.Num == 7)
+			texture = mc.renderEngine.getTexture(mod_MultiToolHolders.GuiToolHolder7);
 		else if(this.Num == 9)
 			texture = mc.renderEngine.getTexture(mod_MultiToolHolders.GuiToolHolder9);
 		else

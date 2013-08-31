@@ -1,22 +1,18 @@
 package net.minecraft.src;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.forge.*;
-import net.minecraft.src.EnchantChanger.*;
 import net.minecraft.src.MultiToolHolders.CommonProxy;
 import net.minecraft.src.MultiToolHolders.ItemMultiToolHolder;
-
-import java.io.File;
-import java.util.*;
+import net.minecraft.src.forge.IItemRenderer;
+import net.minecraft.src.forge.MinecraftForge;
+import net.minecraft.src.forge.MinecraftForgeClient;
 
 import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.common.registry.FMLRegistry;
 
 public class mod_MultiToolHolders extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.1";
+		return "1.2";
 	}
 	@MLProp
 	public static int ItemIDShift = 7000;

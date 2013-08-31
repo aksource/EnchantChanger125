@@ -1,9 +1,43 @@
 package net.minecraft.src;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.forge.*;
-import net.minecraft.src.EnchantChanger.*;
-import java.io.File;
-import java.util.*;
+import net.minecraft.src.EnchantChanger.EcBlockHugeMateria;
+import net.minecraft.src.EnchantChanger.EcBlockMaterializer;
+import net.minecraft.src.EnchantChanger.EcEnchantmentFloat;
+import net.minecraft.src.EnchantChanger.EcEnchantmentHoly;
+import net.minecraft.src.EnchantChanger.EcEnchantmentMeteo;
+import net.minecraft.src.EnchantChanger.EcEnchantmentTeleport;
+import net.minecraft.src.EnchantChanger.EcEnchantmentThunder;
+import net.minecraft.src.EnchantChanger.EcEntityExExpBottle;
+import net.minecraft.src.EnchantChanger.EcEntityMeteo;
+import net.minecraft.src.EnchantChanger.EcEntitySword;
+import net.minecraft.src.EnchantChanger.EcGuiHandler;
+import net.minecraft.src.EnchantChanger.EcItemCloudSword;
+import net.minecraft.src.EnchantChanger.EcItemCloudSwordCore;
+import net.minecraft.src.EnchantChanger.EcItemEnchantmentTable;
+import net.minecraft.src.EnchantChanger.EcItemExExpBottle;
+import net.minecraft.src.EnchantChanger.EcItemHugeMateria;
+import net.minecraft.src.EnchantChanger.EcItemMasterMateria;
+import net.minecraft.src.EnchantChanger.EcItemMateria;
+import net.minecraft.src.EnchantChanger.EcItemMaterializer;
+import net.minecraft.src.EnchantChanger.EcItemSephirothSword;
+import net.minecraft.src.EnchantChanger.EcItemSword;
+import net.minecraft.src.EnchantChanger.EcItemUltimateWeapon;
+import net.minecraft.src.EnchantChanger.EcItemZackSword;
+import net.minecraft.src.EnchantChanger.EcLivingHandler;
+import net.minecraft.src.EnchantChanger.EcMasterMateriaRecipe;
+import net.minecraft.src.EnchantChanger.EcMateriaRecipe;
+import net.minecraft.src.EnchantChanger.EcRenderHugeMateria;
+import net.minecraft.src.EnchantChanger.EcRenderItemThrowable;
+import net.minecraft.src.EnchantChanger.EcTileEntityHugeMateria;
+import net.minecraft.src.EnchantChanger.EcTileEntityMaterializer;
+import net.minecraft.src.forge.IItemRenderer;
+import net.minecraft.src.forge.MinecraftForge;
+import net.minecraft.src.forge.MinecraftForgeClient;
 
 import org.lwjgl.input.Keyboard;
 
@@ -13,7 +47,7 @@ public class mod_EnchantChanger extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.6b";
+		return "1.6h";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
