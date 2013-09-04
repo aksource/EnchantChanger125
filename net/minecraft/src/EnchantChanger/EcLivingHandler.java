@@ -29,7 +29,13 @@ public class EcLivingHandler implements IEntityLivingHandler
 
 	@Override
 	public boolean onEntityLivingDeath(EntityLiving entity, DamageSource killer) {
-		// TODO 自動生成されたメソッド・スタブ
+		if(killer.getEntity() != null && killer.getEntity() instanceof EntityPlayer 
+				&& ((EntityPlayer)killer.getEntity()).getCurrentEquippedItem() != null
+				&& ((EntityPlayer)killer.getEntity()).getCurrentEquippedItem().isItemEnchanted())
+		{
+			int exp = mod_EnchantChanger.getExpValue(entity);
+			entity.worldObj.spawnEntityInWorld(new EcEntityApOrb(entity.worldObj, entity.posX,entity.posY, entity.posZ, exp / 2));
+		}
 		return false;
 	}
 
@@ -64,86 +70,90 @@ public class EcLivingHandler implements IEntityLivingHandler
 		if(entity != null && entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) entity;
-			this.allowLevitatiton = mod_EnchantChanger.checkMagicIteminInv(player, 3) && !(player.capabilities.isCreativeMode || player.capabilities.allowFlying || (player.getFoodStats().getFoodLevel() < 0 && !mod_EnchantChanger.YouAreTera));
-			if(!this.allowLevitatiton)
-			{
-				this.isLevitation = false;
-				return false;
-			}
-			player.fallDistance = 0.0f;
-			boolean jump = ((EntityPlayerSP)player).movementInput.jump;
-            float var2 = 0.8F;
-            boolean var3 = ((EntityPlayerSP)player).movementInput.moveForward >= var2;
-			((EntityPlayerSP)player).movementInput.updatePlayerMoveState();
-			if (this.allowLevitatiton && !jump && ((EntityPlayerSP)player).movementInput.jump)
-			{
-				if (this.flyToggleTimer == 0)
-				{
-					this.flyToggleTimer = 7;
-				}
-				else
-				{
-					this.isLevitation = !this.isLevitation;
-					this.flyToggleTimer = 0;
-				}
-			}
-			boolean var4 = (float)((EntityPlayerSP)player).getFoodStats().getFoodLevel() > 6.0F;
-			if (((EntityPlayerSP)player).onGround && !var3 && ((EntityPlayerSP)player).movementInput.moveForward >= var2 && !((EntityPlayerSP)player).isSprinting() && var4 && !((EntityPlayerSP)player).isUsingItem() && !((EntityPlayerSP)player).isPotionActive(Potion.blindness))
-			{
-				if (this.sprintToggleTimer == 0)
-				{
-					this.sprintToggleTimer = 7;
-				}
-				else
-				{
-					((EntityPlayerSP)player).setSprinting(true);
-					this.sprintToggleTimer = 0;
-				}
-			}
-			if (this.sprintToggleTimer > 0)
-			{
-				--this.sprintToggleTimer;
-			}
-			if (this.flyToggleTimer > 0)
-			{
-				--this.flyToggleTimer;
-			}
-			if (player.onGround && this.isLevitation)
-			{
-				this.isLevitation = false;
-			}
-			if (this.isLevitation)
-			{
-				if(this.mptimer ==0)
-				{
-					this.mptimer = this.FlightMptime;
-					player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel()-1);
-				}
-				else
-					--this.mptimer;
-				player.motionY = 0D;
-				player.jumpMovementFactor = 0.1f;
-				if (((EntityPlayerSP)player).movementInput.sneak)
-				{
-					player.motionY -= 0.4D;
-				}
-
-				if (((EntityPlayerSP)player).movementInput.jump)
-				{
-					player.motionY += 0.4D;
-				}
-
-			}
-			else
-				player.jumpMovementFactor = 0.02f;
-			if (player.onGround && this.isLevitation)
-			{
-				this.isLevitation = false;
-			}
+			this.flight(player);
 		}
 		return false;
 	}
 
+	private void flight(EntityPlayer player)
+	{
+		this.allowLevitatiton = mod_EnchantChanger.checkMagicIteminInv(player, 3) && !(player.capabilities.isCreativeMode || player.capabilities.allowFlying || (player.getFoodStats().getFoodLevel() < 0 && !mod_EnchantChanger.YouAreTera));
+		if(!this.allowLevitatiton)
+		{
+			this.isLevitation = false;
+			return;
+		}
+		player.fallDistance = 0.0f;
+		boolean jump = ((EntityPlayerSP)player).movementInput.jump;
+        float var2 = 0.8F;
+        boolean var3 = ((EntityPlayerSP)player).movementInput.moveForward >= var2;
+		((EntityPlayerSP)player).movementInput.updatePlayerMoveState();
+		if (this.allowLevitatiton && !jump && ((EntityPlayerSP)player).movementInput.jump)
+		{
+			if (this.flyToggleTimer == 0)
+			{
+				this.flyToggleTimer = 7;
+			}
+			else
+			{
+				this.isLevitation = !this.isLevitation;
+				this.flyToggleTimer = 0;
+			}
+		}
+		boolean var4 = (float)((EntityPlayerSP)player).getFoodStats().getFoodLevel() > 6.0F;
+		if (((EntityPlayerSP)player).onGround && !var3 && ((EntityPlayerSP)player).movementInput.moveForward >= var2 && !((EntityPlayerSP)player).isSprinting() && var4 && !((EntityPlayerSP)player).isUsingItem() && !((EntityPlayerSP)player).isPotionActive(Potion.blindness))
+		{
+			if (this.sprintToggleTimer == 0)
+			{
+				this.sprintToggleTimer = 7;
+			}
+			else
+			{
+				((EntityPlayerSP)player).setSprinting(true);
+				this.sprintToggleTimer = 0;
+			}
+		}
+		if (this.sprintToggleTimer > 0)
+		{
+			--this.sprintToggleTimer;
+		}
+		if (this.flyToggleTimer > 0)
+		{
+			--this.flyToggleTimer;
+		}
+		if (player.onGround && this.isLevitation)
+		{
+			this.isLevitation = false;
+		}
+		if (this.isLevitation)
+		{
+			if(this.mptimer ==0)
+			{
+				this.mptimer = this.FlightMptime;
+				player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel()-1);
+			}
+			else
+				--this.mptimer;
+			player.motionY = 0D;
+			player.jumpMovementFactor = 0.1f;
+			if (((EntityPlayerSP)player).movementInput.sneak)
+			{
+				player.motionY -= 0.4D;
+			}
+
+			if (((EntityPlayerSP)player).movementInput.jump)
+			{
+				player.motionY += 0.4D;
+			}
+
+		}
+		else
+			player.jumpMovementFactor = 0.02f;
+		if (player.onGround && this.isLevitation)
+		{
+			this.isLevitation = false;
+		}
+	}
 	@Override
 	public int onEntityLivingHurt(EntityLiving entity, DamageSource source, int damage) {
 		return damage;

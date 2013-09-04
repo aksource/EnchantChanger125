@@ -1,10 +1,5 @@
 package net.minecraft.src.EnchantChanger;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -12,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Enchantment;
-import net.minecraft.src.EnchantmentHelper;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLightningBolt;
 import net.minecraft.src.EntityLiving;
@@ -23,13 +17,11 @@ import net.minecraft.src.EntityZombie;
 import net.minecraft.src.EnumMovingObjectType;
 import net.minecraft.src.EnumRarity;
 import net.minecraft.src.Item;
-import net.minecraft.src.ItemDye;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.NBTTagList;
 import net.minecraft.src.PotionEffect;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.Vec3D;
@@ -38,7 +30,6 @@ import net.minecraft.src.mod_EnchantChanger;
 import net.minecraft.src.forge.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 public class EcItemMateria extends Item implements IItemRenderer
 {
@@ -82,7 +73,13 @@ public class EcItemMateria extends Item implements IItemRenderer
 			int Lv = mod_EnchantChanger.getMateriaEnchLv(itemstack);
 			if(entityplayer.isSneaking() && Lv > 1)
 			{
-				entityplayer.removeExperience(-LevelUPEXP(itemstack, false));
+//				entityplayer.removeExperience(-LevelUPEXP(itemstack, false));
+				ItemStack expBottle;
+				if(Lv > 5)
+					expBottle = new ItemStack(mod_EnchantChanger.ItemExExpBottle);
+				else
+					expBottle = new ItemStack(Item.expBottle);
+				entityplayer.dropPlayerItem(expBottle);
 				this.addMateriaLv(itemstack, -1);
 			}
 			else if ((entityplayer.experienceLevel >= LevelUPEXP(itemstack,true) || entityplayer.capabilities.isCreativeMode) && Lv != 0)

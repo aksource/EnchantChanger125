@@ -12,6 +12,7 @@ import net.minecraft.src.EnchantChanger.EcEnchantmentHoly;
 import net.minecraft.src.EnchantChanger.EcEnchantmentMeteo;
 import net.minecraft.src.EnchantChanger.EcEnchantmentTeleport;
 import net.minecraft.src.EnchantChanger.EcEnchantmentThunder;
+import net.minecraft.src.EnchantChanger.EcEntityApOrb;
 import net.minecraft.src.EnchantChanger.EcEntityExExpBottle;
 import net.minecraft.src.EnchantChanger.EcEntityMeteo;
 import net.minecraft.src.EnchantChanger.EcEntitySword;
@@ -25,12 +26,14 @@ import net.minecraft.src.EnchantChanger.EcItemMasterMateria;
 import net.minecraft.src.EnchantChanger.EcItemMateria;
 import net.minecraft.src.EnchantChanger.EcItemMaterializer;
 import net.minecraft.src.EnchantChanger.EcItemSephirothSword;
+import net.minecraft.src.EnchantChanger.EcItemSephirothSwordImit;
 import net.minecraft.src.EnchantChanger.EcItemSword;
 import net.minecraft.src.EnchantChanger.EcItemUltimateWeapon;
 import net.minecraft.src.EnchantChanger.EcItemZackSword;
 import net.minecraft.src.EnchantChanger.EcLivingHandler;
 import net.minecraft.src.EnchantChanger.EcMasterMateriaRecipe;
 import net.minecraft.src.EnchantChanger.EcMateriaRecipe;
+import net.minecraft.src.EnchantChanger.EcRenderApOrb;
 import net.minecraft.src.EnchantChanger.EcRenderHugeMateria;
 import net.minecraft.src.EnchantChanger.EcRenderItemThrowable;
 import net.minecraft.src.EnchantChanger.EcTileEntityHugeMateria;
@@ -47,7 +50,7 @@ public class mod_EnchantChanger extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.6h";
+		return "1.6i";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
@@ -80,6 +83,9 @@ public class mod_EnchantChanger extends BaseMod
 	@MLProp(info="MasterMateriaID", min = 4096, max = 32000)
 	public static int MasterMateriaID = 5008;
 	public static  Item MasterMateria ;
+	@MLProp(info="ImitateSephirothSword", min = 4096, max = 32000)
+	public static int ImitateSephSwordID = 5009;
+	public static Item ItemImitateSephirothSword;
 	@MLProp(info="EnchantChangerID")
 	public static int EnchantChangerID = 2000;
 	public static Block BlockMat;
@@ -133,6 +139,7 @@ public class mod_EnchantChanger extends BaseMod
 	public static int[] LimitBreakCount = new int[]{0,0,0};
 	public static int[] LimitBreakCoolDownCount = new int[]{0,0,0};
 	public static boolean[] LimitBreakFlag = new boolean[]{false,false,false};
+	public static HashMap<Integer, Integer> apLimit = new HashMap();
 
 	public int GGMptime=20*1;
 	public int AbsorpMptime=20*3;
@@ -179,6 +186,7 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.setInGameHook(this, true, true);
 		mc = ModLoader.getMinecraftInstance();
 		instance =this;
+		this.initMaps();
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/items.png");
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/terrain.png");
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/materia0.png");
@@ -218,6 +226,7 @@ public class mod_EnchantChanger extends BaseMod
 		ItemPortableEnchantChanger = (new EcItemMaterializer(PortableEnchantChangerID - 256)).setItemName("ItemPortableEnchantChanger").setIconIndex(24);
 		ItemPortableEnchantmentTable = (new EcItemEnchantmentTable(PortableEnchantmentTableID - 256)).setItemName("ItemPortableEnchantmentTable").setIconIndex(25);
 		MasterMateria = new EcItemMasterMateria(MasterMateriaID - 256).setItemName("ItemMasterMateria").setIconIndex(10);
+		ItemImitateSephirothSword = (new EcItemSephirothSwordImit(ImitateSephSwordID-256)).setItemName("ItemSephirothSwordImit").setIconIndex(20);
 		BlockMat = (new EcBlockMaterializer(EnchantChangerID));
 		HugeMateria = new EcBlockHugeMateria(HugeMateriaID);
 		ItemHugeMateria = new EcItemHugeMateria(HugeMateria.blockID - 256).setIconIndex(26).setItemName("ItemhugeMateria");
@@ -254,6 +263,8 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.addName(ItemPortableEnchantChanger, "ja_JP","携帯エンチャントチェンジャー");
 		ModLoader.addName(ItemPortableEnchantmentTable, "Portable Enchantment Table");
 		ModLoader.addName(ItemPortableEnchantmentTable, "ja_JP","携帯エンチャントテーブル");
+		ModLoader.addName(ItemImitateSephirothSword, "1/1 Masamune Blade(Imitation)");
+		ModLoader.addName(ItemImitateSephirothSword, "ja_JP","1/1 マサムネブレード");
 		ModLoader.addLocalization("enchantment.Meteo", "Meteo");
 		ModLoader.addLocalization("enchantment.Holy", "Holy");
 		ModLoader.addLocalization("enchantment.Teleport", "Teleport");
@@ -295,11 +306,13 @@ public class mod_EnchantChanger extends BaseMod
 		MinecraftForgeClient.registerItemRenderer(FirstSwordItemID, (IItemRenderer)ItemCloudSwordCore);
 		MinecraftForgeClient.registerItemRenderer(CloudSwordItemID, (IItemRenderer)ItemCloudSword);
 		MinecraftForgeClient.registerItemRenderer(UltimateWeaponItemID, (IItemRenderer)ItemUltimateWeapon);
+		MinecraftForgeClient.registerItemRenderer(ImitateSephSwordID, (IItemRenderer)ItemImitateSephirothSword);
 		MinecraftForgeClient.registerItemRenderer(MateriaID, (IItemRenderer) ItemMat);
 		MinecraftForgeClient.registerItemRenderer(MasterMateriaID, (IItemRenderer) MasterMateria);
 		ModLoader.registerEntityID(EcEntityExExpBottle.class, "ItemExExpBottle", 500);
 		ModLoader.registerEntityID(EcEntityMeteo.class, "Meteo", 501);
 		ModLoader.registerEntityID(EcEntitySword.class, "EntitySword", 502);
+		ModLoader.registerEntityID(EcEntityApOrb.class, "ApOrb", 503);
 		MinecraftForge.setToolClass(ItemSephirothSword, "FF7", 0);
 		Block[] pickeff =
 			{
@@ -352,9 +365,54 @@ public class mod_EnchantChanger extends BaseMod
 		map.put(EcEntityExExpBottle.class, new EcRenderItemThrowable(ItemExExpBottle.getIconFromDamage(0),0.5F, false));
 		map.put(EcEntityMeteo.class, new EcRenderItemThrowable(22,MeteoSize, false));
 		map.put(EcEntitySword.class, new EcRenderItemThrowable(Item.swordDiamond.iconIndex, 0.5F,true));
+		map.put(EcEntityApOrb.class, new EcRenderApOrb());
+	}
+	private void initMaps()
+	{
+		this.apLimit.put(0, 20);
+		this.apLimit.put(1, 10);
+		this.apLimit.put(2, 10);
+		this.apLimit.put(3, 10);
+		this.apLimit.put(4, 10);
+		this.apLimit.put(5, 10);
+		this.apLimit.put(6, 10);
+		this.apLimit.put(16, 20);
+		this.apLimit.put(17, 10);
+		this.apLimit.put(18, 10);
+		this.apLimit.put(19, 10);
+		this.apLimit.put(20, 10);
+		this.apLimit.put(21, 30);
+		this.apLimit.put(32, 10);
+		this.apLimit.put(33, 10);
+		this.apLimit.put(34, 10);
+		this.apLimit.put(35, 20);
+		this.apLimit.put(48, 20);
+		this.apLimit.put(49, 10);
+		this.apLimit.put(50, 10);
+		this.apLimit.put(51, 10);
 	}
 	public void debugsystem()
 	{
+	}
+	public static int getExpValue(EntityLiving entity)
+	{
+		return entity.experienceValue;
+	}
+	public static boolean isApLimit(int Id, int Lv, int ap)
+	{
+		if(mod_EnchantChanger.getApLimit(Id, Lv) < ap)
+			return true;
+		else
+			return false;
+	}
+	public static int getApLimit(int Id, int Lv)
+	{
+		if(mod_EnchantChanger.apLimit.containsKey(Id))
+		{
+			return ((int)mod_EnchantChanger.apLimit.get(Id)) * (Lv / 5 + 1);
+		}
+		else
+			return 15*(Lv / 5 + 1);
 	}
 	public static void addEnchantmentToItem(ItemStack item, Enchantment enchantment, int Lv)
 	{

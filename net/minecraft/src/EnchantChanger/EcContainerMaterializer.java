@@ -1,6 +1,5 @@
 package net.minecraft.src.EnchantChanger;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Container;
@@ -18,7 +17,6 @@ import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ItemTool;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Slot;
@@ -186,6 +184,7 @@ public class EcContainerMaterializer extends Container {
 			if(Result.hasTagCompound())
 			{
 				mod_EnchantChanger.removeEnchTag(Result.getTagCompound(), "ench");
+				mod_EnchantChanger.removeEnchTag(Result.getTagCompound(), "ApList");
 			}
 			if(enchOnItem != null)
 			{
