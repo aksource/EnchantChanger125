@@ -1,6 +1,7 @@
 package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -140,6 +141,7 @@ public class mod_EnchantChanger extends BaseMod
 	public static int[] LimitBreakCoolDownCount = new int[]{0,0,0};
 	public static boolean[] LimitBreakFlag = new boolean[]{false,false,false};
 	public static HashMap<Integer, Integer> apLimit = new HashMap();
+	public static HashSet<Integer> magicEnchantment = new HashSet();
 
 	public int GGMptime=20*1;
 	public int AbsorpMptime=20*3;
@@ -338,7 +340,7 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.addShapelessRecipe(new ItemStack(ItemMat,1, 0), new Object[]{new ItemStack(Item.diamond, 1), new ItemStack(Item.enderPearl, 1)});
 		ModLoader.addRecipe(new ItemStack(ItemZackSword, 1), new Object[]{" X","XX"," Y", Character.valueOf('X'),Block.blockSteel, Character.valueOf('Y'),Item.ingotIron});
 		ModLoader.addRecipe(new ItemStack(ItemCloudSwordCore, 1), new Object[]{" X ","XYX"," Z ", Character.valueOf('X'), Block.blockSteel, Character.valueOf('Y'), new ItemStack(ItemMat, 1,0), Character.valueOf('Z'),Item.ingotIron});
-
+		ModLoader.addRecipe(new ItemStack(ItemImitateSephirothSword), "  A"," A ", "B  ", 'A', Item.ingotIron, 'B', Item.swordSteel);
 		ModLoader.addRecipe(new ItemStack(ItemSephirothSword, 1), new Object[]{"  A"," B ","C  ",Character.valueOf('A'),Item.ingotIron, Character.valueOf('B'),new ItemStack(Item.swordDiamond, 1, 0), Character.valueOf('C'),new ItemStack(ItemMat, 1, 1)});
 		ModLoader.addRecipe(new ItemStack(ItemUltimateWeapon, 1), new Object[]{" A ","ABA"," C ", Character.valueOf('A'),Block.blockDiamond, Character.valueOf('B'), new ItemStack(MasterMateria, 1,-1), Character.valueOf('C'),Item.stick});
 		ModLoader.addRecipe(new ItemStack(BlockMat, 1), new Object[]{"XYX","ZZZ", Character.valueOf('X'),Item.diamond, Character.valueOf('Y'),Block.blockGold, Character.valueOf('Z'),Block.obsidian});
@@ -369,6 +371,11 @@ public class mod_EnchantChanger extends BaseMod
 	}
 	private void initMaps()
 	{
+		this.magicEnchantment.add(this.EnchantmentMeteoId);
+		this.magicEnchantment.add(this.EnchantmentFloatId);
+		this.magicEnchantment.add(this.EndhantmentHolyId);
+		this.magicEnchantment.add(this.EnchantmentTelepoId);
+		this.magicEnchantment.add(this.EnchantmentThunderId);
 		this.apLimit.put(0, 20);
 		this.apLimit.put(1, 10);
 		this.apLimit.put(2, 10);

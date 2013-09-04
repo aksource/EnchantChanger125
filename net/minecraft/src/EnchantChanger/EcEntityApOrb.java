@@ -267,6 +267,12 @@ public class EcEntityApOrb extends Entity
 							enchantmentId = ((NBTTagCompound)enchantList.tagAt(j)).getShort("id");
 							enchantmentLv = ((NBTTagCompound)enchantList.tagAt(j)).getShort("lvl");
 							nowAp = prevAp + this.apValue;
+							
+							if(mod_EnchantChanger.magicEnchantment.contains(Integer.valueOf((int)enchantmentId)))
+							{
+								System.out.println("check");
+								break;
+							}
 							if(mod_EnchantChanger.isApLimit(enchantmentId, enchantmentLv, nowAp))
 							{
 								nowAp -= mod_EnchantChanger.getApLimit(enchantmentId, enchantmentLv);
