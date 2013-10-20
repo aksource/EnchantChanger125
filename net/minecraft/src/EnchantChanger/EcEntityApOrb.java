@@ -221,79 +221,80 @@ public class EcEntityApOrb extends Entity
 	/**
 	 * Called by a player entity when they collide with an entity
 	 */
-	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
+	public void onCollideWithPlayer(EntityPlayer player)
 	{
 		if (!this.worldObj.isRemote)
 		{
-			if (this.field_35126_c == 0 && par1EntityPlayer.xpCooldown == 0)
+			if (this.field_35126_c == 0 && player.xpCooldown == 0)
 			{
-				ItemStack[] items = new ItemStack[5];
-				par1EntityPlayer.xpCooldown = 2;
+				player.xpCooldown = 2;
 				this.worldObj.playSoundAtEntity(this, "random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
-				par1EntityPlayer.onItemPickup(this, 1);
-				items[0]= par1EntityPlayer.getCurrentEquippedItem();
-				for(int i=0;i<par1EntityPlayer.inventory.armorInventory.length;i++)
-				{
-					items[i+1]=par1EntityPlayer.inventory.armorInventory[i];
-				}
-				NBTTagCompound nbt;
-				NBTTagList apList;
-				NBTTagList enchantList;
-				int prevAp;
-				short enchantmentId;
-				short enchantmentLv;
-				int nowAp;
-				for(int i = 0; i < items.length;i++)
-				{
-					if(items[i] != null && items[i].isItemEnchanted())
-					{
-						nbt = items[i].getTagCompound();
-						enchantList = items[i].getEnchantmentTagList();
-						if(!nbt.hasKey("ApList"))
-						{
-							nbt.setTag("ApList", new NBTTagList("ApList"));
-							apList = nbt.getTagList("ApList");
-							for(int j = 0;j<enchantList.tagCount();j++)
-							{
-								NBTTagCompound apTag = new NBTTagCompound();
-						        apTag.setInteger("ap", 0);
-						        apList.appendTag(apTag);
-							}
-						}
-						apList = nbt.getTagList("ApList");
-						for(int j = 0; j < apList.tagCount();j++)
-						{
-							prevAp = ((NBTTagCompound)apList.tagAt(j)).getInteger("ap");
-							enchantmentId = ((NBTTagCompound)enchantList.tagAt(j)).getShort("id");
-							enchantmentLv = ((NBTTagCompound)enchantList.tagAt(j)).getShort("lvl");
-							nowAp = prevAp + this.apValue;
-							
-							if(mod_EnchantChanger.magicEnchantment.contains(Integer.valueOf((int)enchantmentId)))
-							{
-								System.out.println("check");
-								break;
-							}
-							if(mod_EnchantChanger.isApLimit(enchantmentId, enchantmentLv, nowAp))
-							{
-								nowAp -= mod_EnchantChanger.getApLimit(enchantmentId, enchantmentLv);
-								if(enchantmentLv < Short.MAX_VALUE)
-									((NBTTagCompound)enchantList.tagAt(j)).setShort("lvl", (short) (enchantmentLv + 1));
-							}
-							((NBTTagCompound)apList.tagAt(j)).setInteger("ap", nowAp);
-						}
-
-					}
-				}
-//				par1EntityPlayer.addExperience(this.apValue);
+				player.onItemPickup(this, 1);
+				addAp(player);
 				this.setDead();
 			}
 		}
 	}
+	private void addAp(EntityPlayer player)
+	{
+		ItemStack[] items = new ItemStack[13];
+		for(int i=0;i<9;i++)
+		{
+			items[i] = player.inventory.getStackInSlot(i);
+		}
+		for(int i=0;i<player.inventory.armorInventory.length;i++)
+		{
+			items[i+9]=player.inventory.armorInventory[i];
+		}
+		NBTTagCompound nbt;
+		NBTTagList apList;
+		NBTTagList enchantList;
+		int prevAp;
+		short enchantmentId;
+		short enchantmentLv;
+		int nowAp;
+		for(int i = 0; i < items.length;i++)
+		{
+			if(items[i] != null && items[i].isItemEnchanted())
+			{
+				nbt = items[i].getTagCompound();
+				enchantList = items[i].getEnchantmentTagList();
+//				if(!nbt.hasKey("ApList"))
+//				{
+//					nbt.setTag("ApList", new NBTTagList("ApList"));
+//					apList = nbt.getTagList("ApList");
+//					for(int j = 0;j<enchantList.tagCount();j++)
+//					{
+//						NBTTagCompound apTag = new NBTTagCompound();
+//				        apTag.setInteger("ap", 0);
+//				        apList.appendTag(apTag);
+//					}
+//				}
+//				apList = nbt.getTagList("ApList");
+				for(int j = 0; j < enchantList.tagCount();j++)
+				{
+					prevAp = ((NBTTagCompound)enchantList.tagAt(j)).getInteger("ap");
+					enchantmentId = ((NBTTagCompound)enchantList.tagAt(j)).getShort("id");
+					enchantmentLv = ((NBTTagCompound)enchantList.tagAt(j)).getShort("lvl");
+					nowAp = prevAp + this.apValue;
+					if(mod_EnchantChanger.magicEnchantment.contains(Integer.valueOf((int)enchantmentId)))
+						continue;
+					if(mod_EnchantChanger.isApLimit(enchantmentId, enchantmentLv, nowAp))
+					{
+						nowAp -= mod_EnchantChanger.getApLimit(enchantmentId, enchantmentLv);
+						if(enchantmentLv < Short.MAX_VALUE)
+							((NBTTagCompound)enchantList.tagAt(j)).setShort("lvl", (short) (enchantmentLv + 1));
+					}
+					((NBTTagCompound)enchantList.tagAt(j)).setInteger("ap", nowAp);
+				}
 
+			}
+		}
+	}
 	/**
 	 * Returns the XP value of this XP orb.
 	 */
-	public int getXpValue()
+	public int getApValue()
 	{
 		return this.apValue;
 	}

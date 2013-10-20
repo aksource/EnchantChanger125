@@ -192,6 +192,7 @@ public class EcContainerMaterializer extends Container {
 				{
 					if(((NBTTagCompound)enchOnItem.tagAt(i)).getShort("lvl") > 0)
 					{
+						 ((NBTTagCompound)enchOnItem.tagAt(i)).setInteger("ap", 0);
 						this.ItemEnchList.add((int) ((NBTTagCompound)enchOnItem.tagAt(i)).getShort("id"));
 						this.ItemEnchLvList.add((int) ((NBTTagCompound)enchOnItem.tagAt(i)).getShort("lvl"));
 						if(i >=8)

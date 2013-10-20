@@ -51,7 +51,7 @@ public class mod_EnchantChanger extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.6i";
+		return "1.6k";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
@@ -142,7 +142,6 @@ public class mod_EnchantChanger extends BaseMod
 	public static boolean[] LimitBreakFlag = new boolean[]{false,false,false};
 	public static HashMap<Integer, Integer> apLimit = new HashMap();
 	public static HashSet<Integer> magicEnchantment = new HashSet();
-
 	public int GGMptime=20*1;
 	public int AbsorpMptime=20*3;
 	public double AbsorpBoxSize=5D;
@@ -238,67 +237,6 @@ public class mod_EnchantChanger extends BaseMod
 		Float = new EcEnchantmentFloat(this.EnchantmentFloatId,0);
 		Thunder = new EcEnchantmentThunder(this.EnchantmentThunderId,0);
 
-		//Register Name
-		ModLoader.addName(BlockMat, "Enchant Changer");
-		ModLoader.addName(BlockMat, "ja_JP","ƒGƒ“ƒ`ƒƒƒ“ƒgƒ`ƒFƒ“ƒWƒƒ[");
-		ModLoader.addName(HugeMateria, "HugeMateria");
-		ModLoader.addName(HugeMateria, "ja_JP","ƒqƒ…[ƒWƒ}ƒeƒŠƒA");
-		ModLoader.addName(ItemHugeMateria, "HugeMateria");
-		ModLoader.addName(ItemHugeMateria, "ja_JP","ƒqƒ…[ƒWƒ}ƒeƒŠƒA");
-		ModLoader.addName(ItemMat, "ja_JP", "ƒ}ƒeƒŠƒA");
-		ModLoader.addName(ItemMat, "en_US", "Materia");
-		ModLoader.addName(MasterMateria, "ja_JP", "ƒ}ƒXƒ^[ƒ}ƒeƒŠƒA");
-		ModLoader.addName(MasterMateria, "en_US", "Master Materia");
-		ModLoader.addName(ItemExExpBottle, "ja_JP", "ƒGƒ“ƒ`ƒƒƒ“ƒg‚Ì•rEX");
-		ModLoader.addName(ItemExExpBottle, "en_US", "Ex Exp Bottle");
-		ModLoader.addName(ItemZackSword, "Buster Sword");
-		ModLoader.addName(ItemZackSword, "ja_JP","ƒoƒXƒ^[ƒ\[ƒh");
-		ModLoader.addName(ItemCloudSword, "Union Sword");
-		ModLoader.addName(ItemCloudSword, "ja_JP","‡‘ÌŒ•");
-		ModLoader.addName(ItemCloudSwordCore, "FirstSword");
-		ModLoader.addName(ItemCloudSwordCore,"ja_JP" ,"ƒtƒ@[ƒXƒgŒ•");
-		ModLoader.addName(ItemSephirothSword, "Masamune Blade");
-		ModLoader.addName(ItemSephirothSword,"ja_JP","³@");
-		ModLoader.addName(ItemUltimateWeapon, "Ultimate Weapon");
-		ModLoader.addName(ItemUltimateWeapon,"ja_JP","‹†‹ÉŒ•");
-		ModLoader.addName(ItemPortableEnchantChanger, "Portable Enchant Changer");
-		ModLoader.addName(ItemPortableEnchantChanger, "ja_JP","Œg‘ÑƒGƒ“ƒ`ƒƒƒ“ƒgƒ`ƒFƒ“ƒWƒƒ[");
-		ModLoader.addName(ItemPortableEnchantmentTable, "Portable Enchantment Table");
-		ModLoader.addName(ItemPortableEnchantmentTable, "ja_JP","Œg‘ÑƒGƒ“ƒ`ƒƒƒ“ƒgƒe[ƒuƒ‹");
-		ModLoader.addName(ItemImitateSephirothSword, "1/1 Masamune Blade(Imitation)");
-		ModLoader.addName(ItemImitateSephirothSword, "ja_JP","1/1 ƒ}ƒTƒ€ƒlƒuƒŒ[ƒh");
-		ModLoader.addLocalization("enchantment.Meteo", "Meteo");
-		ModLoader.addLocalization("enchantment.Holy", "Holy");
-		ModLoader.addLocalization("enchantment.Teleport", "Teleport");
-		ModLoader.addLocalization("enchantment.Floating", "Floating");
-		ModLoader.addLocalization("enchantment.Thunder", "Thunder");
-		ModLoader.addLocalization("enchantment.arrowDamage","ja_JP", "–îƒ_ƒ[ƒW‘‰Á");
-		ModLoader.addLocalization("ItemMateria.Base.name", "Inactive Materia");
-		ModLoader.addLocalization("ItemMateria.Base.name", "ja_JP","•sŠˆ«ƒ}ƒeƒŠƒA");
-		ModLoader.addLocalization("ItemMateria.name", "Materia");
-		ModLoader.addLocalization("ItemMateria.name", "ja_JP","ƒ}ƒeƒŠƒA");
-		ModLoader.addLocalization("container.materializer", "Enchant Changer");
-		ModLoader.addLocalization("container.materializer", "ja_JP", "ƒGƒ“ƒ`ƒƒƒ“ƒgƒ`ƒFƒ“ƒWƒƒ[");
-		ModLoader.addLocalization("container.hugeMateria", "HugeMateria");
-		ModLoader.addLocalization("container.hugeMateria", "ja_JP", "ƒqƒ…[ƒWƒ}ƒeƒŠƒA");
-		ModLoader.addLocalization("Key.EcMagic", "Magic Key");
-		ModLoader.addLocalization("Key.EcMagic", "ja_JP", "–‚–@ƒL[");
-
-		for(int i=0;i < EcItemMateria.MagicMateriaNum;i++)
-		{
-			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", EcItemMateria.MateriaMagicNames[i]+" Materia");
-			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", "ja_JP",EcItemMateria.MateriaMagicJPNames[i]+"ƒ}ƒeƒŠƒA");
-		}
-		for(int i = 0;i< EcItemMasterMateria.MasterMateriaNum;i++)
-		{
-			ModLoader.addLocalization("ItemMasterMateria." + i + ".name", "Master Materia of " + EcItemMasterMateria.MasterMateriaNames[i]);
-			ModLoader.addLocalization("ItemMasterMateria." + i + ".name","ja_JP", EcItemMasterMateria.MasterMateriaJPNames[i] + "‚Ìƒ}ƒXƒ^[ƒ}ƒeƒŠƒA");
-		}
-		for(int i = 11;i<this.MaxLv + 1;i++)
-		{
-			ModLoader.addLocalization("enchantment.level."+i, i+"");
-		}
-
 		//register
 		ModLoader.registerBlock(BlockMat);
 		ModLoader.registerTileEntity(EcTileEntityMaterializer.class, "container.materializer");
@@ -361,6 +299,11 @@ public class mod_EnchantChanger extends BaseMod
 		}
 		DungeonLootItemResist();
 	}
+	@Override
+	public void modsLoaded()
+	{
+		addName();
+	}
 	public void addRenderer(Map map)
 	{
 		super.addRenderer(map);
@@ -369,6 +312,69 @@ public class mod_EnchantChanger extends BaseMod
 		map.put(EcEntitySword.class, new EcRenderItemThrowable(Item.swordDiamond.iconIndex, 0.5F,true));
 		map.put(EcEntityApOrb.class, new EcRenderApOrb());
 	}
+	private void addName()
+	{
+		//Register Name
+		ModLoader.addName(BlockMat, "Enchant Changer");
+		ModLoader.addName(BlockMat, "ja_JP","ã‚¨ãƒ³ãƒãƒ£ãƒ³ãƒˆãƒã‚§ãƒ³ã‚¸ãƒ£ãƒ¼");
+		ModLoader.addName(HugeMateria, "HugeMateria");
+		ModLoader.addName(HugeMateria, "ja_JP","ãƒ’ãƒ¥ãƒ¼ã‚¸ãƒãƒ†ãƒªã‚¢");
+		ModLoader.addName(ItemHugeMateria, "HugeMateria");
+		ModLoader.addName(ItemHugeMateria, "ja_JP","ãƒ’ãƒ¥ãƒ¼ã‚¸ãƒãƒ†ãƒªã‚¢");
+		ModLoader.addName(ItemMat, "ja_JP", "ãƒãƒ†ãƒªã‚¢");
+		ModLoader.addName(ItemMat, "en_US", "Materia");
+		ModLoader.addName(MasterMateria, "ja_JP", "ãƒã‚¹ã‚¿ãƒ¼ãƒãƒ†ãƒªã‚¢");
+		ModLoader.addName(MasterMateria, "en_US", "Master Materia");
+		ModLoader.addName(ItemExExpBottle, "ja_JP", "ã‚¨ãƒ³ãƒãƒ£ãƒ³ãƒˆã®ç“¶EX");
+		ModLoader.addName(ItemExExpBottle, "en_US", "Ex Exp Bottle");
+		ModLoader.addName(ItemZackSword, "Buster Sword");
+		ModLoader.addName(ItemZackSword, "ja_JP","ãƒã‚¹ã‚¿ãƒ¼ã‚½ãƒ¼ãƒ‰");
+		ModLoader.addName(ItemCloudSword, "Union Sword");
+		ModLoader.addName(ItemCloudSword, "ja_JP","åˆä½“å‰£");
+		ModLoader.addName(ItemCloudSwordCore, "FirstSword");
+		ModLoader.addName(ItemCloudSwordCore,"ja_JP" ,"ãƒ•ã‚¡ãƒ¼ã‚¹ãƒˆå‰£");
+		ModLoader.addName(ItemSephirothSword, "Masamune Blade");
+		ModLoader.addName(ItemSephirothSword,"ja_JP","æ­£å®—");
+		ModLoader.addName(ItemUltimateWeapon, "Ultimate Weapon");
+		ModLoader.addName(ItemUltimateWeapon,"ja_JP","ç©¶æ¥µå‰£");
+		ModLoader.addName(ItemPortableEnchantChanger, "Portable Enchant Changer");
+		ModLoader.addName(ItemPortableEnchantChanger, "ja_JP","æºå¸¯ã‚¨ãƒ³ãƒãƒ£ãƒ³ãƒˆãƒã‚§ãƒ³ã‚¸ãƒ£ãƒ¼");
+		ModLoader.addName(ItemPortableEnchantmentTable, "Portable Enchantment Table");
+		ModLoader.addName(ItemPortableEnchantmentTable, "ja_JP","æºå¸¯ã‚¨ãƒ³ãƒãƒ£ãƒ³ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«");
+		ModLoader.addName(ItemImitateSephirothSword, "1/1 Masamune Blade(Imitation)");
+		ModLoader.addName(ItemImitateSephirothSword, "ja_JP","1/1 ãƒã‚µãƒ ãƒãƒ–ãƒ¬ãƒ¼ãƒ‰");
+		ModLoader.addLocalization("enchantment.Meteo", "Meteo");
+		ModLoader.addLocalization("enchantment.Holy", "Holy");
+		ModLoader.addLocalization("enchantment.Teleport", "Teleport");
+		ModLoader.addLocalization("enchantment.Floating", "Floating");
+		ModLoader.addLocalization("enchantment.Thunder", "Thunder");
+		ModLoader.addLocalization("enchantment.arrowDamage","ja_JP", "çŸ¢ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ");
+		ModLoader.addLocalization("ItemMateria.Base.name", "Inactive Materia");
+		ModLoader.addLocalization("ItemMateria.Base.name", "ja_JP","ä¸æ´»æ€§ãƒãƒ†ãƒªã‚¢");
+		ModLoader.addLocalization("ItemMateria.name", "Materia");
+		ModLoader.addLocalization("ItemMateria.name", "ja_JP","ãƒãƒ†ãƒªã‚¢");
+		ModLoader.addLocalization("container.materializer", "Enchant Changer");
+		ModLoader.addLocalization("container.materializer", "ja_JP", "ã‚¨ãƒ³ãƒãƒ£ãƒ³ãƒˆãƒã‚§ãƒ³ã‚¸ãƒ£ãƒ¼");
+		ModLoader.addLocalization("container.hugeMateria", "HugeMateria");
+		ModLoader.addLocalization("container.hugeMateria", "ja_JP", "ãƒ’ãƒ¥ãƒ¼ã‚¸ãƒãƒ†ãƒªã‚¢");
+		ModLoader.addLocalization("Key.EcMagic", "Magic Key");
+		ModLoader.addLocalization("Key.EcMagic", "ja_JP", "é­”æ³•ã‚­ãƒ¼");
+
+		for(int i=0;i < EcItemMateria.MagicMateriaNum;i++)
+		{
+			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", EcItemMateria.MateriaMagicNames[i]+" Materia");
+			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", "ja_JP",EcItemMateria.MateriaMagicJPNames[i]+"ãƒãƒ†ãƒªã‚¢");
+		}
+		for(int i = 0;i< EcItemMasterMateria.MasterMateriaNum;i++)
+		{
+			ModLoader.addLocalization("ItemMasterMateria." + i + ".name", "Master Materia of " + EcItemMasterMateria.MasterMateriaNames[i]);
+			ModLoader.addLocalization("ItemMasterMateria." + i + ".name","ja_JP", EcItemMasterMateria.MasterMateriaJPNames[i] + "ã®ãƒã‚¹ã‚¿ãƒ¼ãƒãƒ†ãƒªã‚¢");
+		}
+		for(int i = 11;i<this.MaxLv + 1;i++)
+		{
+			ModLoader.addLocalization("enchantment.level."+i, i+"");
+		}
+	}
 	private void initMaps()
 	{
 		this.magicEnchantment.add(this.EnchantmentMeteoId);
@@ -376,27 +382,27 @@ public class mod_EnchantChanger extends BaseMod
 		this.magicEnchantment.add(this.EndhantmentHolyId);
 		this.magicEnchantment.add(this.EnchantmentTelepoId);
 		this.magicEnchantment.add(this.EnchantmentThunderId);
-		this.apLimit.put(0, 20);
-		this.apLimit.put(1, 10);
-		this.apLimit.put(2, 10);
-		this.apLimit.put(3, 10);
-		this.apLimit.put(4, 10);
-		this.apLimit.put(5, 10);
-		this.apLimit.put(6, 10);
-		this.apLimit.put(16, 20);
-		this.apLimit.put(17, 10);
-		this.apLimit.put(18, 10);
-		this.apLimit.put(19, 10);
-		this.apLimit.put(20, 10);
-		this.apLimit.put(21, 30);
-		this.apLimit.put(32, 10);
-		this.apLimit.put(33, 10);
-		this.apLimit.put(34, 10);
-		this.apLimit.put(35, 20);
-		this.apLimit.put(48, 20);
-		this.apLimit.put(49, 10);
-		this.apLimit.put(50, 10);
-		this.apLimit.put(51, 10);
+		this.apLimit.put(0, 200);
+		this.apLimit.put(1, 100);
+		this.apLimit.put(2, 100);
+		this.apLimit.put(3, 100);
+		this.apLimit.put(4, 100);
+		this.apLimit.put(5, 100);
+		this.apLimit.put(6, 100);
+		this.apLimit.put(16, 200);
+		this.apLimit.put(17, 100);
+		this.apLimit.put(18, 100);
+		this.apLimit.put(19, 100);
+		this.apLimit.put(20, 100);
+		this.apLimit.put(21, 300);
+		this.apLimit.put(32, 100);
+		this.apLimit.put(33, 100);
+		this.apLimit.put(34, 100);
+		this.apLimit.put(35, 200);
+		this.apLimit.put(48, 200);
+		this.apLimit.put(49, 100);
+		this.apLimit.put(50, 100);
+		this.apLimit.put(51, 100);
 	}
 	public void debugsystem()
 	{
@@ -419,7 +425,7 @@ public class mod_EnchantChanger extends BaseMod
 			return ((int)mod_EnchantChanger.apLimit.get(Id)) * (Lv / 5 + 1);
 		}
 		else
-			return 15*(Lv / 5 + 1);
+			return 150*(Lv / 5 + 1);
 	}
 	public static void addEnchantmentToItem(ItemStack item, Enchantment enchantment, int Lv)
 	{

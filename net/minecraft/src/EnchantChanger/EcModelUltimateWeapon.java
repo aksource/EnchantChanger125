@@ -1,7 +1,5 @@
 package net.minecraft.src.EnchantChanger;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.ItemStack;
@@ -166,9 +164,7 @@ public class EcModelUltimateWeapon extends ModelBase
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glPushMatrix();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.MC.renderEngine.getTexture(mod_EnchantChanger.EcUltimateWeaponPNG));
-		//	    アルファブレンドを有効化する
 		GL11.glEnable(GL_BLEND);
-		//    アルファブレンドの係数を設定する
 		GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		/**
 	    if (pentity instanceof EntityPlayer && ((EntityPlayer)pentity).isUsingItem()) {

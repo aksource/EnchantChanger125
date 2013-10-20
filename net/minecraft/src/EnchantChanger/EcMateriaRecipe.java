@@ -55,7 +55,7 @@ public class EcMateriaRecipe implements IRecipe
 		{
 			if(materia1.getItemDamage() == 0)
 			{
-				if(expBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) < 6 && materia1.isItemEnchanted())
+				if(expBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) < 5 && materia1.isItemEnchanted())
 				{
 					this.output = materia1.copy();
 					this.output.stackSize = 1;
@@ -63,7 +63,7 @@ public class EcMateriaRecipe implements IRecipe
 					mod_EnchantChanger.addEnchantmentToItem(output, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(materia1)], mod_EnchantChanger.getMateriaEnchLv(materia1) + 1);
 					flag = true;
 				}
-				else if(exExpBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) > 5 && materia1.isItemEnchanted())
+				else if(exExpBottle != null && mod_EnchantChanger.getMateriaEnchLv(materia1) >= 5 && materia1.isItemEnchanted())
 				{
 					this.output = materia1.copy();
 					this.output.stackSize = 1;

@@ -155,18 +155,15 @@ public class EcModelCloudSwordCore extends ModelBase
 
 
 	    if (pentity instanceof EntityPlayer && ((EntityPlayer)pentity).isUsingItem()) {
-			// ガード
 	    	GL11.glTranslatef(0F, 0.2F, 0F);
 			GL11.glRotatef(25.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(10.0F, 1.0F, 0.0F, 0.0F);
-			// 視点補正
 			if (MC.gameSettings.thirdPersonView == 0) {
 				GL11.glTranslatef(1.3F, 0.0F, 0.5F);
 				GL11.glRotatef(70F, 0F, 0F, 1F);
 			}
 		} else {
-			// 視点補正
 			if (MC.gameSettings.thirdPersonView == 0) {
 				GL11.glTranslatef(1F, -1F, 0.5F);
 				GL11.glRotatef(90F, 0F, 1F, 0F);

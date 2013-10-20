@@ -23,7 +23,6 @@ public class EcLivingHandler implements IEntityLivingHandler
 	@Override
 	public boolean onEntityLivingSpawn(EntityLiving entity, World world,
 			float x, float y, float z) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
@@ -31,7 +30,8 @@ public class EcLivingHandler implements IEntityLivingHandler
 	public boolean onEntityLivingDeath(EntityLiving entity, DamageSource killer) {
 		if(killer.getEntity() != null && killer.getEntity() instanceof EntityPlayer 
 				&& ((EntityPlayer)killer.getEntity()).getCurrentEquippedItem() != null
-				&& ((EntityPlayer)killer.getEntity()).getCurrentEquippedItem().isItemEnchanted())
+				&& ((EntityPlayer)killer.getEntity()).getCurrentEquippedItem().isItemEnchanted()
+				&& !entity.worldObj.isRemote)
 		{
 			int exp = mod_EnchantChanger.getExpValue(entity);
 			entity.worldObj.spawnEntityInWorld(new EcEntityApOrb(entity.worldObj, entity.posX,entity.posY, entity.posZ, exp / 2));
@@ -42,26 +42,22 @@ public class EcLivingHandler implements IEntityLivingHandler
 	@Override
 	public void onEntityLivingSetAttackTarget(EntityLiving entity,
 			EntityLiving target) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
 	public boolean onEntityLivingAttacked(EntityLiving entity,
 			DamageSource attack, int damage) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
 	@Override
 	public void onEntityLivingJump(EntityLiving entity) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
 	public boolean onEntityLivingFall(EntityLiving entity, float distance) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 

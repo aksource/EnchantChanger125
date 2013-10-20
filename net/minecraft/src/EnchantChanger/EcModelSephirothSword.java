@@ -65,9 +65,7 @@ public class EcModelSephirothSword extends ModelBase
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glPushMatrix();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.MC.renderEngine.getTexture(mod_EnchantChanger.EcSephirothSwordPNG));
-		//	    アルファブレンドを有効化する
 		//GL11.glEnable(GL_BLEND);
-		//    アルファブレンドの係数を設定する
 		//GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		if (pentity instanceof EntityPlayer && ((EntityPlayer)pentity).isUsingItem()) {

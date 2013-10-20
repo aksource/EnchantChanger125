@@ -34,7 +34,7 @@ import org.lwjgl.opengl.GL11;
 public class EcItemMateria extends Item implements IItemRenderer
 {
 	public static final String[] MateriaMagicNames = new String[]{"Black","White","Teleport","Floating","Thunder","Despell","Haste","Absorption"};
-	public static final String[] MateriaMagicJPNames = new String[]{"•","”’","uŠÔˆÚ“®","•‚—V","—‹","‰ğô","‰Á‘¬","‹zû"};
+	public static final String[] MateriaMagicJPNames = new String[]{"é»’","ç™½","ç¬é–“ç§»å‹•","æµ®éŠ","é›·","è§£å‘ª","åŠ é€Ÿ","å¸å"};
 	public static int MagicMateriaNum = MateriaMagicNames.length;
 	public static int[] magicEnch = new int[]{mod_EnchantChanger.EnchantmentMeteoId, mod_EnchantChanger.EndhantmentHolyId, mod_EnchantChanger.EnchantmentTelepoId, mod_EnchantChanger.EnchantmentFloatId, mod_EnchantChanger.EnchantmentThunderId};
 	public static double homeX = 0;

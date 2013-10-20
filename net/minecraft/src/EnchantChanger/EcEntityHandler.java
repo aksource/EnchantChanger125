@@ -20,43 +20,36 @@ public class EcEntityHandler implements IEntityLivingHandler
 
 	@Override
 	public boolean onEntityLivingSpawn(EntityLiving entity, World world, float x, float y, float z) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
 	@Override
 	public boolean onEntityLivingDeath(EntityLiving entity, DamageSource killer) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
 	@Override
 	public void onEntityLivingSetAttackTarget(EntityLiving entity, EntityLiving target) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
 	public boolean onEntityLivingAttacked(EntityLiving entity,DamageSource attack, int damage) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
 	@Override
 	public void onEntityLivingJump(EntityLiving entity) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
 	public boolean onEntityLivingFall(EntityLiving entity, float distance) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
 	@Override
 	public boolean onEntityLivingUpdate(EntityLiving entity) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
@@ -109,7 +102,6 @@ public class EcEntityHandler implements IEntityLivingHandler
 
 	@Override
 	public void onEntityLivingDrops(EntityLiving entity, DamageSource source, ArrayList<EntityItem> drops, int lootingLevel, boolean recentlyHit, int specialDropValue) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 }

@@ -1,27 +1,18 @@
 package net.minecraft.src.EnchantChanger;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import net.minecraft.src.Item;
-import net.minecraft.src.ItemDye;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.mod_EnchantChanger;
 import net.minecraft.src.forge.IItemRenderer;
-import net.minecraft.src.forge.ITextureProvider;
-import net.minecraft.src.forge.IItemRenderer.ItemRenderType;
-import net.minecraft.src.forge.IItemRenderer.ItemRendererHelper;
+
+import org.lwjgl.opengl.GL11;
 
 public class EcItemMasterMateria extends Item implements IItemRenderer
 {
 	public static final String[] MasterMateriaNames = new String[] {"Ultimatum","Protection","Water","Attack","Digging","Bow","Addition"};
-	public static final String[] MasterMateriaJPNames = new String[] {"‹†‹É","–hŒä","…","UŒ‚","ÌŒ@","‹|", "’Ç‰Á"};
+	public static final String[] MasterMateriaJPNames = new String[] {"ç©¶æ¥µ","é˜²å¾¡","æ°´","æ”»æ’ƒ","æ¡æ˜","å¼“", "è¿½åŠ "};
 	public static int MasterMateriaNum = MasterMateriaNames.length;
 	private static double vert[];
 	private static int  face[];

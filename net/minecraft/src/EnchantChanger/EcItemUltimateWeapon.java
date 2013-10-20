@@ -1,7 +1,5 @@
 package net.minecraft.src.EnchantChanger;
 
-import java.util.ArrayList;
-
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
@@ -10,7 +8,6 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.World;
-import net.minecraft.src.forge.IItemRenderer;
 
 public class EcItemUltimateWeapon extends EcItemSword //implements IItemRenderer
 {
@@ -23,20 +20,6 @@ public class EcItemUltimateWeapon extends EcItemSword //implements IItemRenderer
 		this.setMaxDamage(-1);
 		this.ultimateWeaponDamage =  0;
 	}
-
-//	@Override
-//	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-//		return type == ItemRenderType.EQUIPPED;
-//	}
-//	@Override
-//	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-//		return false;
-//	}
-//
-//	@Override
-//	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-//		UModel.renderItem(item, (EntityLiving)data[1]);
-//	}
 
 	public int getDamageVsEntity(Entity par1Entity)
 	{
@@ -60,12 +43,6 @@ public class EcItemUltimateWeapon extends EcItemSword //implements IItemRenderer
 		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		return par1ItemStack;
 	}
-
-//	@Override
-//	public void addCreativeItems(ArrayList itemList)
-//	{
-//		itemList.add(new ItemStack(this, 1));
-//	}
 	public int WeaponDamagefromHP()
 	{
 		EntityPlayer player = ModLoader.getMinecraftInstance().thePlayer;
