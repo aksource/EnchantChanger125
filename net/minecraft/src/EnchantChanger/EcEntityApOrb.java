@@ -2,6 +2,7 @@ package net.minecraft.src.EnchantChanger;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
+import net.minecraft.src.Enchantment;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
@@ -287,6 +288,8 @@ public class EcEntityApOrb extends Entity
 		{
 			prevAp = ((NBTTagCompound)enchantList.tagAt(j)).getInteger("ap");
 			enchantmentId = ((NBTTagCompound)enchantList.tagAt(j)).getShort("id");
+			if(Enchantment.enchantmentsList[enchantmentId].getMaxLevel() == 1)
+				continue;
 			enchantmentLv = ((NBTTagCompound)enchantList.tagAt(j)).getShort("lvl");
 			nowAp = prevAp + this.apValue;
 			if(mod_EnchantChanger.magicEnchantment.contains(Integer.valueOf((int)enchantmentId)))
