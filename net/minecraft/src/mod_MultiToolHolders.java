@@ -79,21 +79,21 @@ public class mod_MultiToolHolders extends BaseMod
 		ModLoader.addName(ItemMultiToolHolder9, "9-Way Tool Holder");
 		ModLoader.addName(ItemMultiToolHolder7, "7-Way Tool Holder");
 
-		ModLoader.addName(ItemMultiToolHolder3, "ja_JP","3-Wayƒc[ƒ‹ƒzƒ‹ƒ_[");
-		ModLoader.addName(ItemMultiToolHolder5, "ja_JP","5-Wayƒc[ƒ‹ƒzƒ‹ƒ_[");
-		ModLoader.addName(ItemMultiToolHolder9, "ja_JP","9-Wayƒc[ƒ‹ƒzƒ‹ƒ_[");
-		ModLoader.addName(ItemMultiToolHolder7, "ja_JP","7-Wayƒc[ƒ‹ƒzƒ‹ƒ_[");
+		ModLoader.addName(ItemMultiToolHolder3, "ja_JP","3-Wayãƒ„ãƒ¼ãƒ«ãƒ›ãƒ«ãƒ€ãƒ¼");
+		ModLoader.addName(ItemMultiToolHolder5, "ja_JP","5-Wayãƒ„ãƒ¼ãƒ«ãƒ›ãƒ«ãƒ€ãƒ¼");
+		ModLoader.addName(ItemMultiToolHolder9, "ja_JP","9-Wayãƒ„ãƒ¼ãƒ«ãƒ›ãƒ«ãƒ€ãƒ¼");
+		ModLoader.addName(ItemMultiToolHolder7, "ja_JP","7-Wayãƒ„ãƒ¼ãƒ«ãƒ›ãƒ«ãƒ€ãƒ¼");
 
 		ModLoader.addLocalization("container.toolholder", "ToolHolder");
-		ModLoader.addLocalization("container.toolholder", "ja_JP", "ƒc[ƒ‹ƒzƒ‹ƒ_[");
+		ModLoader.addLocalization("container.toolholder", "ja_JP", "ãƒ„ãƒ¼ãƒ«ãƒ›ãƒ«ãƒ€ãƒ¼");
 		ModLoader.addLocalization("container.toolholder", "ToolHolder");
-		ModLoader.addLocalization("container.toolholder", "ja_JP", "ƒc[ƒ‹ƒzƒ‹ƒ_[");
+		ModLoader.addLocalization("container.toolholder", "ja_JP", "ãƒ„ãƒ¼ãƒ«ãƒ›ãƒ«ãƒ€ãƒ¼");
 		ModLoader.addLocalization("Key.openToolHolder", "Open ToolHolder");
-		ModLoader.addLocalization("Key.openToolHolder", "ja_JP", "ƒc[ƒ‹ƒzƒ‹ƒ_[‚ğŠJ‚­");
+		ModLoader.addLocalization("Key.openToolHolder", "ja_JP", "ãƒ„ãƒ¼ãƒ«ãƒ›ãƒ«ãƒ€ãƒ¼ã‚’é–‹ã");
 		ModLoader.addLocalization("Key.nextToolHolder", "ToolHolder Next Slot");
-		ModLoader.addLocalization("Key.nextToolHolder", "ja_JP", "Ÿ‚ÌƒXƒƒbƒg");
+		ModLoader.addLocalization("Key.nextToolHolder", "ja_JP", "æ¬¡ã®ã‚¹ãƒ­ãƒƒãƒˆ");
 		ModLoader.addLocalization("Key.prevToolHolder", "ToolHolder Previous Slot");
-		ModLoader.addLocalization("Key.prevToolHolder", "ja_JP", "‘O‚ÌƒXƒƒbƒg");
+		ModLoader.addLocalization("Key.prevToolHolder", "ja_JP", "å‰ã®ã‚¹ãƒ­ãƒƒãƒˆ");
 
 		//register
 		MinecraftForgeClient.registerItemRenderer(ItemIDShift, (IItemRenderer) ItemMultiToolHolder3);

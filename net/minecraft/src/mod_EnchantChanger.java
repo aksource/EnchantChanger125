@@ -51,7 +51,7 @@ public class mod_EnchantChanger extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.6k";
+		return "1.6l";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
@@ -169,6 +169,7 @@ public class mod_EnchantChanger extends BaseMod
 
 	private Entity entity;
 	private boolean CSCmode;
+	public static boolean loadMTH = false;
     @Override
     public String getPriorities()
     {
@@ -303,6 +304,7 @@ public class mod_EnchantChanger extends BaseMod
 	public void modsLoaded()
 	{
 		addName();
+		this.loadMTH = ModLoader.isModLoaded("mod_MultiToolHolders");
 	}
 	public void addRenderer(Map map)
 	{

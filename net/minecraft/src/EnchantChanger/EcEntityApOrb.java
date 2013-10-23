@@ -11,6 +11,8 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.World;
 import net.minecraft.src.mod_EnchantChanger;
+import net.minecraft.src.MultiToolHolders.ItemMultiToolHolder;
+import net.minecraft.src.MultiToolHolders.ToolHolderData;
 
 public class EcEntityApOrb extends Entity
 {
@@ -246,49 +248,56 @@ public class EcEntityApOrb extends Entity
 		{
 			items[i+9]=player.inventory.armorInventory[i];
 		}
+
+
+		for(int i = 0; i < items.length;i++)
+		{
+			if(items[i] != null && items[i].isItemEnchanted())
+			{
+				if(mod_EnchantChanger.loadMTH && items[i].getItem() instanceof ItemMultiToolHolder)
+				{
+					ToolHolderData tools = ((ItemMultiToolHolder)items[i].getItem()).tools;
+					for(int j = 0; j < tools.tools.length; j ++)
+					{
+						if(tools.tools[j] != null && tools.tools[j].isItemEnchanted())
+						{
+							addApToItem(tools.tools[j]);
+						}
+					}
+				}
+				else
+				{
+					addApToItem(items[i]);
+				}
+
+			}
+		}
+	}
+	public void addApToItem(ItemStack item)
+	{
 		NBTTagCompound nbt;
-		NBTTagList apList;
 		NBTTagList enchantList;
 		int prevAp;
 		short enchantmentId;
 		short enchantmentLv;
 		int nowAp;
-		for(int i = 0; i < items.length;i++)
+		nbt = item.getTagCompound();
+		enchantList = item.getEnchantmentTagList();
+		for(int j = 0; j < enchantList.tagCount();j++)
 		{
-			if(items[i] != null && items[i].isItemEnchanted())
+			prevAp = ((NBTTagCompound)enchantList.tagAt(j)).getInteger("ap");
+			enchantmentId = ((NBTTagCompound)enchantList.tagAt(j)).getShort("id");
+			enchantmentLv = ((NBTTagCompound)enchantList.tagAt(j)).getShort("lvl");
+			nowAp = prevAp + this.apValue;
+			if(mod_EnchantChanger.magicEnchantment.contains(Integer.valueOf((int)enchantmentId)))
+				continue;
+			if(mod_EnchantChanger.isApLimit(enchantmentId, enchantmentLv, nowAp))
 			{
-				nbt = items[i].getTagCompound();
-				enchantList = items[i].getEnchantmentTagList();
-//				if(!nbt.hasKey("ApList"))
-//				{
-//					nbt.setTag("ApList", new NBTTagList("ApList"));
-//					apList = nbt.getTagList("ApList");
-//					for(int j = 0;j<enchantList.tagCount();j++)
-//					{
-//						NBTTagCompound apTag = new NBTTagCompound();
-//				        apTag.setInteger("ap", 0);
-//				        apList.appendTag(apTag);
-//					}
-//				}
-//				apList = nbt.getTagList("ApList");
-				for(int j = 0; j < enchantList.tagCount();j++)
-				{
-					prevAp = ((NBTTagCompound)enchantList.tagAt(j)).getInteger("ap");
-					enchantmentId = ((NBTTagCompound)enchantList.tagAt(j)).getShort("id");
-					enchantmentLv = ((NBTTagCompound)enchantList.tagAt(j)).getShort("lvl");
-					nowAp = prevAp + this.apValue;
-					if(mod_EnchantChanger.magicEnchantment.contains(Integer.valueOf((int)enchantmentId)))
-						continue;
-					if(mod_EnchantChanger.isApLimit(enchantmentId, enchantmentLv, nowAp))
-					{
-						nowAp -= mod_EnchantChanger.getApLimit(enchantmentId, enchantmentLv);
-						if(enchantmentLv < Short.MAX_VALUE)
-							((NBTTagCompound)enchantList.tagAt(j)).setShort("lvl", (short) (enchantmentLv + 1));
-					}
-					((NBTTagCompound)enchantList.tagAt(j)).setInteger("ap", nowAp);
-				}
-
+				nowAp -= mod_EnchantChanger.getApLimit(enchantmentId, enchantmentLv);
+				if(enchantmentLv < Short.MAX_VALUE)
+					((NBTTagCompound)enchantList.tagAt(j)).setShort("lvl", (short) (enchantmentLv + 1));
 			}
+			((NBTTagCompound)enchantList.tagAt(j)).setInteger("ap", nowAp);
 		}
 	}
 	/**
