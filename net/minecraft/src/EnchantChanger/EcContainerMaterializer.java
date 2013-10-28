@@ -22,6 +22,7 @@ import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Slot;
 import net.minecraft.src.World;
 import net.minecraft.src.mod_EnchantChanger;
+import net.minecraft.src.MultiToolHolders.ItemMultiToolHolder;
 
 
 public class EcContainerMaterializer extends Container {
@@ -172,7 +173,7 @@ public class EcContainerMaterializer extends Container {
 		ItemStack enchitem = this.materializeSource.getStackInSlot(0);
 		if (enchitem != null)
 		{
-			if(! (enchitem.getItem() instanceof Item))
+			if(! (enchitem.getItem() instanceof Item) || (mod_EnchantChanger.loadMTH && enchitem.getItem() instanceof ItemMultiToolHolder))
 			{
 				return;
 			}

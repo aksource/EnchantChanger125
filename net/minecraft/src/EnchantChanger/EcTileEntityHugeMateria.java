@@ -189,7 +189,7 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 		{
 			return false;
 		}
-		else if(this.Hugeitemstacks[3] != null && this.Hugeitemstacks[3].getItem() instanceof EcItemMateria)
+		else if(this.Hugeitemstacks[3] != null && this.Hugeitemstacks[3].getItem() instanceof EcItemMateria && this.Hugeitemstacks[3].isItemEnchanted())
 		{
 			return true;
 		}
@@ -304,35 +304,30 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 						if(this.Hugeitemstacks[3].getItem().shiftedIndex == Block.dragonEgg.blockID)
 						{
 							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 1);
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentMeteoId], 1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentMeteoId], 1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.appleGold.shiftedIndex && this.Hugeitemstacks[3].getItemDamage() == 1)
 						{
 							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 2);
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.EndhantmentHolyId], 1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.EndhantmentHolyId], 1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.enderPearl.shiftedIndex)
 						{
 							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 3);
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentTelepoId], 1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentTelepoId], 1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.eyeOfEnder.shiftedIndex)
 						{
 							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 4);
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentFloatId], 1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentFloatId], 1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Block.blockGold.blockID)
 						{
 							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 5);
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentThunderId], 1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.EnchantmentThunderId], 1);
 							this.Hugeitemstacks[4] = materia;
 						}
@@ -351,14 +346,6 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 							materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 8);
 							this.Hugeitemstacks[4] = materia;
 						}
-						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == mod_EnchantChanger.MateriaID)
-						{
-							materia = this.Hugeitemstacks[3].copy();
-							mod_EnchantChanger.removeEnchTag(materia.getTagCompound(), "ench");
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
-							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
-							this.Hugeitemstacks[4] = materia;
-						}
 					}
 				}
 				else if(this.Hugeitemstacks[0].getItemDamage() == 1)
@@ -368,40 +355,27 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 						materia = new ItemStack(mod_EnchantChanger.MateriaID, 1, 0);
 						if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.ingotIron.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.protection, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.protection,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.blazePowder.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.fireProtection, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.fireProtection,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.feather.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.featherFalling, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.featherFalling,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.gunpowder.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.blastProtection, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.blastProtection,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.arrow.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.projectileProtection, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.projectileProtection,  1 + var1);
-							this.Hugeitemstacks[4] = materia;
-						}
-						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == mod_EnchantChanger.MateriaID)
-						{
-							materia = this.Hugeitemstacks[3].copy();
-							mod_EnchantChanger.removeEnchTag(materia.getTagCompound(), "ench");
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
-							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 					}
@@ -413,22 +387,12 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 					{
 						if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.reed.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.respiration, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.respiration,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.pickaxeGold.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.aquaAffinity, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.aquaAffinity,  1 + var1);
-							this.Hugeitemstacks[4] = materia;
-						}
-						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == mod_EnchantChanger.MateriaID)
-						{
-							materia = this.Hugeitemstacks[3].copy();
-							mod_EnchantChanger.removeEnchTag(materia.getTagCompound(), "ench");
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
-							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 					}
@@ -440,46 +404,32 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 					{
 						if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.fireballCharge.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.sharpness, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.sharpness,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.flintAndSteel.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.smite, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.smite,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.spiderEye.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.baneOfArthropods, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.baneOfArthropods,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.slimeBall.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.knockback, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.knockback,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.blazeRod.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.fireAspect, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.fireAspect,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.appleGold.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.looting, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.looting,  1 + var1);
-							this.Hugeitemstacks[4] = materia;
-						}
-						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == mod_EnchantChanger.MateriaID)
-						{
-							materia = this.Hugeitemstacks[3].copy();
-							mod_EnchantChanger.removeEnchTag(materia.getTagCompound(), "ench");
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
-							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 					}
@@ -491,34 +441,22 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 					{
 						if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.pickaxeGold.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.efficiency, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.efficiency,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.silk.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.silkTouch, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.silkTouch,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.ingotIron.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.unbreaking, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.unbreaking,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.appleGold.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.fortune, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.fortune,  1 + var1);
-							this.Hugeitemstacks[4] = materia;
-						}
-						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == mod_EnchantChanger.MateriaID)
-						{
-							materia = this.Hugeitemstacks[3].copy();
-							mod_EnchantChanger.removeEnchTag(materia.getTagCompound(), "ench");
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
-							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 					}
@@ -530,38 +468,33 @@ public class EcTileEntityHugeMateria extends TileEntity implements IInventory {
 					{
 						if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.fireballCharge.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.power, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.power,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.slimeBall.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.punch, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.punch,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.blazeRod.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.flame, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.flame,  1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == Item.bow.shiftedIndex)
 						{
-//							materia.addEnchantment(Enchantment.infinity, 1 + var1);
 							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.infinity,  1 + var1);
-							this.Hugeitemstacks[4] = materia;
-						}
-						else if(this.Hugeitemstacks[3].getItem().shiftedIndex == mod_EnchantChanger.MateriaID)
-						{
-							materia = this.Hugeitemstacks[3].copy();
-							mod_EnchantChanger.removeEnchTag(materia.getTagCompound(), "ench");
-//							materia.addEnchantment(Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
-							mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
 							this.Hugeitemstacks[4] = materia;
 						}
 					}
 				}
+			}
+			if(this.Hugeitemstacks[3].getItem().shiftedIndex == mod_EnchantChanger.MateriaID && this.Hugeitemstacks[3].isItemEnchanted())
+			{
+				materia = this.Hugeitemstacks[3].copy();
+				mod_EnchantChanger.removeEnchTag(materia.getTagCompound(), "ench");
+				mod_EnchantChanger.addEnchantmentToItem(materia, Enchantment.enchantmentsList[mod_EnchantChanger.getMateriaEnchKind(this.Hugeitemstacks[3])], mod_EnchantChanger.getMateriaEnchLv(this.Hugeitemstacks[3]) + 1 + var1);
+				this.Hugeitemstacks[4] = materia;
 			}
 			if(this.Hugeitemstacks[1] != null)
 			{
