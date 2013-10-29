@@ -28,6 +28,8 @@ public class EcLivingHandler implements IEntityLivingHandler
 
 	@Override
 	public boolean onEntityLivingDeath(EntityLiving entity, DamageSource killer) {
+		if(!mod_EnchantChanger.enableAPSystem)
+			return false;
 		if(killer.getEntity() != null && killer.getEntity() instanceof EntityPlayer 
 				&& ((EntityPlayer)killer.getEntity()).getCurrentEquippedItem() != null
 				&& ((EntityPlayer)killer.getEntity()).getCurrentEquippedItem().isItemEnchanted()

@@ -51,7 +51,7 @@ public class mod_EnchantChanger extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.6l";
+		return "1.6m";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
@@ -122,6 +122,10 @@ public class mod_EnchantChanger extends BaseMod
 	public static int MateriaPotionMinutes = 10;
 	@MLProp(info="Difficulty Ex:0=Easy,1=Normal,2=Hard")
 	public static int Difficulty =1;
+	public static boolean enableAPSystem = true;
+	public static boolean enableDungeonLoot = true;
+	public static int aPBasePoint = 200;
+	
 	public static int MaxLv = 127;
 
 
@@ -274,7 +278,8 @@ public class mod_EnchantChanger extends BaseMod
 
 
 		//register recipes
-		FMLRegistry.addRecipe(new EcMateriaRecipe());
+		if(this.Difficulty < 2)
+			FMLRegistry.addRecipe(new EcMateriaRecipe());
 		FMLRegistry.addRecipe(new EcMasterMateriaRecipe());
 		ModLoader.addShapelessRecipe(new ItemStack(ItemMat,1, 0), new Object[]{new ItemStack(Item.diamond, 1), new ItemStack(Item.enderPearl, 1)});
 		ModLoader.addRecipe(new ItemStack(ItemZackSword, 1), new Object[]{" X","XX"," Y", Character.valueOf('X'),Block.blockSteel, Character.valueOf('Y'),Item.ingotIron});
@@ -288,8 +293,8 @@ public class mod_EnchantChanger extends BaseMod
 		ModLoader.addShapelessRecipe(new ItemStack(ItemPortableEnchantmentTable,1),  new Object[]{Block.enchantmentTable});
 
 		ModLoader.addShapelessRecipe(new ItemStack(MasterMateria,1,0), new Object[]{new ItemStack(MasterMateria,1,1), new ItemStack(MasterMateria,1,2), new ItemStack(MasterMateria,1,3), new ItemStack(MasterMateria,1,4), new ItemStack(MasterMateria,1,5)});
-
-		ModLoader.addRecipe(new ItemStack(Item.expBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.potion, 1, 0), Character.valueOf('Y'), new ItemStack(Item.diamond, 1)});
+		if(this.Difficulty == 0)
+			ModLoader.addRecipe(new ItemStack(Item.expBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.potion, 1, 0), Character.valueOf('Y'), new ItemStack(Item.diamond, 1)});
 		ModLoader.addRecipe(new ItemStack(ItemExExpBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.expBottle, 1, 0), Character.valueOf('Y'), new ItemStack(Block.blockDiamond, 1)});
 
 		ModLoader.addRecipe(new ItemStack(Block.dragonEgg,1), new Object[]{"XXX","XYX","XXX",Character.valueOf('X'), Item.eyeOfEnder, Character.valueOf('Y'), new ItemStack(MasterMateria,1,-1)});
@@ -298,7 +303,8 @@ public class mod_EnchantChanger extends BaseMod
 		{
 			this.debugsystem();
 		}
-		DungeonLootItemResist();
+		if(this.enableDungeonLoot)
+			DungeonLootItemResist();
 	}
 	@Override
 	public void modsLoaded()
@@ -384,27 +390,28 @@ public class mod_EnchantChanger extends BaseMod
 		this.magicEnchantment.add(this.EndhantmentHolyId);
 		this.magicEnchantment.add(this.EnchantmentTelepoId);
 		this.magicEnchantment.add(this.EnchantmentThunderId);
-		this.apLimit.put(0, 200);
-		this.apLimit.put(1, 100);
-		this.apLimit.put(2, 100);
-		this.apLimit.put(3, 100);
-		this.apLimit.put(4, 100);
-		this.apLimit.put(5, 100);
-		this.apLimit.put(6, 100);
-		this.apLimit.put(16, 200);
-		this.apLimit.put(17, 100);
-		this.apLimit.put(18, 100);
-		this.apLimit.put(19, 100);
-		this.apLimit.put(20, 100);
-		this.apLimit.put(21, 300);
-		this.apLimit.put(32, 100);
-		this.apLimit.put(33, 100);
-		this.apLimit.put(34, 100);
-		this.apLimit.put(35, 200);
-		this.apLimit.put(48, 200);
-		this.apLimit.put(49, 100);
-		this.apLimit.put(50, 100);
-		this.apLimit.put(51, 100);
+		this.apLimit.put(0, 2*aPBasePoint);
+		this.apLimit.put(1, 1*aPBasePoint);
+		this.apLimit.put(2, 1*aPBasePoint);
+		this.apLimit.put(3, 1*aPBasePoint);
+		this.apLimit.put(4, 1*aPBasePoint);
+		this.apLimit.put(5, 1*aPBasePoint);
+		this.apLimit.put(6, 1*aPBasePoint);
+		this.apLimit.put(7, 1*aPBasePoint);
+		this.apLimit.put(16, 2*aPBasePoint);
+		this.apLimit.put(17, 1*aPBasePoint);
+		this.apLimit.put(18, 1*aPBasePoint);
+		this.apLimit.put(19, 1*aPBasePoint);
+		this.apLimit.put(20, 1*aPBasePoint);
+		this.apLimit.put(21, 3*aPBasePoint);
+		this.apLimit.put(32, 1*aPBasePoint);
+		this.apLimit.put(33, 1*aPBasePoint);
+		this.apLimit.put(34, 1*aPBasePoint);
+		this.apLimit.put(35, 2*aPBasePoint);
+		this.apLimit.put(48, 2*aPBasePoint);
+		this.apLimit.put(49, 1*aPBasePoint);
+		this.apLimit.put(50, 1*aPBasePoint);
+		this.apLimit.put(51, 1*aPBasePoint);
 	}
 	public void debugsystem()
 	{
