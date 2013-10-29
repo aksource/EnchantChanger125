@@ -122,8 +122,11 @@ public class mod_EnchantChanger extends BaseMod
 	public static int MateriaPotionMinutes = 10;
 	@MLProp(info="Difficulty Ex:0=Easy,1=Normal,2=Hard")
 	public static int Difficulty =1;
+	@MLProp(info="false:Not Spawn ApOrb")
 	public static boolean enableAPSystem = true;
+	@MLProp(info ="false: materia is not in dungeon loot chest")
 	public static boolean enableDungeonLoot = true;
+	@MLProp(info="BasePoint of Next Ehcnantment Level. it is 100 in 1.6l")
 	public static int aPBasePoint = 200;
 	
 	public static int MaxLv = 127;
