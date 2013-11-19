@@ -15,11 +15,11 @@ import net.minecraft.src.mod_EnchantChanger;
 import net.minecraft.src.forge.IItemRenderer;
 public class EcItemSword extends ItemSword implements IItemRenderer
 {
-	private final EcModelUltimateWeapon UModel = new EcModelUltimateWeapon();
-	private final EcModelCloudSwordCore2 CCModel = new EcModelCloudSwordCore2();
-	private final EcModelCloudSword2 CModel = new EcModelCloudSword2();
-	private final EcModelSephirothSword SModel = new EcModelSephirothSword();
-	private final EcModelZackSword ZModel = new EcModelZackSword();
+	private static final EcModelUltimateWeapon UModel = new EcModelUltimateWeapon();
+	private static final EcModelCloudSwordCore2 CCModel = new EcModelCloudSwordCore2();
+	private static final EcModelCloudSword2 CModel = new EcModelCloudSword2();
+	private static final EcModelSephirothSword SModel = new EcModelSephirothSword();
+	private static final EcModelZackSword ZModel = new EcModelZackSword();
 	private boolean toggle = false;
 	public EcItemSword(int par1 , EnumToolMaterial toolMaterial)
 	{

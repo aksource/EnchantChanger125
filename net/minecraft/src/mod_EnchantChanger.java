@@ -51,7 +51,7 @@ public class mod_EnchantChanger extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.6m";
+		return "1.6n";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
@@ -302,10 +302,6 @@ public class mod_EnchantChanger extends BaseMod
 
 		ModLoader.addRecipe(new ItemStack(Block.dragonEgg,1), new Object[]{"XXX","XYX","XXX",Character.valueOf('X'), Item.eyeOfEnder, Character.valueOf('Y'), new ItemStack(MasterMateria,1,-1)});
 
-		if(this.Debug)
-		{
-			this.debugsystem();
-		}
 		if(this.enableDungeonLoot)
 			DungeonLootItemResist();
 	}
@@ -415,9 +411,6 @@ public class mod_EnchantChanger extends BaseMod
 		this.apLimit.put(49, 1*aPBasePoint);
 		this.apLimit.put(50, 1*aPBasePoint);
 		this.apLimit.put(51, 1*aPBasePoint);
-	}
-	public void debugsystem()
-	{
 	}
 	public static int getExpValue(EntityLiving entity)
 	{
