@@ -18,6 +18,7 @@ public class EcItemSephirothSword extends EcItemSword //implements IItemRenderer
 	public EcItemSephirothSword(int par1)
 	{
 		super(par1, EnumToolMaterial.EMERALD);
+		this.setMaxDamage(EnumToolMaterial.EMERALD.getMaxUses() * 2);
 	}
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{

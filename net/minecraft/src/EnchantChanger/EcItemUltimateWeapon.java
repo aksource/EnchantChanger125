@@ -17,7 +17,7 @@ public class EcItemUltimateWeapon extends EcItemSword //implements IItemRenderer
 	public EcItemUltimateWeapon(int par1)
 	{
 		super(par1, EnumToolMaterial.EMERALD);
-		this.setMaxDamage(-1);
+		this.setMaxDamage(EnumToolMaterial.IRON.getMaxUses() * 14);
 		this.ultimateWeaponDamage =  0;
 	}
 

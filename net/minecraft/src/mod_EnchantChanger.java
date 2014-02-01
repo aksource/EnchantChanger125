@@ -37,21 +37,27 @@ import net.minecraft.src.EnchantChanger.EcMateriaRecipe;
 import net.minecraft.src.EnchantChanger.EcRenderApOrb;
 import net.minecraft.src.EnchantChanger.EcRenderHugeMateria;
 import net.minecraft.src.EnchantChanger.EcRenderItemThrowable;
+import net.minecraft.src.EnchantChanger.EcRenderMateria;
 import net.minecraft.src.EnchantChanger.EcTileEntityHugeMateria;
 import net.minecraft.src.EnchantChanger.EcTileEntityMaterializer;
 import net.minecraft.src.forge.IItemRenderer;
 import net.minecraft.src.forge.MinecraftForge;
 import net.minecraft.src.forge.MinecraftForgeClient;
+import net.minecraft.src.forge.NetworkMod;
 
 import org.lwjgl.input.Keyboard;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.modloader.ModLoaderHelper;
 import cpw.mods.fml.common.registry.FMLRegistry;
 
-public class mod_EnchantChanger extends BaseMod
+public class mod_EnchantChanger extends NetworkMod
 {
 	@Override
 	public String getVersion() {
-		return "1.6n";
+		return "1.6q";
 	}
 
 	@MLProp(info="ExExpBottleID", min = 4096, max = 32000)
@@ -128,7 +134,9 @@ public class mod_EnchantChanger extends BaseMod
 	public static boolean enableDungeonLoot = true;
 	@MLProp(info="BasePoint of Next Ehcnantment Level. it is 100 in 1.6l")
 	public static int aPBasePoint = 200;
-	
+	@MLProp(info="Set Enchantmets Level Limit for AP System Format EnchantmentID:LimitLv(LimitLv = 0 > DefaultMaxLevel")
+	public static String enchantmentLevelLimits = "0:10,1:10,2:10,3:10,4:10,32:0,34:30";
+	public static HashMap<Integer, Integer> levelLimitMap = new HashMap<Integer, Integer>();
 	public static int MaxLv = 127;
 
 
@@ -192,8 +200,8 @@ public class mod_EnchantChanger extends BaseMod
     }
 	public void load() {
 		//initialize
-		ModLoader.setInGameHook(this, true, true);
-		mc = ModLoader.getMinecraftInstance();
+		ModLoaderHelper.updateStandardTicks(this, true, true);
+		mc = FMLClientHandler.instance().getClient();
 		instance =this;
 		this.initMaps();
 		MinecraftForgeClient.preloadTexture("/mod_EnchantChanger/gui/items.png");
@@ -246,21 +254,26 @@ public class mod_EnchantChanger extends BaseMod
 		Thunder = new EcEnchantmentThunder(this.EnchantmentThunderId,0);
 
 		//register
-		ModLoader.registerBlock(BlockMat);
-		ModLoader.registerTileEntity(EcTileEntityMaterializer.class, "container.materializer");
-		ModLoader.registerTileEntity(EcTileEntityHugeMateria.class, "container.hugeMateria", new EcRenderHugeMateria());
+		FMLRegistry.registerBlock(BlockMat);
+		FMLRegistry.registerTileEntity(EcTileEntityMaterializer.class, "container.materializer");
+		ClientRegistry.instance().registerTileEntity(EcTileEntityHugeMateria.class, "container.hugeMateria", new EcRenderHugeMateria());
 		MinecraftForgeClient.registerItemRenderer(SephirothSwordItemID, (IItemRenderer) ItemSephirothSword);
 		MinecraftForgeClient.registerItemRenderer(ZackSwordItemID, (IItemRenderer)ItemZackSword);
 		MinecraftForgeClient.registerItemRenderer(FirstSwordItemID, (IItemRenderer)ItemCloudSwordCore);
 		MinecraftForgeClient.registerItemRenderer(CloudSwordItemID, (IItemRenderer)ItemCloudSword);
 		MinecraftForgeClient.registerItemRenderer(UltimateWeaponItemID, (IItemRenderer)ItemUltimateWeapon);
 		MinecraftForgeClient.registerItemRenderer(ImitateSephSwordID, (IItemRenderer)ItemImitateSephirothSword);
-		MinecraftForgeClient.registerItemRenderer(MateriaID, (IItemRenderer) ItemMat);
-		MinecraftForgeClient.registerItemRenderer(MasterMateriaID, (IItemRenderer) MasterMateria);
-		ModLoader.registerEntityID(EcEntityExExpBottle.class, "ItemExExpBottle", 500);
-		ModLoader.registerEntityID(EcEntityMeteo.class, "Meteo", 501);
-		ModLoader.registerEntityID(EcEntitySword.class, "EntitySword", 502);
-		ModLoader.registerEntityID(EcEntityApOrb.class, "ApOrb", 503);
+		MinecraftForgeClient.registerItemRenderer(MateriaID, new EcRenderMateria());
+		MinecraftForgeClient.registerItemRenderer(MasterMateriaID, new EcRenderMateria());
+//		ModLoader.registerEntityID(EcEntityExExpBottle.class, "ItemExExpBottle", 500);
+//		ModLoader.registerEntityID(EcEntityMeteo.class, "Meteo", 501);
+//		ModLoader.registerEntityID(EcEntitySword.class, "EntitySword", 502);
+//		ModLoader.registerEntityID(EcEntityApOrb.class, "ApOrb", 503);
+		MinecraftForge.registerEntity(EcEntityExExpBottle.class, this, 0, 32, 0, false);
+		MinecraftForge.registerEntity(EcEntityMeteo.class, this, 1, 256, 0, false);
+		MinecraftForge.registerEntity(EcEntitySword.class, this, 2, 32, 0, false);
+		MinecraftForge.registerEntity(EcEntityApOrb.class, this, 3, 32, 0, false);
+		
 		MinecraftForge.setToolClass(ItemSephirothSword, "FF7", 0);
 		Block[] pickeff =
 			{
@@ -284,23 +297,23 @@ public class mod_EnchantChanger extends BaseMod
 		if(this.Difficulty < 2)
 			FMLRegistry.addRecipe(new EcMateriaRecipe());
 		FMLRegistry.addRecipe(new EcMasterMateriaRecipe());
-		ModLoader.addShapelessRecipe(new ItemStack(ItemMat,1, 0), new Object[]{new ItemStack(Item.diamond, 1), new ItemStack(Item.enderPearl, 1)});
-		ModLoader.addRecipe(new ItemStack(ItemZackSword, 1), new Object[]{" X","XX"," Y", Character.valueOf('X'),Block.blockSteel, Character.valueOf('Y'),Item.ingotIron});
-		ModLoader.addRecipe(new ItemStack(ItemCloudSwordCore, 1), new Object[]{" X ","XYX"," Z ", Character.valueOf('X'), Block.blockSteel, Character.valueOf('Y'), new ItemStack(ItemMat, 1,0), Character.valueOf('Z'),Item.ingotIron});
-		ModLoader.addRecipe(new ItemStack(ItemImitateSephirothSword), "  A"," A ", "B  ", 'A', Item.ingotIron, 'B', Item.swordSteel);
-		ModLoader.addRecipe(new ItemStack(ItemSephirothSword, 1), new Object[]{"  A"," B ","C  ",Character.valueOf('A'),Item.ingotIron, Character.valueOf('B'),new ItemStack(Item.swordDiamond, 1, 0), Character.valueOf('C'),new ItemStack(ItemMat, 1, 1)});
-		ModLoader.addRecipe(new ItemStack(ItemUltimateWeapon, 1), new Object[]{" A ","ABA"," C ", Character.valueOf('A'),Block.blockDiamond, Character.valueOf('B'), new ItemStack(MasterMateria, 1,-1), Character.valueOf('C'),Item.stick});
-		ModLoader.addRecipe(new ItemStack(BlockMat, 1), new Object[]{"XYX","ZZZ", Character.valueOf('X'),Item.diamond, Character.valueOf('Y'),Block.blockGold, Character.valueOf('Z'),Block.obsidian});
-		ModLoader.addRecipe(new ItemStack(HugeMateria), new Object[]{" A ","ABA"," A ",'A',Block.blockDiamond,'B',new ItemStack(MasterMateria,1,-1)});
-		ModLoader.addShapelessRecipe(new ItemStack(ItemPortableEnchantChanger,1),  new Object[]{BlockMat});
-		ModLoader.addShapelessRecipe(new ItemStack(ItemPortableEnchantmentTable,1),  new Object[]{Block.enchantmentTable});
+		FMLRegistry.addShapelessRecipe(new ItemStack(ItemMat,1, 0), new Object[]{new ItemStack(Item.diamond, 1), new ItemStack(Item.enderPearl, 1)});
+		FMLRegistry.addRecipe(new ItemStack(ItemZackSword, 1), new Object[]{" X","XX"," Y", Character.valueOf('X'),Block.blockSteel, Character.valueOf('Y'),Item.ingotIron});
+		FMLRegistry.addRecipe(new ItemStack(ItemCloudSwordCore, 1), new Object[]{" X ","XYX"," Z ", Character.valueOf('X'), Block.blockSteel, Character.valueOf('Y'), new ItemStack(ItemMat, 1,0), Character.valueOf('Z'),Item.ingotIron});
+		FMLRegistry.addRecipe(new ItemStack(ItemImitateSephirothSword), "  A"," A ", "B  ", 'A', Item.ingotIron, 'B', Item.swordSteel);
+		FMLRegistry.addRecipe(new ItemStack(ItemSephirothSword, 1), new Object[]{"  A"," B ","C  ",Character.valueOf('A'),Item.ingotIron, Character.valueOf('B'),new ItemStack(Item.swordDiamond, 1, 0), Character.valueOf('C'),new ItemStack(ItemMat, 1, 1)});
+		FMLRegistry.addRecipe(new ItemStack(ItemUltimateWeapon, 1), new Object[]{" A ","ABA"," C ", Character.valueOf('A'),Block.blockDiamond, Character.valueOf('B'), new ItemStack(MasterMateria, 1,-1), Character.valueOf('C'),Item.stick});
+		FMLRegistry.addRecipe(new ItemStack(BlockMat, 1), new Object[]{"XYX","ZZZ", Character.valueOf('X'),Item.diamond, Character.valueOf('Y'),Block.blockGold, Character.valueOf('Z'),Block.obsidian});
+		FMLRegistry.addRecipe(new ItemStack(HugeMateria), new Object[]{" A ","ABA"," A ",'A',Block.blockDiamond,'B',new ItemStack(MasterMateria,1,-1)});
+		FMLRegistry.addShapelessRecipe(new ItemStack(ItemPortableEnchantChanger,1),  new Object[]{BlockMat});
+		FMLRegistry.addShapelessRecipe(new ItemStack(ItemPortableEnchantmentTable,1),  new Object[]{Block.enchantmentTable});
 
-		ModLoader.addShapelessRecipe(new ItemStack(MasterMateria,1,0), new Object[]{new ItemStack(MasterMateria,1,1), new ItemStack(MasterMateria,1,2), new ItemStack(MasterMateria,1,3), new ItemStack(MasterMateria,1,4), new ItemStack(MasterMateria,1,5)});
+		FMLRegistry.addShapelessRecipe(new ItemStack(MasterMateria,1,0), new Object[]{new ItemStack(MasterMateria,1,1), new ItemStack(MasterMateria,1,2), new ItemStack(MasterMateria,1,3), new ItemStack(MasterMateria,1,4), new ItemStack(MasterMateria,1,5)});
 		if(this.Difficulty == 0)
-			ModLoader.addRecipe(new ItemStack(Item.expBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.potion, 1, 0), Character.valueOf('Y'), new ItemStack(Item.diamond, 1)});
-		ModLoader.addRecipe(new ItemStack(ItemExExpBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.expBottle, 1, 0), Character.valueOf('Y'), new ItemStack(Block.blockDiamond, 1)});
+			FMLRegistry.addRecipe(new ItemStack(Item.expBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.potion, 1, 0), Character.valueOf('Y'), new ItemStack(Item.diamond, 1)});
+		FMLRegistry.addRecipe(new ItemStack(ItemExExpBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.expBottle, 1, 0), Character.valueOf('Y'), new ItemStack(Block.blockDiamond, 1)});
 
-		ModLoader.addRecipe(new ItemStack(Block.dragonEgg,1), new Object[]{"XXX","XYX","XXX",Character.valueOf('X'), Item.eyeOfEnder, Character.valueOf('Y'), new ItemStack(MasterMateria,1,-1)});
+		FMLRegistry.addRecipe(new ItemStack(Block.dragonEgg,1), new Object[]{"XXX","XYX","XXX",Character.valueOf('X'), Item.eyeOfEnder, Character.valueOf('Y'), new ItemStack(MasterMateria,1,-1)});
 
 		if(this.enableDungeonLoot)
 			DungeonLootItemResist();
@@ -309,7 +322,7 @@ public class mod_EnchantChanger extends BaseMod
 	public void modsLoaded()
 	{
 		addName();
-		this.loadMTH = ModLoader.isModLoaded("mod_MultiToolHolders");
+		this.loadMTH = Loader.isModLoaded("mod_MultiToolHolders");
 	}
 	public void addRenderer(Map map)
 	{
@@ -322,65 +335,53 @@ public class mod_EnchantChanger extends BaseMod
 	private void addName()
 	{
 		//Register Name
-		ModLoader.addName(BlockMat, "Enchant Changer");
-		ModLoader.addName(BlockMat, "ja_JP","エンチャントチェンジャー");
-		ModLoader.addName(HugeMateria, "HugeMateria");
-		ModLoader.addName(HugeMateria, "ja_JP","ヒュージマテリア");
-		ModLoader.addName(ItemHugeMateria, "HugeMateria");
-		ModLoader.addName(ItemHugeMateria, "ja_JP","ヒュージマテリア");
-		ModLoader.addName(ItemMat, "ja_JP", "マテリア");
-		ModLoader.addName(ItemMat, "en_US", "Materia");
-		ModLoader.addName(MasterMateria, "ja_JP", "マスターマテリア");
-		ModLoader.addName(MasterMateria, "en_US", "Master Materia");
-		ModLoader.addName(ItemExExpBottle, "ja_JP", "エンチャントの瓶EX");
-		ModLoader.addName(ItemExExpBottle, "en_US", "Ex Exp Bottle");
-		ModLoader.addName(ItemZackSword, "Buster Sword");
-		ModLoader.addName(ItemZackSword, "ja_JP","バスターソード");
-		ModLoader.addName(ItemCloudSword, "Union Sword");
-		ModLoader.addName(ItemCloudSword, "ja_JP","合体剣");
-		ModLoader.addName(ItemCloudSwordCore, "FirstSword");
-		ModLoader.addName(ItemCloudSwordCore,"ja_JP" ,"ファースト剣");
-		ModLoader.addName(ItemSephirothSword, "Masamune Blade");
-		ModLoader.addName(ItemSephirothSword,"ja_JP","正宗");
-		ModLoader.addName(ItemUltimateWeapon, "Ultimate Weapon");
-		ModLoader.addName(ItemUltimateWeapon,"ja_JP","究極剣");
-		ModLoader.addName(ItemPortableEnchantChanger, "Portable Enchant Changer");
-		ModLoader.addName(ItemPortableEnchantChanger, "ja_JP","携帯エンチャントチェンジャー");
-		ModLoader.addName(ItemPortableEnchantmentTable, "Portable Enchantment Table");
-		ModLoader.addName(ItemPortableEnchantmentTable, "ja_JP","携帯エンチャントテーブル");
-		ModLoader.addName(ItemImitateSephirothSword, "1/1 Masamune Blade(Imitation)");
-		ModLoader.addName(ItemImitateSephirothSword, "ja_JP","1/1 マサムネブレード");
-		ModLoader.addLocalization("enchantment.Meteo", "Meteo");
-		ModLoader.addLocalization("enchantment.Holy", "Holy");
-		ModLoader.addLocalization("enchantment.Teleport", "Teleport");
-		ModLoader.addLocalization("enchantment.Floating", "Floating");
-		ModLoader.addLocalization("enchantment.Thunder", "Thunder");
-		ModLoader.addLocalization("enchantment.arrowDamage","ja_JP", "矢ダメージ増加");
-		ModLoader.addLocalization("ItemMateria.Base.name", "Inactive Materia");
-		ModLoader.addLocalization("ItemMateria.Base.name", "ja_JP","不活性マテリア");
-		ModLoader.addLocalization("ItemMateria.name", "Materia");
-		ModLoader.addLocalization("ItemMateria.name", "ja_JP","マテリア");
-		ModLoader.addLocalization("container.materializer", "Enchant Changer");
-		ModLoader.addLocalization("container.materializer", "ja_JP", "エンチャントチェンジャー");
-		ModLoader.addLocalization("container.hugeMateria", "HugeMateria");
-		ModLoader.addLocalization("container.hugeMateria", "ja_JP", "ヒュージマテリア");
-		ModLoader.addLocalization("Key.EcMagic", "Magic Key");
-		ModLoader.addLocalization("Key.EcMagic", "ja_JP", "魔法キー");
+		addName(BlockMat, "Enchant Changer", "エンチャントチェンジャー");
+		addName(HugeMateria, "HugeMateria", "ヒュージマテリア");
+		addName(ItemHugeMateria, "HugeMateria", "ヒュージマテリア");
+		addName(ItemMat, "Materia", "マテリア");
+		addName(MasterMateria, "Master Materia", "マスターマテリア");
+		addName(ItemExExpBottle, "Ex Exp Bottle", "エンチャントの瓶EX");
+		addName(ItemZackSword, "Buster Sword", "バスターソード");
+		addName(ItemCloudSword, "Union Sword","合体剣");
+		addName(ItemCloudSwordCore, "FirstSword","ファースト剣");
+		addName(ItemSephirothSword, "Masamune Blade","正宗");
+		addName(ItemUltimateWeapon, "Ultimate Weapon","究極剣");
+		addName(ItemPortableEnchantChanger, "Portable Enchant Changer","携帯エンチャントチェンジャー");
+		addName(ItemPortableEnchantmentTable, "Portable Enchantment Table","携帯エンチャントテーブル");
+		addName(ItemImitateSephirothSword, "1/1 Masamune Blade(Imitation)","1/1 マサムネブレード");
+		addLocalization("enchantment.Meteo", "Meteo", "メテオ");
+		addLocalization("enchantment.Holy", "Holy", "ホーリー");
+		addLocalization("enchantment.Teleport", "Teleport", "テレポ");
+		addLocalization("enchantment.Floating", "Floating", "レビテト");
+		addLocalization("enchantment.Thunder", "Thunder", "サンダー");
+		addLocalization("ItemMateria.Base.name", "Inactive Materia","不活性マテリア");
+		addLocalization("ItemMateria.name", "Materia","マテリア");
+		addLocalization("container.materializer", "Enchant Changer", "エンチャントチェンジャー");
+		addLocalization("container.hugeMateria", "HugeMateria", "ヒュージマテリア");
+		addLocalization("Key.EcMagic", "Magic Key", "魔法キー");
 
 		for(int i=0;i < EcItemMateria.MagicMateriaNum;i++)
 		{
-			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", EcItemMateria.MateriaMagicNames[i]+" Materia");
-			ModLoader.addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", "ja_JP",EcItemMateria.MateriaMagicJPNames[i]+"マテリア");
+			addLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", EcItemMateria.MateriaMagicNames[i]+" Materia",EcItemMateria.MateriaMagicJPNames[i]+"マテリア");
 		}
 		for(int i = 0;i< EcItemMasterMateria.MasterMateriaNum;i++)
 		{
-			ModLoader.addLocalization("ItemMasterMateria." + i + ".name", "Master Materia of " + EcItemMasterMateria.MasterMateriaNames[i]);
-			ModLoader.addLocalization("ItemMasterMateria." + i + ".name","ja_JP", EcItemMasterMateria.MasterMateriaJPNames[i] + "のマスターマテリア");
+			addLocalization("ItemMasterMateria." + i + ".name", "Master Materia of " + EcItemMasterMateria.MasterMateriaNames[i], EcItemMasterMateria.MasterMateriaJPNames[i] + "のマスターマテリア");
 		}
 		for(int i = 11;i<this.MaxLv + 1;i++)
 		{
-			ModLoader.addLocalization("enchantment.level."+i, i+"");
+			addLocalization("enchantment.level."+i, Integer.toString(i), Integer.toString(i));
 		}
+	}
+	private void addName(Object obj, String en, String ja)
+	{
+		FMLCommonHandler.instance().addNameForObject(obj, "en_US", en);
+		FMLCommonHandler.instance().addNameForObject(obj, "ja_JP", ja);
+	}
+	private void addLocalization(String key, String en, String ja)
+	{
+		FMLCommonHandler.instance().addStringLocalization(key, "en_US", en);
+		FMLCommonHandler.instance().addStringLocalization(key, "ja_JP", ja);
 	}
 	private void initMaps()
 	{
@@ -411,6 +412,12 @@ public class mod_EnchantChanger extends BaseMod
 		this.apLimit.put(49, 1*aPBasePoint);
 		this.apLimit.put(50, 1*aPBasePoint);
 		this.apLimit.put(51, 1*aPBasePoint);
+		String[] enchLevelLimits = this.enchantmentLevelLimits.split(",");
+		String[] idAndLimit;
+		for(int i = 0;i<enchLevelLimits.length;i++){
+			idAndLimit = enchLevelLimits[i].trim().split(":");
+			this.levelLimitMap.put(Integer.valueOf(idAndLimit[0]), Integer.valueOf(idAndLimit[1]));
+		}
 	}
 	public static int getExpValue(EntityLiving entity)
 	{
@@ -605,7 +612,7 @@ public class mod_EnchantChanger extends BaseMod
 			{
 				if(this.LimitBreakFlag[i])
 				{
-					ModLoader.getMinecraftInstance().thePlayer.addChatMessage("LIMIT BREAK FINISH.");
+					FMLClientHandler.instance().getClient().thePlayer.addChatMessage("LIMIT BREAK FINISH.");
 				}
 				this.LimitBreakFlag[i]=false;
 				this.LimitBreakCount[i] = 0;

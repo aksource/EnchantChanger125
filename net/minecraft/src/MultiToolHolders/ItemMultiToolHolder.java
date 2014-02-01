@@ -127,7 +127,7 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 		GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
 		this.renderItemIn2D(var4, var7, var8, var6, var9);
 
-		if (stack != null && stack.hasEffect())
+		if (stack.hasEffect())
 		{
 			GL11.glDepthFunc(GL11.GL_EQUAL);
 			GL11.glDisable(GL11.GL_LIGHTING);
@@ -394,7 +394,7 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 		{
 			this.destroyTheItem(par3EntityPlayer, this.tools.getStackInSlot(SlotNum));
 		}
-		else
+		else if(this.getItemUseAction(par1ItemStack) != EnumAction.none)
 			par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		return par1ItemStack;
 	}
@@ -424,16 +424,6 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 		else
 			return super.getMaxItemUseDuration(par1ItemStack);
 	}
-//	public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player)
-//	{
-//		if(this.tools !=null && this.tools.getStackInSlot(SlotNum) != null)
-//		{
-//			this.onPlayerDestroyBlock(X, Y, Z, this.tools.getStackInSlot(SlotNum), player, player.worldObj);
-//			return true;
-//		}
-//		else
-//			return false;
-//	}
 	@Override
 	public float getStrVsBlock(ItemStack par1ItemStack, Block par2Block){
 		if(this.tools !=null && this.tools.getStackInSlot(SlotNum) != null)
@@ -461,16 +451,6 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 		else
 			return super.getDamageVsEntity(par1Entity);
 	}
-//	@Override
-//	public int getDamageVsEntity(Entity par1Entity, ItemStack itemStack)
-//	{
-//		if(this.tools !=null && this.tools.getStackInSlot(SlotNum) != null)
-//		{
-//			return this.tools.getStackInSlot(SlotNum).getItem().getDamageVsEntity(par1Entity, this.tools.getStackInSlot(SlotNum));
-//		}
-//		else
-//			return super.getDamageVsEntity(par1Entity, itemStack);
-//	}
 	public boolean canHarvestBlock(Block par1Block)
 	{
 		if(this.tools !=null && this.tools.getStackInSlot(SlotNum) != null)
@@ -496,59 +476,6 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 		else
 			return super.onBlockDestroyed(par1ItemStack, par2, par3, par4, par5, par6EntityLiving);
     }
-//	public boolean onPlayerDestroyBlock(int par1, int par2, int par3, /*int par4,*/ ItemStack stack, EntityPlayer player, World world)
-//	{
-//		mc = Minecraft.getMinecraft();
-//		if (stack != null && stack.getItem() != null && stack.getItem().onBlockStartBreak(stack, par1, par2, par3, player))
-//		{
-//			return false;
-//		}
-//		if (!player.capabilities.allowEdit && !this.canCurrentToolHarvestBlock(par1, par2, par3, player, stack))
-//		{
-//			return false;
-//		}
-//		else
-//		{
-//			Block block = Block.blocksList[world.getBlockId(par1, par2, par3)];
-//
-//			if (block == null)
-//			{
-//				return false;
-//			}
-//			else
-//			{
-//				world.playAuxSFX(2001, par1, par2, par3, block.blockID + (world.getBlockMetadata(par1, par2, par3) << 12));
-//				int i1 = world.getBlockMetadata(par1, par2, par3);
-//				boolean flag = block.removeBlockByPlayer(world, player, par1, par2, par3);
-//
-//				if (flag)
-//				{
-//					System.out.println("0");
-//					block.onBlockDestroyedByPlayer(world, par1, par2, par3, i1);
-//				}
-//
-//				System.out.println("1");
-//				//				this.currentBlockY = -1;
-//
-//				if (!player.capabilities.isCreativeMode)
-//				{
-//					ItemStack itemstack = stack;
-//
-//					if (itemstack != null)
-//					{
-//						itemstack.onBlockDestroyed(world, block.blockID, par1, par2, par3, player);
-//
-//						if (itemstack.stackSize == 0)
-//						{
-//							this.destroyTheItem(player, stack);
-//						}
-//					}
-//				}
-//
-//				return flag;
-//			}
-//		}
-//	}
 	public void attackTargetEntityWithTheItem(Entity par1Entity, EntityPlayer player,ItemStack stack)
 	{
 		if (!ForgeHooks.onEntityInteract(player, par1Entity, true))
@@ -707,44 +634,10 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 		{
 			HashMap map = ModLoader.getPrivateValue(NBTTagCompound.class, nbt, 0);
 			map.remove(string);
-//			ModLoader.setPrivateValue(NBTTagCompound.class, nbt, "tagMap", map);
 		}
 		catch (Exception e)
 		{
 
 		}
 	}
-//	public boolean canCurrentToolHarvestBlock(int par1, int par2, int par3, EntityPlayer player, ItemStack stack)
-//	{
-//		if (player.capabilities.allowEdit)
-//		{
-//			return true;
-//		}
-//		else
-//		{
-//			int l = player.worldObj.getBlockId(par1, par2, par3);
-//
-//			if (l > 0)
-//			{
-//				Block block = Block.blocksList[l];
-//
-//				if (block.blockMaterial.isAlwaysHarvested())
-//				{
-//					return true;
-//				}
-//
-//				if (stack != null)
-//				{
-//					ItemStack itemstack = stack;
-//
-//					if (itemstack.canHarvestBlock(block) || itemstack.getStrVsBlock(block) > 1.0F)
-//					{
-//						return true;
-//					}
-//				}
-//			}
-//
-//			return false;
-//		}
-//	}
 }

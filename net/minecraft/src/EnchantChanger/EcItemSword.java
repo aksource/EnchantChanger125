@@ -25,7 +25,7 @@ public class EcItemSword extends ItemSword implements IItemRenderer
 	{
 		super(par1, toolMaterial);
 		this.setTextureFile(mod_EnchantChanger.EcSprites);
-		this.setMaxDamage(-1);
+//		this.setMaxDamage(-1);
 	}
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {

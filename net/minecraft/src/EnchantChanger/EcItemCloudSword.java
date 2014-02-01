@@ -1,6 +1,5 @@
 package net.minecraft.src.EnchantChanger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -12,7 +11,6 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumToolMaterial;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
@@ -22,7 +20,6 @@ import net.minecraft.src.StatList;
 import net.minecraft.src.World;
 import net.minecraft.src.mod_EnchantChanger;
 import net.minecraft.src.forge.ForgeHooks;
-import net.minecraft.src.forge.IItemRenderer;
 
 public class EcItemCloudSword extends EcItemSword //implements IItemRenderer
 {
@@ -34,6 +31,7 @@ public class EcItemCloudSword extends EcItemSword //implements IItemRenderer
 	public EcItemCloudSword(int par1)
 	{
 		super(par1, EnumToolMaterial.EMERALD);
+		this.setMaxDamage(EnumToolMaterial.IRON.getMaxUses() * 14);
 	}
 
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving)

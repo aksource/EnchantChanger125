@@ -12,7 +12,6 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.PotionEffect;
 import net.minecraft.src.World;
 import net.minecraft.src.mod_EnchantChanger;
-import net.minecraft.src.forge.IItemRenderer;
 
 public class EcItemZackSword extends EcItemSword //implements IItemRenderer
 {
@@ -22,7 +21,7 @@ public class EcItemZackSword extends EcItemSword //implements IItemRenderer
 	public EcItemZackSword(int par1)
 	{
 		super(par1, EnumToolMaterial.IRON);
-//		this.setMaxDamage(-1);
+		this.setMaxDamage(EnumToolMaterial.IRON.getMaxUses() * 14);
 	}
 
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving)

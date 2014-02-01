@@ -292,8 +292,7 @@ public class EcEntityApOrb extends Entity
 			prevAp = ((NBTTagCompound)enchantList.tagAt(j)).getInteger("ap");
 			enchantmentId = ((NBTTagCompound)enchantList.tagAt(j)).getShort("id");
 			enchantmentLv = ((NBTTagCompound)enchantList.tagAt(j)).getShort("lvl");
-			if(Enchantment.enchantmentsList[enchantmentId].getMaxLevel() == 1
-					|| (mod_EnchantChanger.LevelCap && Enchantment.enchantmentsList[enchantmentId].getMaxLevel() <= enchantmentLv))
+			if(checkLevelLimit(Enchantment.enchantmentsList[enchantmentId], enchantmentLv))
 				continue;
 			nowAp = prevAp + this.apValue;
 			if(mod_EnchantChanger.magicEnchantment.contains(Integer.valueOf((int)enchantmentId)))
@@ -305,6 +304,22 @@ public class EcEntityApOrb extends Entity
 					((NBTTagCompound)enchantList.tagAt(j)).setShort("lvl", (short) (enchantmentLv + 1));
 			}
 			((NBTTagCompound)enchantList.tagAt(j)).setInteger("ap", nowAp);
+		}
+	}
+	private boolean checkLevelLimit(Enchantment ench, int nowLevel)
+	{
+		if (mod_EnchantChanger.levelLimitMap.containsKey(Integer.valueOf(ench.effectId))) {
+			if (mod_EnchantChanger.levelLimitMap.get(Integer.valueOf(ench.effectId)) == 0) {
+				return ench.getMaxLevel() <= nowLevel;
+			} else {
+				return mod_EnchantChanger.levelLimitMap.get(Integer.valueOf(ench.effectId)) <= nowLevel;
+			}
+		} else if (ench.getMaxLevel() == 1) {
+			return true;
+		} else if (mod_EnchantChanger.LevelCap && ench.getMaxLevel() <= nowLevel) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	/**

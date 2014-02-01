@@ -1,6 +1,5 @@
 package net.minecraft.src.EnchantChanger;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.src.AchievementList;
@@ -22,7 +21,6 @@ import net.minecraft.src.StatList;
 import net.minecraft.src.World;
 import net.minecraft.src.mod_EnchantChanger;
 import net.minecraft.src.forge.ForgeHooks;
-import net.minecraft.src.forge.IItemRenderer;
 public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 {
 	public static final EcModelCloudSwordCore2 CCModel = new EcModelCloudSwordCore2();
@@ -38,7 +36,7 @@ public class EcItemCloudSwordCore extends EcItemSword //implements IItemRenderer
 	public EcItemCloudSwordCore(int par1)
 	{
 		super(par1, EnumToolMaterial.EMERALD);
-//		this.setMaxDamage(-1);
+		this.setMaxDamage(EnumToolMaterial.IRON.getMaxUses() * 14);
 	}
 
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving)

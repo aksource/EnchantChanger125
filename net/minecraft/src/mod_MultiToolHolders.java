@@ -8,11 +8,16 @@ import net.minecraft.src.forge.MinecraftForgeClient;
 
 import org.lwjgl.input.Keyboard;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.modloader.ModLoaderHelper;
+import cpw.mods.fml.common.registry.FMLRegistry;
+
 public class mod_MultiToolHolders extends BaseMod
 {
 	@Override
 	public String getVersion() {
-		return "1.2";
+		return "1.2b";
 	}
 	@MLProp
 	public static int ItemIDShift = 7000;
@@ -57,14 +62,14 @@ public class mod_MultiToolHolders extends BaseMod
 	public mod_MultiToolHolders(){}
 	public void load() {
 		//initialize
-		ModLoader.setInGameHook(this, true, true);
-		mc = ModLoader.getMinecraftInstance();
+		ModLoaderHelper.updateStandardTicks(this, true, true);
+		mc = FMLClientHandler.instance().getClient();
 		instance =this;
 		MinecraftForgeClient.preloadTexture("/ak/MultiToolHolders/textures/items.png");
 		MinecraftForge.setGuiHandler(this, new CommonProxy());
-		ModLoader.registerKey(this, OpenKey, false);
-		ModLoader.registerKey(this, NextKey, false);
-		ModLoader.registerKey(this, PrevKey, false);
+		FMLClientHandler.instance().registerKeyHandler(this, OpenKey, false);
+		FMLClientHandler.instance().registerKeyHandler(this, NextKey, false);
+		FMLClientHandler.instance().registerKeyHandler(this, PrevKey, false);
 
 
 		//Definition Item & Block & Enchant
@@ -74,26 +79,15 @@ public class mod_MultiToolHolders extends BaseMod
 		ItemMultiToolHolder7 = (new ItemMultiToolHolder(ItemIDShift - 256 + 3, 7)).setItemName(this.TextureDomain + "Holder7").setIconIndex(1);
 
 		//Register Name
-		ModLoader.addName(ItemMultiToolHolder3, "3-Way Tool Holder");
-		ModLoader.addName(ItemMultiToolHolder5, "5-Way Tool Holder");
-		ModLoader.addName(ItemMultiToolHolder9, "9-Way Tool Holder");
-		ModLoader.addName(ItemMultiToolHolder7, "7-Way Tool Holder");
+		addName(ItemMultiToolHolder3, "3-Way Tool Holder","3-Wayツールホルダー");
+		addName(ItemMultiToolHolder5, "5-Way Tool Holder","5-Wayツールホルダー");
+		addName(ItemMultiToolHolder9, "9-Way Tool Holder","9-Wayツールホルダー");
+		addName(ItemMultiToolHolder7, "7-Way Tool Holder","7-Wayツールホルダー");
 
-		ModLoader.addName(ItemMultiToolHolder3, "ja_JP","3-Wayツールホルダー");
-		ModLoader.addName(ItemMultiToolHolder5, "ja_JP","5-Wayツールホルダー");
-		ModLoader.addName(ItemMultiToolHolder9, "ja_JP","9-Wayツールホルダー");
-		ModLoader.addName(ItemMultiToolHolder7, "ja_JP","7-Wayツールホルダー");
-
-		ModLoader.addLocalization("container.toolholder", "ToolHolder");
-		ModLoader.addLocalization("container.toolholder", "ja_JP", "ツールホルダー");
-		ModLoader.addLocalization("container.toolholder", "ToolHolder");
-		ModLoader.addLocalization("container.toolholder", "ja_JP", "ツールホルダー");
-		ModLoader.addLocalization("Key.openToolHolder", "Open ToolHolder");
-		ModLoader.addLocalization("Key.openToolHolder", "ja_JP", "ツールホルダーを開く");
-		ModLoader.addLocalization("Key.nextToolHolder", "ToolHolder Next Slot");
-		ModLoader.addLocalization("Key.nextToolHolder", "ja_JP", "次のスロット");
-		ModLoader.addLocalization("Key.prevToolHolder", "ToolHolder Previous Slot");
-		ModLoader.addLocalization("Key.prevToolHolder", "ja_JP", "前のスロット");
+		addLocalization("container.toolholder", "ToolHolder", "ツールホルダー");
+		addLocalization("Key.openToolHolder", "Open ToolHolder", "ツールホルダーを開く");
+		addLocalization("Key.nextToolHolder", "ToolHolder Next Slot", "次のスロット");
+		addLocalization("Key.prevToolHolder", "ToolHolder Previous Slot", "前のスロット");
 
 		//register
 		MinecraftForgeClient.registerItemRenderer(ItemIDShift, (IItemRenderer) ItemMultiToolHolder3);
@@ -102,14 +96,24 @@ public class mod_MultiToolHolders extends BaseMod
 		MinecraftForgeClient.registerItemRenderer(ItemIDShift + 3, (IItemRenderer) ItemMultiToolHolder7);
 
 		//register recipes
-		ModLoader.addRecipe(new ItemStack(ItemMultiToolHolder3), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.ingotIron,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Item.silk});
-		ModLoader.addRecipe(new ItemStack(ItemMultiToolHolder7), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.ingotGold,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Item.silk});
-		ModLoader.addRecipe(new ItemStack(ItemMultiToolHolder9), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.diamond,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Item.silk});
-		ModLoader.addRecipe(new ItemStack(ItemMultiToolHolder5), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), new ItemStack(Item.dyePowder,1,4), Character.valueOf('B'),Block.chest, Character.valueOf('C'),Item.silk});
+		FMLRegistry.addRecipe(new ItemStack(ItemMultiToolHolder3), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.ingotIron,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Item.silk});
+		FMLRegistry.addRecipe(new ItemStack(ItemMultiToolHolder7), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.ingotGold,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Item.silk});
+		FMLRegistry.addRecipe(new ItemStack(ItemMultiToolHolder9), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.diamond,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Item.silk});
+		FMLRegistry.addRecipe(new ItemStack(ItemMultiToolHolder5), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), new ItemStack(Item.dyePowder,1,4), Character.valueOf('B'),Block.chest, Character.valueOf('C'),Item.silk});
 		if(this.Debug)
 		{
 			this.debugsystem();
 		}
+	}
+	private void addName(Object obj, String en, String ja)
+	{
+		FMLCommonHandler.instance().addNameForObject(obj, "en_US", en);
+		FMLCommonHandler.instance().addNameForObject(obj, "ja_JP", ja);
+	}
+	private void addLocalization(String key, String en, String ja)
+	{
+		FMLCommonHandler.instance().addStringLocalization(key, "en_US", en);
+		FMLCommonHandler.instance().addStringLocalization(key, "ja_JP", ja);
 	}
 	@Override
     public void keyboardEvent(KeyBinding kb)
